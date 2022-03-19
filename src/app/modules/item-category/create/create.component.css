@@ -1,0 +1,9 @@
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #555E96!important;
+    border-color: #555E96!important;
+}
+
+form { margin-top: 15px; }
+.checkbox { margin-top: inherit; }
+ul.nav-tabs { cursor: pointer; }

@@ -1,0 +1,53 @@
+<app-header></app-header>
+<app-siderbar></app-siderbar>
+ <main role="main" class="wlt-mainpanel ml-sm-auto px-2 py-2">
+<mat-card>
+    <mat-card-title>
+        <div class="row">
+            <div class="col-6 col-md-8 col-lg-9">
+                <h3>Vendor</h3>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="Name">
+                  <th mat-header-cell *matHeaderCellDef> Vendor Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Id">
+                  <th mat-header-cell *matHeaderCellDef> Vendor Id </th>
+                  <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+                </ng-container>
+                <ng-container matColumnDef="AccountNumber">
+                  <th mat-header-cell *matHeaderCellDef> Vendor Id </th>
+                  <td mat-cell *matCellDef="let element"> {{element.AccountNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width:120px">
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="float-left">
+                            <a [routerLink]="['/vendor/view',element.VendorId]" class="mr-2 wlt-view"><mat-icon aria-hidden="false"  matTooltip="View" aria-label="view icon">visibility</mat-icon></a>
+                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)"><mat-icon aria-hidden="false"  matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon></a>
+                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.VendorId)"><mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon">delete</mat-icon></a>
+                        </div>
+                    </td>
+                  </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                             showFirstLastButtons 
+                             aria-label="Select page of periodic elements">
+              </mat-paginator>    
+        </div>
+    </mat-card-content>
+</mat-card>
+</main>
+<app-footer></app-footer>

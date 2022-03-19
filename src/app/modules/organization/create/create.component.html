@@ -1,0 +1,97 @@
+<p class="close" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</p>
+<h1 mat-dialog-title>{{  isCreate ? 'Add' : 'Edit' }} Organization</h1>
+<form [formGroup]="frm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Organization ID</mat-label>
+                    <input matInput formControlName="Id" id="Id" placeholder="">
+                    <mat-error>
+                        Organization ID is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Organization Name</mat-label>
+                    <input matInput formControlName="Name" id="Name" placeholder="">
+                    <mat-error>
+                        Organization Name is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="Description" id="Description"
+                              placeholder="Organization Description"></textarea>
+                    <mat-error>
+                        Organization Description is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Purchase Order Prefix</mat-label>
+                    <input matInput formControlName="PurchaseOrderPrefix" id="PurchaseOrderPrefix" placeholder="">
+                    <mat-error>
+                        Purchase Order Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Return Order Prefix</mat-label>
+                    <input matInput formControlName="ReturnOrderPrefix" id="ReturnOrderPrefix" placeholder="">
+                    <mat-error>
+                        Return Order Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Inventory Adjustment Prefix</mat-label>
+                    <input matInput formControlName="InventoryAdjustmentPrefix" id="InventoryAdjustmentPrefix" placeholder="">
+                    <mat-error>
+                        Inventory Adjustment Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Item Consumption Prefix</mat-label>
+                    <input matInput formControlName="ItemConsumptionPrefix" id="ItemConsumptionPrefix" placeholder="">
+                    <mat-error>
+                        Item Consumption Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Transactional Warehouse</mat-label>
+                    <mat-select [(ngModel)]="selectedValue" formControlName="TransactionalWarehouseId">
+                        <mat-option *ngFor="let TransactionalWarehouseId of TransactionalWarehouseId" [value]="TransactionalWarehouseId.WarehouseId">
+                            {{TransactionalWarehouseId.Name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tax Registration Number</mat-label>
+                    <input matInput formControlName="TaxRegistrationNumber" id="TaxRegistrationNumber" placeholder="">
+                    <mat-error>
+                        Tax Registration Number is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="float-right">
+        <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
+    </mat-dialog-actions>
+</form>

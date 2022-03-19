@@ -1,0 +1,118 @@
+<p class="close" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</p>
+<h1 mat-dialog-title>  {{itemName}}</h1>
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab label="Vendor">
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSourceVendor">
+                            <ng-container matColumnDef="VendorNo">
+                                <th mat-header-cell *matHeaderCellDef>Vendor No</th>
+                                <td mat-cell *matCellDef="let element"> {{element.VendorNo}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="VendorName">
+                                <th mat-header-cell *matHeaderCellDef>Vendor Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.VendorName}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="UnitPrice">
+                                <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+                                <td mat-cell *matCellDef="let element"> {{element.UnitPrice}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderDate">
+                                <th mat-header-cell *matHeaderCellDef>Order Date</th>
+                                <td mat-cell *matCellDef="let element"> {{element.OrderDate}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedVendorColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedVendorColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                                       showFirstLastButtons
+                                       aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Transactions">
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSourceTransaction">
+                            <ng-container matColumnDef="TransactionDate">
+                                <th mat-header-cell *matHeaderCellDef>Transaction Date</th>
+                                <td mat-cell *matCellDef="let element"> {{element.TransactionDate}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Reference">
+                                <th mat-header-cell *matHeaderCellDef>Reference</th>
+                                <td mat-cell *matCellDef="let element"> {{element.Reference}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="RefNo">
+                                <th mat-header-cell *matHeaderCellDef>RefNo</th>
+                                <td mat-cell *matCellDef="let element"> {{element.RefNo}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                                <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="LotNo">
+                                <th mat-header-cell *matHeaderCellDef>LotNo</th>
+                                <td mat-cell *matCellDef="let element"> {{element.LotNo}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedTransactionColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedTransactionColumns;"></tr>
+                        </table>
+                        <mat-paginator #paginatorTransaction="matPaginator" [pageSizeOptions]="[10, 20, 30]"
+                                       showFirstLastButtons
+                                       aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Category">
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSourceCategory">
+                            <ng-container matColumnDef="CategoryName">
+                                <th mat-header-cell *matHeaderCellDef>Category Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.CategoryName}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedCategoryColumns;"></tr>
+                        </table>
+                        <mat-paginator #paginatorCategory="matPaginator" [pageSizeOptions]="[10, 20, 30]"
+                                       showFirstLastButtons
+                                       aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </mat-tab>
+                <mat-tab label="OnHand Quantity">
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSourceOnHandQty">
+                            <ng-container matColumnDef="WarehouseName">
+                                <th mat-header-cell *matHeaderCellDef>Warehouse Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.WarehouseName}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Unit">
+                                <th mat-header-cell *matHeaderCellDef>Unit</th>
+                                <td mat-cell *matCellDef="let element"> {{element.Unit}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="OnHandQuantity">
+                                <th mat-header-cell *matHeaderCellDef>OnHand Quantity</th>
+                                <td mat-cell *matCellDef="let element"> {{element.OnHandQuantity}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedOnHandQtyColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedOnHandQtyColumns;"></tr>
+                        </table>
+                        <mat-paginator #paginatorTOnHandQty="matPaginator" [pageSizeOptions]="[10, 20, 30]"
+                                       showFirstLastButtons
+                                       aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</mat-dialog-content>
+
+

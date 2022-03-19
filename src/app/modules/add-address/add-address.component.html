@@ -1,0 +1,77 @@
+<p class="close" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</p>
+<h1 mat-dialog-title>{{  isCreate ? 'Add' : 'Edit' }} Address</h1>
+<form [formGroup]="frm" (ngSubmit)="onSubmit()">
+<mat-dialog-content>
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Address1</mat-label>
+                    <input matInput formControlName="Address1" id="Address1" placeholder="">
+                    <mat-error>
+                        Address1 is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Address2</mat-label>
+                    <input matInput formControlName="Address2" id="Address2" placeholder="">
+                    <mat-error>
+                        Address2 is required!
+                    </mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>State</mat-label>
+                    <input matInput formControlName="State" id="State" placeholder="">
+                    <mat-error>
+                        State is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>City</mat-label>
+                    <input matInput formControlName="City" id="City" placeholder="">
+                    <mat-error>
+                        City is required!
+                    </mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Pincode</mat-label>
+                    <input matInput formControlName="Pincode" id="Pincode" placeholder="">
+                    <mat-error>
+                        Pincode is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="Phone" id="Phone" placeholder="">
+                    <mat-error>
+                        Phone is required!
+                    </mat-error>
+                  </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="Email" id="Email" placeholder="">
+                    <mat-error>
+                        Email is required!
+                    </mat-error>
+                  </mat-form-field>
+            </div>
+        </div>
+</mat-dialog-content>
+<mat-dialog-actions class="float-right">
+  <button  mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
+</mat-dialog-actions>
+</form>

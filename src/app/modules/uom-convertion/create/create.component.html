@@ -1,0 +1,66 @@
+<p class="close" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</p>
+<h1 mat-dialog-title>{{  isCreate ? 'Add' : 'Edit' }} UOM Convertion</h1>
+<form [formGroup]="addUOMCForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="row">
+
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="Name" id="name" placeholder="">
+                    <mat-error>
+                        Name is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="Description" id="desc" placeholder=""></textarea>
+                    <mat-error>
+                        Description is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>From Unit</mat-label>
+                    <mat-select formControlName="FromUnitId" id="from">
+                        <mat-option></mat-option>
+                        <mat-option [value]="option.Id" *ngFor="let option of units">{{ option.Name }}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        From Unit is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>To Unit</mat-label>
+                    <mat-select formControlName="ToUnitId" id="to">
+                        <mat-option></mat-option>
+                        <mat-option [value]="option.Id" *ngFor="let option of units">{{ option.Name }}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        To Unit is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Ratio</mat-label>
+                    <input matInput formControlName="Ratio" id="ratio" placeholder="">
+                    <mat-error>
+                        Ratio is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="float-right">
+        <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
+    </mat-dialog-actions>
+</form>

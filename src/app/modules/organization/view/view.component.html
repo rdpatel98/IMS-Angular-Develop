@@ -1,0 +1,155 @@
+<app-header></app-header>
+<app-siderbar></app-siderbar>
+ <main role="main" class="wlt-mainpanel ml-sm-auto px-2 py-2">
+<mat-card>
+    <mat-card-title>
+        <div class="row">
+            <div class="col-6 col-md-8 col-lg-9">
+                <h3>Organizations</h3>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <button mat-raised-button color="primary" class="float-right" (click)="addAddress()">Add New Address</button>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Organization ID</mat-label>
+                    <input matInput id="Id" placeholder="" value="{{data['Id']}}" readonly>
+                    <mat-error>
+                        Organization ID is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Organization Name</mat-label>
+                    <input matInput id="Name" placeholder="" value="{{data['Name']}}" readonly>
+                    <mat-error>
+                        Organization Name is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Purchase Order Prefix</mat-label>
+                    <input matInput id="PurchaseOrderPrefix" placeholder="" value="{{data['PurchaseOrderPrefix']}}" readonly>
+                    <mat-error>
+                        Purchase Order Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Return Order Prefix</mat-label>
+                    <input matInput id="ReturnOrderPrefix" placeholder="" value="{{data['ReturnOrderPrefix']}}" readonly>
+                    <mat-error>
+                        Return Order Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Inventory Adjustment Prefix</mat-label>
+                    <input matInput id="InventoryAdjustmentPrefix" placeholder="" value="{{data['InventoryAdjustmentPrefix']}}" readonly>
+                    <mat-error>
+                        Inventory Adjustment Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Item Consumption Prefix</mat-label>
+                    <input matInput id="ItemConsumptionPrefix" placeholder="" value="{{data['ItemConsumptionPrefix']}}" readonly>
+                    <mat-error>
+                        Item Consumption Prefix is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Transactional Warehouse</mat-label>
+                    <input matInput placeholder="TransactionalWarehouse" value="{{data['TransactionalWarehouse']}}" readonly>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tax Registration Number</mat-label>
+                    <input matInput id="TaxRegistrationNumber" placeholder="" value="{{data['TaxRegistrationNumber']}}" readonly>
+                    <mat-error>
+                        Tax Registration Number is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput id="Description"
+                              placeholder="Organization Description" value="{{data['Description']}}" readonly></textarea>
+                    <mat-error>
+                        Organization Description is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="Address1">
+                    <th mat-header-cell *matHeaderCellDef> Address1</th>
+                    <td mat-cell *matCellDef="let element"> {{element.Address1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Address2">
+                    <th mat-header-cell *matHeaderCellDef> Address2</th>
+                    <td mat-cell *matCellDef="let element"> {{element.Address2}} </td>
+                </ng-container>
+                <ng-container matColumnDef="City">
+                    <th mat-header-cell *matHeaderCellDef> City</th>
+                    <td mat-cell *matCellDef="let element"> {{element.City}} </td>
+                </ng-container>
+                <ng-container matColumnDef="State">
+                    <th mat-header-cell *matHeaderCellDef> State</th>
+                    <td mat-cell *matCellDef="let element"> {{element.State}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Email">
+                    <th mat-header-cell *matHeaderCellDef> Email</th>
+                    <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Phone">
+                    <th mat-header-cell *matHeaderCellDef> Phone</th>
+                    <td mat-cell *matCellDef="let element"> {{element.Phone}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Pincode">
+                    <th mat-header-cell *matHeaderCellDef> Pincode</th>
+                    <td mat-cell *matCellDef="let element"> {{element.Pincode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width:120px">
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="float-left">
+                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="editAddress(element)">
+                                <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon>
+                            </a>
+                            <a [routerLink]="" class=" wlt-delete" (click)="deleteAddress(element)">
+                                <mat-icon aria-hidden="false" matTooltip="Delete" aria-label="delete icon">delete</mat-icon>
+                            </a>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+    </mat-card-content>
+</mat-card>
+</main> 
+<app-footer></app-footer>

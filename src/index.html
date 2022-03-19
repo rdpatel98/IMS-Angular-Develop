@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inventory Solutions</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Bootstrap core CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icons -->
+  <!-- <script src="assets/js/feather.min.js"></script> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body id="id_body" class=" mat-typography">
+  <app-root></app-root>
+ 
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="assets/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script>
+      //feather.replace()
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.navbar-toggler').click(function(){
+          document.getElementById("id_body").classList.toggle("wlt-sidebar-icon-only");
+        });
+      });
+      </script>
+      <script type="text/javascript">
+        (function($) {
+        'use strict';
+          //Open submenu on hover in compact sidebar mode and horizontal menu mode
+          $(document).on('mouseenter mouseleave', '.wlt-sidebar .nav-item', function(ev) {
+            var body = $('body');
+            var sidebarIconOnly = body.hasClass("wlt-sidebar-icon-only");
+            var sidebarFixed = body.hasClass("sidebar-fixed");
+            if (!('ontouchstart' in document.documentElement)) {
+              if (sidebarIconOnly) {
+                if (sidebarFixed) {
+                  if (ev.type === 'mouseenter') {
+                    body.removeClass('wlt-sidebar-icon-only');
+                  }
+                } else {
+                  var $menuItem = $(this);
+                  if (ev.type === 'mouseenter') {
+                    $menuItem.addClass('wlt-hover-open')
+                  } else {
+                    $menuItem.removeClass('wlt-hover-open')
+                  }
+                }
+              }
+            }
+          });
+        })(jQuery);
+      </script>
+      <script type="text/javascript">
+        (function($) {
+          'use strict';
+          $(function() {
+            $('[data-toggle="minimize"]').on("click", function() {
+              $('.wlt-sidebar-offcanvas').toggleClass('active')
+            });
+          });
+        })(jQuery);
+      </script>
+</body>
+</html>

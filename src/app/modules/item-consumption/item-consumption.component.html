@@ -1,0 +1,117 @@
+<app-header></app-header>
+<app-siderbar></app-siderbar>
+<main role="main" class="wlt-mainpanel ml-sm-auto px-2 py-2">
+    <mat-card>
+        <mat-card-title>
+            <div class="row">
+                <div class="col-6 col-md-8 col-lg-9">
+                    <h3>Item Consumption</h3>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+
+            <form [formGroup]="frm" (ngSubmit)="onSubmit()">
+                <div >
+                    <div class="row" formGroupName="Consumption">
+                        <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Journal</mat-label>
+                                    <input matInput formControlName="ConsumptionNo" id="id" placeholder="" readonly>
+                                    <mat-error>
+                                        Journal Number is required!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="fill" class="ml-1">
+                                    <mat-label>Warehouse</mat-label>
+                                    <mat-select formControlName="WarehouseId" (selectionChange)="warehouseChange($event.value)">
+                                        <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-6 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Worker Name</mat-label>
+                                    <mat-select formControlName="WorkerId" id="worker">
+                                        <mat-option *ngFor="let w of workerAll" value="{{w.WorkerId}}">{{w.Name}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Worker Name is required!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right px-4">
+
+                        <button mat-raised-button color="primary">Submit</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <mat-tab-group [selectedIndex]="selected.value" formArrayName="ConsumptionCategory">
+                                <mat-tab *ngFor="let tab of listItemCategory; let index = index" [label]="tab.CategoryName">
+
+                                    <ng-container [formGroupName]="index">
+
+                                        <ng-container formArrayName="ConsumptionItems">
+
+                                            <table mat-table [dataSource]="loadItemss(index)">
+                                                <ng-container matColumnDef="item_code">
+                                                    <th mat-header-cell *matHeaderCellDef> #</th>
+                                                    <td mat-cell *matCellDef="let element;let i = index"> {{i + 1}} </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="item_name">
+                                                    <th mat-header-cell *matHeaderCellDef> Item</th>
+                                                    <td mat-cell *matCellDef="let element let index = index" [formGroupName]="index">
+                                                        <input type="text" style="border: none" formControlName="ItemName" readonly>
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="unit">
+                                                    <th mat-header-cell *matHeaderCellDef> Unit</th>
+                                                    x
+                                                    <td mat-cell *matCellDef="let element let index = index" [formGroupName]="index">
+                                                        <input type="text" style="border: none" formControlName="UnitName" readonly>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="qty">
+                                                    <th mat-header-cell *matHeaderCellDef> Qty</th>
+                                                    <td mat-cell *matCellDef="let element let index = index" [formGroupName]="index">
+                                                        <mat-form-field appearance="standard">
+                                                            <input type="number" matInput formControlName="Quantity">
+                                                        </mat-form-field>
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container matColumnDef="onhand">
+                                                    <th mat-header-cell *matHeaderCellDef> On-hand</th>
+                                                    <td mat-cell *matCellDef="let element let index = index" [formGroupName]="index">
+                                                        <input type="text" style="border: none" formControlName="OnHandQty" readonly>
+                                                    </td>
+                                                </ng-container>
+
+                                                <tr mat-header-row *matHeaderRowDef="displayedItemColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedItemColumns;"></tr>
+                                            </table>
+                                        </ng-container>
+                                    </ng-container>
+
+                                </mat-tab>
+                            </mat-tab-group>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</main>
+<app-footer></app-footer>
