@@ -46,7 +46,7 @@ export class PurchaseOrderComponent implements OnInit {
     vendorAll: any;
     _totalAmount: number = 0;
 
-    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: '', Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: '0', SourceOfOriginName: '' }];
+    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: '', Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0, SourceOfOriginName: '' }];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'warehouse', 'SourceOfOriginName', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
 
@@ -70,6 +70,9 @@ export class PurchaseOrderComponent implements OnInit {
 
         whService.getWarehouse(this.orgId.toString()).subscribe(data => {
             this.warehouseAll = data['Result'];
+            if (this.warehouseAll.length > 0) {
+                this.defaultWarehouseId = this.warehouseAll[0];
+            }
         });
 
         vendorService.getVendors(this.orgId.toString()).subscribe(data => {
@@ -124,7 +127,6 @@ export class PurchaseOrderComponent implements OnInit {
     addRow(d?: TableData, noUpdate?: boolean) {
         const row = this.formBulider.group({
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
-            'Unit': [d && d.Unit ? d.Unit : null, [Validators.required]],
             'ItemId': [d && d.ItemId ? d.ItemId : null, []],
             'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : this.defaultWarehouseId, []],
             'Quantity': [d && d.Quantity ? d.Quantity : 1, [Validators.required]],
@@ -176,9 +178,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
     vendorChange(eventValue: any) {
-        this.vendorAccount = this.vendorAll.map((d: any) => {
-            return d.VendorId == eventValue ? d.AccountNumber : null;
-        });
+        this.vendorAccount = this.vendorAll.find((d: any) => d.VendorId == eventValue)?.AccountNumber;
     }
 
     netAmount(index: string) {
@@ -194,14 +194,13 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.form.controls['PurchaseOrderItems'].setValue(this.form.value.PurchaseOrderItems.map((d: any, i = 0) => {
             return {
-                ItemId: d.ItemId?.ItemId,
+                ItemId: d?.ItemId?.ItemId,
                 LineNo: ++i,
                 WarehouseId: d.WarehouseId,
                 Quantity: d.Quantity,
                 UnitId: d.UnitId,
                 UnitPrice: d.UnitPrice,
                 NetAmount: d.NetAmount,
-                Unit: d.Unit,
                 SourceOfOriginName: d.SourceOfOriginName
             }
         }));
@@ -226,7 +225,7 @@ export interface TableData {
     Quantity: number;
     UnitId: string;
     UnitPrice: number;
-    NetAmount: string;
+    NetAmount: number;
     Unit: string;
     SourceOfOriginName: string;
 }

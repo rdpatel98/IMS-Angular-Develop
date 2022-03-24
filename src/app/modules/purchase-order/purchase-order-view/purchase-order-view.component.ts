@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {BehaviorSubject, Observable} from "rxjs";
-import {IItem} from "../../items/items.component";
-import {LoginService} from "../../user/login/login.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ItemsService} from "../../items/items.service";
-import {WarehouseService} from "../../warehouse/warehouse.service";
-import {UomConvertionService} from "../../uom-convertion/uom-convertion.service";
-import {VendorService} from "../../vendor/vendor.service";
-import {PurchaseOrderService} from "../purchase-order.service";
-import {map, startWith} from "rxjs/operators";
-import {ReceiveInvoiceComponent} from "../receive-invoice/receive-invoice.component";
-import {TableData} from "../purchase-order.component";
-import {ActivatedRoute} from "@angular/router";
-import {MatTableDataSource} from "@angular/material/table";
-import {IPurchaseOrder} from "../purchase-order-list/purchase-order-list.component";
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { BehaviorSubject, Observable } from "rxjs";
+import { IItem } from "../../items/items.component";
+import { LoginService } from "../../user/login/login.service";
+import { MatDialog } from "@angular/material/dialog";
+import { ItemsService } from "../../items/items.service";
+import { WarehouseService } from "../../warehouse/warehouse.service";
+import { UomConvertionService } from "../../uom-convertion/uom-convertion.service";
+import { VendorService } from "../../vendor/vendor.service";
+import { PurchaseOrderService } from "../purchase-order.service";
+import { map, startWith } from "rxjs/operators";
+import { ReceiveInvoiceComponent } from "../receive-invoice/receive-invoice.component";
+import { TableData } from "../purchase-order.component";
+import { ActivatedRoute } from "@angular/router";
+import { MatTableDataSource } from "@angular/material/table";
+import { IPurchaseOrder } from "../purchase-order-list/purchase-order-list.component";
 
 @Component({
     selector: 'app-purchase-order-view',
@@ -105,19 +105,17 @@ export class PurchaseOrderViewComponent implements OnInit {
             this.dataSource = new MatTableDataSource<TableData>(data['Result']['PurchaseOrderItems']);
             this.poNo = data['Result']['PurchaseOrder']['PurchaseOrderNo'];
             this.poID = data['Result']['PurchaseOrder']['PurchaseOrderId'];
-            this.VendorName = this.vendorAll.map((d: any) => {
-                return d.VendorId == data['Result']['PurchaseOrder']['VendorId'] ? d.Name : null;
-            });
-            this.vendorAccount = this.vendorAll.map((d: any) => {
-                return d.VendorId == data['Result']['PurchaseOrder']['VendorId'] ? d.AccountNumber : null;
-            });
+            const vendor=this.vendorAll.find((x:any) => x.VendorId == 1)
+            this.VendorName =vendor.Name;
+            this.vendorAccount = vendor.AccountNumber;
+            this._totalAmount = data.Result.PurchaseOrderItems.reduce((p: number, c: any) => p + Number(c.NetAmount), 0);
         });
     }
 
     invoice() {
         const dialogRef = this.dialog.open(ReceiveInvoiceComponent, {
             disableClose: true,
-            data: {IsPurchaseReceiveSaved: this.IsPurchaseReceiveSaved, id: this.poID},
+            data: { IsPurchaseReceiveSaved: this.IsPurchaseReceiveSaved, id: this.poID },
             width: '1400px',
         });
 

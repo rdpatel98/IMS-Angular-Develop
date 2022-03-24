@@ -21,4 +21,10 @@ export class InventoryAdjustmentService {
     return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId=" + id +"&type=ia");
   }
 
+  
+  getIAByID(id:string){
+    return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetInventoryAdjustmentByID?inventoryAdjustmentId="+id);
+  }
+
+
 }

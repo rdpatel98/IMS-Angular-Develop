@@ -1,0 +1,90 @@
+<app-header></app-header>
+<app-siderbar></app-siderbar>
+<main role="main" class="wlt-mainpanel ml-sm-auto px-2 py-2">
+    <mat-card>
+        <mat-card-title>
+            <div class="row">
+                <div class="col-6 col-md-8 col-lg-9">
+                    <h3>Inventory Adjuestment View</h3>
+                </div>
+            </div>
+        </mat-card-title>
+        <form>
+            <mat-card-content>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Inventory Adjuestment Number</mat-label>
+                                <input matInput id="id" placeholder="" value="{{iaNo}}" readonly>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Warehouse Name</mat-label>
+                                <input matInput id="id" placeholder="" value="{{WarehouseName}}" readonly>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Worker Name</mat-label>
+                                <input type="text" matInput placeholder="" [disabled]='true' value="{{WorkerName}}">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <!--<button (click)="addMore()" >Click</button>-->
+                    </div>
+                </div>
+
+                <div class="table-responsive mt-3 wlt-purchase">
+
+
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="no">
+                            <th mat-header-cell *matHeaderCellDef> S.No.</th>
+                            <td mat-cell *matCellDef="let element; let index = index">{{index + 1}}
+                        </ng-container>
+                        <ng-container matColumnDef="item_no">
+                            <th mat-header-cell *matHeaderCellDef> Item No</th>
+                            <td mat-cell *matCellDef="let element; let index = index">
+                                {{getItem(element.ItemId)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="qty">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Qty</th>
+                            <td mat-cell *matCellDef="let element; let index = index" class="text-center">
+                                {{element.Quantity}}
+
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="unit">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Unit</th>
+                            <td mat-cell *matCellDef="let element; let index = index" class="text-center">
+                                {{getUnit(element.ItemId)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reason">
+                            <th mat-header-cell *matHeaderCellDef class="text-center"> Unit</th>
+                            <td mat-cell *matCellDef="let element; let index = index" class="text-center">
+                                {{element.reason}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                </div>  <
+                <div class="text-right px-4">
+                    <h3><strong> Grand Total : {{_totalAmount}}</strong></h3>
+                </div>
+
+            </mat-card-content>
+        </form>
+    </mat-card>
+</main>
+<app-footer></app-footer>

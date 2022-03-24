@@ -34,7 +34,7 @@ export class InventoryAdjustmentComponent implements OnInit {
     displayedItemColumns: string[] = ['item_code', 'item_name', 'unit', 'qty', 'onhand'];
 
     items: any;
-    userlogdetails:any;
+    userlogdetails: any;
     form: FormGroup = new FormGroup({});
     control = new FormControl();
     itemOptions!: IItem[];
@@ -63,9 +63,9 @@ export class InventoryAdjustmentComponent implements OnInit {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         this.orgId = serviceLogin.currentUser()?.OrganizationId;
         this.userlogdetails = serviceLogin.currentUser();
-        console.log("justcheck"+this.userlogdetails.DefaultWarehouseId + " " + this.defaultWarehouseId);
-        
-        
+        console.log("justcheck" + this.userlogdetails.DefaultWarehouseId + " " + this.defaultWarehouseId);
+
+
         this.form = formBulider.group({
             'InventoryAdjustment': this.formBulider.group({
                 'InventoryAdjustmentNo': new FormControl('', Validators.required),
@@ -76,7 +76,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             }),
             InventoryAdjustmentItems: this.rows
         });
-        
+
         itemService.getItem(this.orgId.toString()).subscribe((data) => {
             this.itemOptions = data['Result'];
             this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -90,7 +90,7 @@ export class InventoryAdjustmentComponent implements OnInit {
         service.getWorker(this.orgId.toString()).subscribe(data => {
             this.workerAll = data['Result'];
         });
-       
+
     }
 
     displayFn(item: IItem): string {
@@ -164,7 +164,8 @@ export class InventoryAdjustmentComponent implements OnInit {
     onSubmit() {
 
         console.log(this.form.value);
-
+        if (!this.form.valid)
+            return;
         this.form.controls['InventoryAdjustmentItems'].setValue(this.form.value.InventoryAdjustmentItems.map((d: any, i = 0) => {
             return {
                 ItemId: d.ItemId?.ItemId,
@@ -180,6 +181,7 @@ export class InventoryAdjustmentComponent implements OnInit {
         this.service.saveInventoryAdjustment(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Inventory Adjustment Created Successfully!");
             this.form.reset();
+            this.router.navigate(['/inventory-adjustment-view', data['Result']]);
         });
 
 
