@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {AbstractControl, FormArray, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ReceiveInvoiceComponent} from './receive-invoice/receive-invoice.component';
-import {map, startWith} from "rxjs/operators";
-import {BehaviorSubject, Observable} from "rxjs";
-import {ItemsService} from "../items/items.service";
-import {IItem} from "../items/items.component";
-import {WarehouseService} from "../warehouse/warehouse.service";
-import {UomConvertionService} from "../uom-convertion/uom-convertion.service";
-import {VendorService} from "../vendor/vendor.service";
-import {PurchaseOrderService} from "./purchase-order.service";
-import {Router} from "@angular/router";
-import {LoginService} from '../user/login/login.service';
+import { Component, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { AbstractControl, FormArray, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ReceiveInvoiceComponent } from './receive-invoice/receive-invoice.component';
+import { map, startWith } from "rxjs/operators";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ItemsService } from "../items/items.service";
+import { IItem } from "../items/items.component";
+import { WarehouseService } from "../warehouse/warehouse.service";
+import { UomConvertionService } from "../uom-convertion/uom-convertion.service";
+import { VendorService } from "../vendor/vendor.service";
+import { PurchaseOrderService } from "./purchase-order.service";
+import { Router } from "@angular/router";
+import { LoginService } from '../user/login/login.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,14 +46,14 @@ export class PurchaseOrderComponent implements OnInit {
     vendorAll: any;
     _totalAmount: number = 0;
 
-    data: TableData[] = [{LineNo: '', Unit: '', ItemId: '', WarehouseId: '', Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: '0', SourceOfOriginName: ''}];
+    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: '', Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: '0', SourceOfOriginName: '' }];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'warehouse', 'SourceOfOriginName', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
 
     rows: FormArray = this.formBulider.array([]);
 
     form!: FormGroup;
-
+    isSaving = false;
 
     constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
@@ -124,10 +124,10 @@ export class PurchaseOrderComponent implements OnInit {
     addRow(d?: TableData, noUpdate?: boolean) {
         const row = this.formBulider.group({
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
-            'Unit': [d && d.Unit ? d.Unit : null, []],
+            'Unit': [d && d.Unit ? d.Unit : null, [Validators.required]],
             'ItemId': [d && d.ItemId ? d.ItemId : null, []],
             'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : this.defaultWarehouseId, []],
-            'Quantity': [d && d.Quantity ? d.Quantity : 1, []],
+            'Quantity': [d && d.Quantity ? d.Quantity : 1, [Validators.required]],
             'UnitId': [d && d.UnitId ? d.UnitId : null, []],
             'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, []],
             'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, []],
@@ -208,6 +208,8 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.form.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
 
+        if (!this.form.valid)
+            return;
         this.poService.createPO(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Purchase Order Created Successfully!");
             this.router.navigate(['/purchase-order-view', data['Result']]);

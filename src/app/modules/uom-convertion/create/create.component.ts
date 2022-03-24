@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {LoginService} from "../../user/login/login.service";
-import {UomService} from "../../uom/uom.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {UomConvertionService} from "../uom-convertion.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { LoginService } from "../../user/login/login.service";
+import { UomService } from "../../uom/uom.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { UomConvertionService } from "../uom-convertion.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -31,19 +31,19 @@ interface to_unit {
     styleUrls: ['./create.component.css']
 })
 export class CreateComponent implements OnInit {
-       isCreate: boolean = false;
+    isCreate: boolean = false;
     units: any;
-
+    isSaving = false;
     addUOMCForm: FormGroup = new FormGroup({});
 
-    constructor(private formBulider: FormBuilder, private service: UomConvertionService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService : UomService, private serviceLogin: LoginService) {
+    constructor(private formBulider: FormBuilder, private service: UomConvertionService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomService, private serviceLogin: LoginService) {
         if (info.ed == null) {
             this.isCreate = true;
         }
 
         uomService.getUOM().subscribe(
-            data =>{
-             this.units = data['Result'];
+            data => {
+                this.units = data['Result'];
             });
 
         this.addUOMCForm = this.formBulider.group({
@@ -65,9 +65,13 @@ export class CreateComponent implements OnInit {
     }
 
     onSubmit() {
+        if (!this.addUOMCForm.valid)
+            return;
+        this.isSaving=true;
         if (this.isCreate) {
             this.service.createUomConversion(this.addUOMCForm.value).subscribe(
                 data => {
+                    this.isSaving=false;
                     this.dialogRef.close();
                     this._snackBar.open("Uom Conversion Created Successfully!");
                 }
@@ -75,6 +79,7 @@ export class CreateComponent implements OnInit {
         } else {
             this.service.update(this.addUOMCForm.value).subscribe(
                 data => {
+                    this.isSaving=false;
                     this.dialogRef.close();
                     this._snackBar.open("Uom Conversion Updated Successfully!");
                 }

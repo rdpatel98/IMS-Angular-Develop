@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog} from '@angular/material/dialog';
-import {CreateComponent} from './create/create.component';
-import {WarehouseService} from "./warehouse.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateComponent } from './create/create.component';
+import { WarehouseService } from "./warehouse.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { LoginService } from '../user/login/login.service';
 
 
@@ -16,7 +16,7 @@ import { LoginService } from '../user/login/login.service';
 export class WarehouseComponent implements AfterViewInit {
     displayedColumns: string[] = ['Id', 'Name', 'action'];
     dataSource: any;
-orgId : string;
+    orgId: string;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 
@@ -41,7 +41,7 @@ orgId : string;
     create() {
         const dialogRef = this.dialog.open(CreateComponent, {
             disableClose: true,
-            data: {ed: null},
+            data: { ed: null },
             width: '500px',
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -52,7 +52,7 @@ orgId : string;
     edit(data: any) {
         const dialogRef = this.dialog.open(CreateComponent, {
             disableClose: true,
-            data: {ed: data},
+            data: { ed: data },
             width: '700px',
         });
 

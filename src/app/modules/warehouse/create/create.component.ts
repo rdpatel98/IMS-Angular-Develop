@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {OrganizationService} from "../../organization/organization.service";
-import {WarehouseService} from "../warehouse.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {LoginService} from "../../user/login/login.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { OrganizationService } from "../../organization/organization.service";
+import { WarehouseService } from "../warehouse.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { LoginService } from "../../user/login/login.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -29,11 +29,11 @@ export class CreateComponent implements OnInit {
     selectedValue!: string;
     organizations!: any;
     isCreate: boolean = false;
-
+    saveloading: boolean=false;
     warehouseId: warehouseId[] = [
-        {value: '0001', viewValue: 'Organization 1'},
-        {value: '0002', viewValue: 'Organization 2'},
-        {value: '0004', viewValue: 'Organization 3'},
+        { value: '0001', viewValue: 'Organization 1' },
+        { value: '0002', viewValue: 'Organization 2' },
+        { value: '0004', viewValue: 'Organization 3' },
     ];
     frm: FormGroup = new FormGroup({});
 
@@ -66,14 +66,18 @@ export class CreateComponent implements OnInit {
     }
 
     onSubmit() {
-
+        if (!this.frm.valid) {
+            return;
+        }
+        this.saveloading=true;
         if (this.isCreate) {
 
             console.log(this.frm.value);
-            this.service.createWarehouse({"Warehouse": this.frm.value}).subscribe(
+            this.service.createWarehouse({ "Warehouse": this.frm.value }).subscribe(
                 data => {
                     this.dialogRef.close();
                     this._snackBar.open("Warehouse Created Successfully!");
+                    this.saveloading=false;
                 }
             )
         } else {
@@ -81,6 +85,7 @@ export class CreateComponent implements OnInit {
                 data => {
                     this.dialogRef.close();
                     this._snackBar.open("Warehouse Updated Successfully!");
+                    this.saveloading=false;
                 }
             )
         }

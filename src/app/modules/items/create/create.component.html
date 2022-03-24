@@ -86,10 +86,7 @@
             <div class="col-12 col-md-6 col-lg-6">
                 <mat-form-field appearance="outline">
                     <mat-label>Max Stock</mat-label>
-                    <input matInput formControlName="MaxStock" id="max" placeholder="" >
-                    <mat-error>
-                        Max Stock is required!
-                    </mat-error>
+                    <input matInput formControlName="MaxStock" id="max" placeholder="" >                   
                 </mat-form-field>
             </div>
             
@@ -103,6 +100,6 @@
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
         <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
+        <button [disabled]="isSaving" mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
     </mat-dialog-actions>
 </form>

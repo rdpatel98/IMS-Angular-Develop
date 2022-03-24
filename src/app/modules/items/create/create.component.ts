@@ -36,8 +36,8 @@ export class CreateComponent implements OnInit {
     isCreate: boolean = false;
     units: any;
     sourceOfOrigins: any;
-
     addItemForm: FormGroup = new FormGroup({});
+    isSaving=false;
 
     constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService) {
 
@@ -63,8 +63,8 @@ export class CreateComponent implements OnInit {
             'Description': new FormControl('', Validators.required),
             'PurchaseUnitId': new FormControl('', Validators.required),
             'InventoryUnitId': new FormControl('', Validators.required),
-            'MinStock': new FormControl('', Validators.required),
-            'MaxStock': new FormControl('', Validators.required),
+            'MinStock': new FormControl(''),
+            'MaxStock': new FormControl(''),
             'SourceOfOrigin': [],
             'AvgPrice': []
         })
@@ -82,10 +82,13 @@ export class CreateComponent implements OnInit {
             return;
         }
 
+
+        this.isSaving=true;
         if (this.isCreate) {
             this.service.createItem(this.addItemForm.value).subscribe(
                 data => {
                     console.log(data);
+                    this.isSaving=false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Created Successfully!");
                 }
@@ -94,6 +97,7 @@ export class CreateComponent implements OnInit {
             this.service.update(this.addItemForm.value).subscribe(
                 data => {
                     console.log(data);
+                    this.isSaving=false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Updated Successfully!");
                 }

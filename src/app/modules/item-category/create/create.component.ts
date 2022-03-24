@@ -1,15 +1,15 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormArray, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {DualListComponent} from "angular-dual-listbox";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {CategoryService} from "../../category/category.service";
-import {LoginService} from "../../user/login/login.service";
-import {ItemsService} from "../../items/items.service";
-import {TableData} from "../../purchase-order/purchase-order.component";
-import {ItemCategoryService} from "../item-category.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormArray, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { DualListComponent } from "angular-dual-listbox";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { CategoryService } from "../../category/category.service";
+import { LoginService } from "../../user/login/login.service";
+import { ItemsService } from "../../items/items.service";
+import { TableData } from "../../purchase-order/purchase-order.component";
+import { ItemCategoryService } from "../item-category.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -48,6 +48,7 @@ export class CreateComponent implements OnInit {
     loadItems: Array<any> = [];
 
     isCreate: boolean = false;
+    isSaving = false;
 
     constructor(private dialogRef: MatDialogRef<CreateComponent>, @Inject(MAT_DIALOG_DATA) public info: any, private _snackBar: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private serviceCategory: CategoryService, private serviceItem: ItemsService, private service: ItemCategoryService, private serviceLogin: LoginService) {
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
@@ -63,14 +64,14 @@ export class CreateComponent implements OnInit {
             this.itemAll = d['Result'];
 
             d['Result'].forEach((d: any) => {
-                this.loadItems.push({"ItemId": d.ItemId, "Name": d.Name});
+                this.loadItems.push({ "ItemId": d.ItemId, "Name": d.Name });
             });
 
             if (!this.isCreate) {
                 service.getItemCategoryById(info.ed['ItemCategoryId']).subscribe((data: any) => {
 
                     data['Result']['ItemCategoryCollections'].forEach((d: any) => {
-                        this.confirmedStations.push({"ItemId": d.ItemId, "Name": d.ItemName})
+                        this.confirmedStations.push({ "ItemId": d.ItemId, "Name": d.ItemName })
                     });
 
                     this.loadItems.filter(item1 => this.confirmedStations.some(item2 => item1.ItemId === item2.ItemId))
@@ -82,7 +83,7 @@ export class CreateComponent implements OnInit {
                 this.frm.get('ItemCategory.CategoryId')?.setValue(info.ed['CategoryId']);
             } else {
                 d['Result'].forEach((d: any) => {
-                    this.loadItems.push({"ItemId": d.ItemId, "Name": d.Name});
+                    this.loadItems.push({ "ItemId": d.ItemId, "Name": d.Name });
                 });
 
             }
@@ -97,7 +98,7 @@ export class CreateComponent implements OnInit {
 
         this.frm = this.fb.group({
             ItemCategory: this.fb.group({
-                ItemCategoryId:[],
+                ItemCategoryId: [],
                 CategoryId: ['', Validators.required],
                 OrganizationId: [this.orgId],
             }),
@@ -127,15 +128,17 @@ export class CreateComponent implements OnInit {
             d.CategoryId = this.frm.get('ItemCategory.CategoryId')?.value;
             this.addRow(d)
         })
-
+        this.isSaving = true;
         if (this.isCreate) {
 
             this.service.create(this.frm.value).subscribe(d => {
+                this.isSaving = false;
                 this.dialogRef.close();
                 this._snackBar.open("Item Category Created Successfully!");
             });
         } else {
             this.service.update(this.frm.value).subscribe(d => {
+                this.isSaving = false;
                 this.dialogRef.close();
                 this._snackBar.open("Item Category Created Successfully!");
             });

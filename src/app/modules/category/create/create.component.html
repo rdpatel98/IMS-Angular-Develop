@@ -36,6 +36,6 @@
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
         <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
+        <button [disabled]="isSaving" mat-raised-button color="primary">{{  isCreate ? 'Save' : 'Update' }}</button>
     </mat-dialog-actions>
 </form>

@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {OrganizationService} from "../organization.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {WarehouseService} from "../../warehouse/warehouse.service";
-import {LoginService} from "../../user/login/login.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { OrganizationService } from "../organization.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { WarehouseService } from "../../warehouse/warehouse.service";
+import { LoginService } from "../../user/login/login.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -30,8 +30,8 @@ export class CreateComponent implements OnInit {
     isCreate: boolean = false;
     selectedValue!: string;
     TransactionalWarehouseId: any;
-    frm!: FormGroup;
-
+    frm: FormGroup;
+    isSaving=false;
     // wh: any;
 
     constructor(private formBulider: FormBuilder, private service: OrganizationService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private servicesWH: WarehouseService, private serviceLogin: LoginService) {
@@ -69,6 +69,10 @@ export class CreateComponent implements OnInit {
 
     onSubmit() {
         console.log(this.frm.value);
+        if (!this.frm.valid) {
+            return;
+        }
+        this.isSaving=true;
         if (this.isCreate) {
 
             this.service.createOrganization(this.frm.value).subscribe(
