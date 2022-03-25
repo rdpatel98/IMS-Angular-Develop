@@ -85,6 +85,9 @@ export class InventoryAdjustmentComponent implements OnInit {
 
         whService.getWarehouse(this.orgId.toString()).subscribe(data => {
             this.warehouseAll = data['Result'];
+            // if (this.warehouseAll.length > 0) {
+            //     this.defaultWarehouseId = this.warehouseAll[0];
+            // }
         });
 
         service.getWorker(this.orgId.toString()).subscribe(data => {
@@ -108,7 +111,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             this.form.get('InventoryAdjustment.InventoryAdjustmentNo')?.setValue(data['Result']);
         });
         this.form.get('InventoryAdjustment.OrganizationId')?.setValue(this.orgId);
-        this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
+        // this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
     }
 
     loadDD(index: string) {
@@ -143,12 +146,12 @@ export class InventoryAdjustmentComponent implements OnInit {
     addRow(d?: TableData, noUpdate?: boolean) {
         const row = this.formBulider.group({
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
-            'ItemId': [d && d.ItemId ? d.ItemId : null, []],
+            'ItemId': [d && d.ItemId ? d.ItemId : null, [Validators.required]],
             'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : null, []],
             'WorkerId': [d && d.WorkerId ? d.WorkerId : null, []],
-            'Quantity': [d && d.Quantity ? d.Quantity : 0, []],
+            'Quantity': [d && d.Quantity ? d.Quantity : 0, [Validators.required,Validators.min(1)]],
             'Reason': [d && d.Reason ? d.Reason : '', []],
-            'Unit': [d && d.Unit ? d.Unit : '', []],
+            'Unit': [d && d.Unit ? d.Unit : '', [Validators.required]],
         });
         this.rows.push(row);
         this.loadDD((this.rows.length - 1).toString());
@@ -162,8 +165,7 @@ export class InventoryAdjustmentComponent implements OnInit {
     }
 
     onSubmit() {
-
-        console.log(this.form.value);
+        
         if (!this.form.valid)
             return;
         this.form.controls['InventoryAdjustmentItems'].setValue(this.form.value.InventoryAdjustmentItems.map((d: any, i = 0) => {
@@ -180,8 +182,9 @@ export class InventoryAdjustmentComponent implements OnInit {
 
         this.service.saveInventoryAdjustment(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Inventory Adjustment Created Successfully!");
-            this.form.reset();
             this.router.navigate(['/inventory-adjustment-view', data['Result']]);
+            this.form.reset();
+            
         });
 
 

@@ -46,7 +46,7 @@ export class PurchaseOrderComponent implements OnInit {
     vendorAll: any;
     _totalAmount: number = 0;
 
-    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: '', Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0, SourceOfOriginName: '' }];
+    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: 0, Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0, SourceOfOriginName: '' }];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'warehouse', 'SourceOfOriginName', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
 
@@ -58,6 +58,14 @@ export class PurchaseOrderComponent implements OnInit {
     constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
+
+        whService.getWarehouse(this.orgId.toString()).subscribe(data => {
+            this.warehouseAll = data['Result'];
+            if (this.warehouseAll.length > 0) {
+                this.defaultWarehouseId = this.warehouseAll[0];
+            }
+        });
+
         itemService.getItem(this.orgId.toString()).subscribe((data) => {
             this.itemOptions = data['Result'];
             this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -67,13 +75,6 @@ export class PurchaseOrderComponent implements OnInit {
         poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
             this.form.get('PurchaseOrder.PurchaseOrderNo')?.setValue(data['Result']);
         })
-
-        whService.getWarehouse(this.orgId.toString()).subscribe(data => {
-            this.warehouseAll = data['Result'];
-            if (this.warehouseAll.length > 0) {
-                this.defaultWarehouseId = this.warehouseAll[0];
-            }
-        });
 
         vendorService.getVendors(this.orgId.toString()).subscribe(data => {
             this.vendorAll = data['Result'];
@@ -127,12 +128,13 @@ export class PurchaseOrderComponent implements OnInit {
     addRow(d?: TableData, noUpdate?: boolean) {
         const row = this.formBulider.group({
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
-            'ItemId': [d && d.ItemId ? d.ItemId : null, []],
-            'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : this.defaultWarehouseId, []],
+            'ItemId': [d && d.ItemId ? d.ItemId : null, [Validators.required]],
+            'WarehouseId': [d && d.WarehouseId && d.WarehouseId > 0 ? d.WarehouseId : this.defaultWarehouseId.WarehouseId, [Validators.required]],
             'Quantity': [d && d.Quantity ? d.Quantity : 1, [Validators.required]],
-            'UnitId': [d && d.UnitId ? d.UnitId : null, []],
-            'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, []],
-            'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, []],
+            'Unit': [d && d.Unit ? d.Unit : null, []],
+            'UnitId': [d && d.UnitId ? d.UnitId : null, [Validators.required]],
+            'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, [Validators.required]],
+            'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, [Validators.required]],
             'SourceOfOriginName': [d && d.SourceOfOriginName ? d.SourceOfOriginName : '', []],
         });
         this.rows.push(row);
@@ -192,6 +194,9 @@ export class PurchaseOrderComponent implements OnInit {
 
     onSubmit() {
 
+        if (!this.form.valid)
+            return;
+
         this.form.controls['PurchaseOrderItems'].setValue(this.form.value.PurchaseOrderItems.map((d: any, i = 0) => {
             return {
                 ItemId: d?.ItemId?.ItemId,
@@ -207,8 +212,6 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.form.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
 
-        if (!this.form.valid)
-            return;
         this.poService.createPO(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Purchase Order Created Successfully!");
             this.router.navigate(['/purchase-order-view', data['Result']]);
@@ -221,7 +224,7 @@ export class PurchaseOrderComponent implements OnInit {
 export interface TableData {
     LineNo: string;
     ItemId: any;
-    WarehouseId: string;
+    WarehouseId: number;
     Quantity: number;
     UnitId: string;
     UnitPrice: number;
