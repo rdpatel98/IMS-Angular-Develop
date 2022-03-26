@@ -57,6 +57,7 @@ export class ItemConsumptionComponent implements OnInit {
     }
     init() {
 
+        this._rowsOfConsumption.clear();
         this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.OrganizationId].toString(), [this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
             console.log(data['Result']['ConsumptionCategory']);
             this.listItemCategory = data['Result']['ConsumptionCategory'];
