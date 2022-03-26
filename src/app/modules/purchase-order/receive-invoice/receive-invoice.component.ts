@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReceiveInvoiceService } from "./receive-invoice.service";
 import { BehaviorSubject, Observable } from "rxjs";
 import { IItem } from "../../items/items.component";
@@ -76,7 +76,7 @@ export class ReceiveInvoiceComponent implements OnInit {
                 console.log(this.po['PurchaseReceiveNo']);
                 this.poNo = this.po['PurchaseReceiveNo'];
                 this.getVendorById(this.po.VendorId);
-
+                this.frm.get('InvoiceNumber')?.setValue(data['Result']['InvoiceNumber']);
 
                 data['Result']['PurchaseReceiveItems'].forEach((d: TableData) => {
                     this.addRow(d);
@@ -97,6 +97,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     ngOnInit(): void {
 
         this.frm = this.fb.group({
+            InvoiceNumber: [''],
             PurchaseReceive: this.fb.group({
                 PurchaseReceiveId: [''],
                 PurchaseOrderId: [''],
@@ -156,6 +157,8 @@ export class ReceiveInvoiceComponent implements OnInit {
     onSubmit() {
 
         if (this.btnSaveOption === 'save') {
+            this.frm?.get('InvoiceNumber')?.clearValidators();
+            this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
             if (!this.info['IsPurchaseReceiveSaved']) {
                 this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
                     console.log(data);
@@ -170,6 +173,10 @@ export class ReceiveInvoiceComponent implements OnInit {
                 })
             }
         } else if (this.btnSaveOption === 'saveAndInvoice') {
+            this.frm?.get('InvoiceNumber')?.setValidators([Validators.required]);
+            this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
+            if (this.frm.invalid)
+                return;
             this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
                 console.log(data);
                 this.dialogRef.close();

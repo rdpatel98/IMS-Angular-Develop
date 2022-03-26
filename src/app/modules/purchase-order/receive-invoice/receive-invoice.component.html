@@ -23,8 +23,10 @@
             <div class="col-12 col-md-4 col-lg-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Invoice Number</mat-label>
-                    <input matInput id="name">
-
+                    <input matInput id="name" [readonly]="po && po.PurchaseReceiveStatus===4" formControlName="InvoiceNumber">
+                    <mat-error>
+                        Invoice Number is required
+                    </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-12 col-md-4 col-lg-4">
