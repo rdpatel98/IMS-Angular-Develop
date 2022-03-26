@@ -5,15 +5,7 @@
 <form [formGroup]="addItemForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Item Name</mat-label>
-                    <input matInput formControlName="Name" id="name" placeholder="">
-                    <mat-error>
-                        Item Name is required!
-                    </mat-error>
-                </mat-form-field>
-            </div>
+            
             <!-- <div class="col-12 col-md-6 col-lg-6">
                 <mat-form-field appearance="outline">
                     <mat-label>Item Id</mat-label>
@@ -32,7 +24,16 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="col-12 col-md-6 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Item Name</mat-label>
+                    <input matInput formControlName="Name" id="name" placeholder="">
+                    <mat-error>
+                        Item Name is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <!-- <div class="col-12 col-md-6 col-lg-6">
                 <mat-form-field appearance="outline">
                     <mat-label>Source of Origin </mat-label>
                     <mat-select formControlName="SourceOfOrigin" id="SourceOfOrigin">
@@ -40,7 +41,7 @@
                         <mat-option [value]="option.VendorId" *ngFor="let option of sourceOfOrigins">{{ option.Name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div> -->
             <div class="col-12 col-md-12 col-lg-12">
                 <mat-form-field appearance="outline">
                     <mat-label>Description</mat-label>
