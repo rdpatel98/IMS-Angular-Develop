@@ -149,7 +149,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             'ItemId': [d && d.ItemId ? d.ItemId : null, [Validators.required]],
             'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : null, []],
             'WorkerId': [d && d.WorkerId ? d.WorkerId : null, []],
-            'Quantity': [d && d.Quantity ? d.Quantity : 0, [Validators.required,Validators.min(1)]],
+            'Quantity': [d && d.Quantity ? d.Quantity : 0, [Validators.required]],
             'Reason': [d && d.Reason ? d.Reason : '', []],
             'Unit': [d && d.Unit ? d.Unit : '', [Validators.required]],
         });
