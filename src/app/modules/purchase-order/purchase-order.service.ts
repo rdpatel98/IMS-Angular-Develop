@@ -22,4 +22,9 @@ export class PurchaseOrderService {
 
     return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId="+orgId+"&type=po");
   }
+
+  getPurchaseOrderUnitPriceByItemId(itemId:string) {
+
+    return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPurchaseOrderUnitPriceByItemId?itemId="+itemId);
+  }
 }

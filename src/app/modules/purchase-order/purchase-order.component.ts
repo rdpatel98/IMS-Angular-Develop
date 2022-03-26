@@ -83,7 +83,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
         // const whs = await this.whService.getWarehouse(this.orgId.toString()).toPromise();
         // this.warehouseAll = whs.Result;
         // if (this.warehouseAll.length > 0) {
@@ -167,7 +167,12 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
     itemChange(eventValue: any, index: any) {
-        console.log(eventValue);
+
+
+        this.poService.getPurchaseOrderUnitPriceByItemId(eventValue.ItemId).subscribe((data: any) => {
+            this.form?.get('PurchaseOrderItems.' + index + '.UnitPrice')?.setValue(data.Result);
+            this.netAmount(index);
+        })
         this.form?.get('PurchaseOrderItems.' + index + '.SourceOfOriginName')?.setValue(eventValue?.SourceOfOriginName);
         let c = this.form?.get('PurchaseOrderItems.' + index + '.UnitId') as FormControl;
 

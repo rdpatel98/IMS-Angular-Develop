@@ -12,6 +12,7 @@ import { VendorService } from "../../vendor/vendor.service";
 import { PurchaseOrderService } from "../purchase-order.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-receive-invoice',
@@ -35,7 +36,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     vendor: any;
     btnSaveOption!: string;
 
-    constructor(private _snackBar: MatSnackBar, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    constructor(private _snackBar: MatSnackBar,private router: Router, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
         itemService.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data) => {
             this.itemOptions = data['Result'];
             // this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -173,6 +174,7 @@ export class ReceiveInvoiceComponent implements OnInit {
                 console.log(data);
                 this.dialogRef.close();
                 this._snackBar.open("Receive and Invoice Order Items Successfully!");
+                this.router.navigate(['/purchase-order-list']);
             })
         }
 
