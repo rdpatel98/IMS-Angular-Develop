@@ -26,14 +26,14 @@
                     <div class="col-6 col-md-6">
                         <mat-form-field appearance="outline">
                             <mat-label>Vendor Name</mat-label>
-                            <input matInput id="id" placeholder="" value="{{VendorName}}" readonly>
+                            <input matInput id="id" placeholder="" value="{{vendor?.Vendor?.Name}}" readonly>
                         </mat-form-field>
                     </div>
 
                     <div class="col-6 col-md-6">
                         <mat-form-field appearance="outline">
                             <mat-label>Invoice Account</mat-label>
-                            <input type="text" matInput placeholder="" [disabled]='true' value="{{vendorAccount}}">
+                            <input type="text" matInput placeholder="" [disabled]='true' value="{{vendor?.Vendor?.AccountNumber}}">
                         </mat-form-field>
                     </div>
 

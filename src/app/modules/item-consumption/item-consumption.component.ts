@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {ItemCategoryService} from "../item-category/item-category.service";
-import {LoginService} from "../user/login/login.service";
-import {MatPaginator} from "@angular/material/paginator";
-import {ItemConsumptionService} from "./item-consumption.service";
-import {BehaviorSubject} from "rxjs";
-import {WarehouseService} from "../warehouse/warehouse.service";
-import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ItemCategoryService } from "../item-category/item-category.service";
+import { LoginService } from "../user/login/login.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { ItemConsumptionService } from "./item-consumption.service";
+import { BehaviorSubject } from "rxjs";
+import { WarehouseService } from "../warehouse/warehouse.service";
+import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-item-consumption',
@@ -43,10 +43,21 @@ export class ItemConsumptionComponent implements OnInit {
 
 
     constructor(private router: Router, private _snackBar: MatSnackBar, private fb: FormBuilder, private serviceItemCategory: ItemCategoryService, private service: ItemConsumptionService, private whService: WarehouseService, private serviceLogin: LoginService) {
+        this.init();
+        this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
+        this.defaultWarehouseId = this.serviceLogin.currentUser()?.DefaultWarehouseId;
 
-        this.orgId =serviceLogin.currentUser()?.OrganizationId;
-        this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
-        service.getItemsWithCategoryByWarehouseId([serviceLogin.currentUser()?.OrganizationId].toString(), [serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
+        this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+            this.warehouseAll = data['Result'];
+        });
+
+        service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+            this.workerAll = data['Result'];
+        });
+    }
+    init() {
+
+        this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.OrganizationId].toString(), [this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
             console.log(data['Result']['ConsumptionCategory']);
             this.listItemCategory = data['Result']['ConsumptionCategory'];
 
@@ -56,13 +67,13 @@ export class ItemConsumptionComponent implements OnInit {
         })
 
 
-        this.frm = fb.group({
+        this.frm = this.fb.group({
             Consumption: this.fb.group({
                 ConsumptionId: [''],
-                ConsumptionNo: [''],
-                WarehouseId: [''],
-                WorkerId: [serviceLogin.currentUser()?.UserId],
-                OrganizationId: [serviceLogin.currentUser()?.OrganizationId]
+                ConsumptionNo: ['', Validators.required],
+                WarehouseId: ['', Validators.required],
+                WorkerId: [this.serviceLogin.currentUser()?.UserId, Validators.required],
+                OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
 
             }),
             ConsumptionCategory: this._rowsOfConsumption
@@ -77,21 +88,15 @@ export class ItemConsumptionComponent implements OnInit {
         // });
 
 
-        service.getPrefixAutoValue([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
+        this.service.getPrefixAutoValue([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
             this.frm.get('Consumption.ConsumptionNo')?.setValue(data['Result']);
         })
 
-        whService.getWarehouse([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
-            this.warehouseAll = data['Result'];
-        });
 
-        service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
-            this.workerAll = data['Result'];
-        });
+
+
     }
-
-    warehouseChange(whId: any)
-    {
+    warehouseChange(whId: any) {
         this.rows.clear();
         this._rowsOfConsumption.clear();
         this.service.getItemsWithCategoryByWarehouseId(this.orgId, whId.toString()).subscribe((data: any) => {
@@ -137,7 +142,7 @@ export class ItemConsumptionComponent implements OnInit {
                 'UnitId': [d && d.UnitId ? d.UnitId : null, []],
                 'OnHandQty': [d && d.OnHandQty ? d.OnHandQty : 0, []],
                 'CategoryId': [d && d.CategoryId ? d.CategoryId : 0, []],
-                'Quantity': [d && d.Quantity ? d.Quantity : 0, []],
+                'Quantity': [d && d.Quantity ? d.Quantity : 0, [Validators.required]],
             });
 
             rt.push(r);
@@ -176,6 +181,8 @@ export class ItemConsumptionComponent implements OnInit {
 
     onSubmit() {
 
+        if (this.frm.invalid)
+            return;
         console.log(this.frm.value);
 
         // this.frm.controls['ConsumptionItems'].setValue(this.frm.value.ConsumptionItems.map((d: any, i = 1) => {
@@ -194,9 +201,12 @@ export class ItemConsumptionComponent implements OnInit {
         //
         this.service.createItemConsumption(this.frm.value).subscribe((d: any) => {
             this._snackBar.open("Item Consumption submitted Successfully!");
-            this.router.navigate(['/item-consumption']);
+            this.init();
+            this.ngOnInit();
+            // this.router.navigate(['/item-consumption']);
         })
     }
+
 
 }
 

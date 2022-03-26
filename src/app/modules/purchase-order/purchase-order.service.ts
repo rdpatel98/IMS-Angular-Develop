@@ -18,7 +18,7 @@ export class PurchaseOrderService {
     return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPurchaseOrderByID?purchaseOrderId="+id);
   }
 
-  getPrefixAutoValue(orgId:string){
+  getPrefixAutoValue(orgId:string) {
 
     return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId="+orgId+"&type=po");
   }

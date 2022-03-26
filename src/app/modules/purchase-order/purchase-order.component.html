@@ -31,7 +31,7 @@
                                 <mat-label>Vendor Name</mat-label>
                                 <mat-select formControlName="VendorId" id="vendor"
                                     (selectionChange)="vendorChange($event.value)">
-                                    <mat-option *ngFor="let v of vendorAll" [value]="v.VendorId">{{v.Name}}
+                                    <mat-option *ngFor="let v of vendorAll" [value]="v?.VendorId">{{v?.Name}}
                                     </mat-option>
                                 </mat-select>
                                 <mat-error>

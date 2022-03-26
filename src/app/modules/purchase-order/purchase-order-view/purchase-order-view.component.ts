@@ -15,6 +15,7 @@ import { TableData } from "../purchase-order.component";
 import { ActivatedRoute } from "@angular/router";
 import { MatTableDataSource } from "@angular/material/table";
 import { IPurchaseOrder } from "../purchase-order-list/purchase-order-list.component";
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
     selector: 'app-purchase-order-view',
@@ -43,11 +44,10 @@ export class PurchaseOrderViewComponent implements OnInit {
     dataSource: any;// = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'warehouse', 'qty', 'unit', 'unit_price', 'net_amt'];
     _id!: any;
-    rows: FormArray = this.formBulider.array([]);
-    vendorAccount: any;
+    rows: FormArray = this.formBulider.array([]);    
     poNo: any;
     poID: any;
-    VendorName: any;
+    vendor: any;
     IsPurchaseReceiveSaved = false;
 
 
@@ -105,9 +105,8 @@ export class PurchaseOrderViewComponent implements OnInit {
             this.dataSource = new MatTableDataSource<TableData>(data['Result']['PurchaseOrderItems']);
             this.poNo = data['Result']['PurchaseOrder']['PurchaseOrderNo'];
             this.poID = data['Result']['PurchaseOrder']['PurchaseOrderId'];
-            const vendor=this.vendorAll.find((x:any) => x.VendorId == 1)
-            this.VendorName =vendor.Name;
-            this.vendorAccount = vendor.AccountNumber;
+            this.getVendorById(data['Result']['PurchaseOrder']['VendorId']);
+            
             this._totalAmount = data.Result.PurchaseOrderItems.reduce((p: number, c: any) => p + Number(c.NetAmount), 0);
         });
     }
@@ -196,12 +195,6 @@ export class PurchaseOrderViewComponent implements OnInit {
     //     this.form.get('PurchaseOrderItems.' + index + '.Unit')?.setValue(this.UomConvertionAll.filter((d: any) => d.Id == eventValue)[0]?.Name);
     // }
 
-    vendorChange(eventValue: any) {
-        this.vendorAccount = this.vendorAll.map((d: any) => {
-            return d.VendorId == eventValue ? d.AccountNumber : null;
-        });
-    }
-
     // netAmount(index: string) {
     //     this.form.get('PurchaseOrderItems.' + index + '.NetAmount')?.setValue((this.form.get('PurchaseOrderItems.' + index + '.UnitPrice')?.value).toFixed(2) * (this.form.get('PurchaseOrderItems.' + index + '.Quantity')?.value).toFixed(2));
     //     this.totalAmount()
@@ -234,18 +227,24 @@ export class PurchaseOrderViewComponent implements OnInit {
     //
     // }
 
-    getItem(ItemId: any): string {
+    getItem(ItemId: any): string | undefined {
 
-        return this.itemOptions.filter((d: any) => d.ItemId == ItemId)[0]?.Name;
+        return this.itemOptions?.find((d: any) => d.ItemId == ItemId)?.Name;
     }
 
-    getWH(WarehouseId: any): string {
+    getWH(WarehouseId: any): string | undefined {
 
-        return this.warehouseAll.filter((d: any) => d.WarehouseId == WarehouseId)[0]?.Name;
+        return this.warehouseAll?.find((d: any) => d.WarehouseId == WarehouseId)?.Name;
     }
 
-    getUnit(UnitId: any): string {
+    getUnit(UnitId: any): string | undefined {
 
-        return this.UomConvertionAll.filter((d: any) => d.Id == UnitId)[0]?.Name;
+        return this.UomConvertionAll?.find((d: any) => d.Id == UnitId)?.Name;
+    }
+
+    getVendorById(id: any) {
+        return this.vendorService.getVendorById(id).subscribe(res => {
+            this.vendor=res['Result']
+        });
     }
 }

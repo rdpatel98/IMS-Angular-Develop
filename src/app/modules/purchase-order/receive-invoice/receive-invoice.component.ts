@@ -1,17 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {ReceiveInvoiceService} from "./receive-invoice.service";
-import {BehaviorSubject, Observable} from "rxjs";
-import {IItem} from "../../items/items.component";
-import {LoginService} from "../../user/login/login.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {ItemsService} from "../../items/items.service";
-import {WarehouseService} from "../../warehouse/warehouse.service";
-import {UomConvertionService} from "../../uom-convertion/uom-convertion.service";
-import {VendorService} from "../../vendor/vendor.service";
-import {PurchaseOrderService} from "../purchase-order.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { Component, Inject, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ReceiveInvoiceService } from "./receive-invoice.service";
+import { BehaviorSubject, Observable } from "rxjs";
+import { IItem } from "../../items/items.component";
+import { LoginService } from "../../user/login/login.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { ItemsService } from "../../items/items.service";
+import { WarehouseService } from "../../warehouse/warehouse.service";
+import { UomConvertionService } from "../../uom-convertion/uom-convertion.service";
+import { VendorService } from "../../vendor/vendor.service";
+import { PurchaseOrderService } from "../purchase-order.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-receive-invoice',
@@ -32,11 +32,10 @@ export class ReceiveInvoiceComponent implements OnInit {
     _totalAmount: number = 0;
     po: any;
     poNo: any;
-    vendorAccount: any;
-    VendorName: any;
+    vendor: any;
     btnSaveOption!: string;
 
-    constructor(private _snackBar :MatSnackBar,private dialogRef: MatDialogRef<ReceiveInvoiceComponent>,private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    constructor(private _snackBar: MatSnackBar, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
         itemService.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data) => {
             this.itemOptions = data['Result'];
             // this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -45,10 +44,6 @@ export class ReceiveInvoiceComponent implements OnInit {
 
         whService.getWarehouse([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
             this.warehouseAll = data['Result'];
-        });
-
-        vendorService.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
-            this.vendorAll = data['Result'];
         });
 
         uomService.getUomConversion([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
@@ -63,15 +58,8 @@ export class ReceiveInvoiceComponent implements OnInit {
 
                 console.log(data);
                 this.po = data['Result']['PurchaseOrder'];
-
                 this.poNo = this.po['PurchaseOrderNo'];
-                this.VendorName = this.vendorAll.map((d: any) => {
-                    return d.VendorId == this.po['VendorId'] ? d.Name : null;
-                });
-                this.vendorAccount = this.vendorAll.map((d: any) => {
-                    return d.VendorId == this.po['VendorId'] ? d.AccountNumber : null;
-                });
-
+                this.getVendorById(this.po.VendorId);
 
                 data['Result']['PurchaseOrderItems'].forEach((d: TableData) => {
                     this.addRow(d);
@@ -86,12 +74,7 @@ export class ReceiveInvoiceComponent implements OnInit {
                 this.po = data['Result']['PurchaseReceive'];
                 console.log(this.po['PurchaseReceiveNo']);
                 this.poNo = this.po['PurchaseReceiveNo'];
-                this.VendorName = this.vendorAll.map((d: any) => {
-                    return d.VendorId == this.po['VendorId'] ? d.Name : null;
-                });
-                this.vendorAccount = this.vendorAll.map((d: any) => {
-                    return d.VendorId == this.po['VendorId'] ? d.AccountNumber : null;
-                });
+                this.getVendorById(this.po.VendorId);
 
 
                 data['Result']['PurchaseReceiveItems'].forEach((d: TableData) => {
@@ -171,27 +154,28 @@ export class ReceiveInvoiceComponent implements OnInit {
 
     onSubmit() {
 
-        if (!this.info['IsPurchaseReceiveSaved']) {
-            this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
-                console.log(data);
-                this.dialogRef.close();
-                this._snackBar.open("Receive Order Items Successfully!");
-            })
-        } else {
-            if(this.btnSaveOption === 'save') {
+        if (this.btnSaveOption === 'save') {
+            if (!this.info['IsPurchaseReceiveSaved']) {
+                this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
+                    console.log(data);
+                    this.dialogRef.close();
+                    this._snackBar.open("Receive Order Items Successfully!");
+                })
+            } else {
                 this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
                     console.log(data);
                     this.dialogRef.close();
                     this._snackBar.open("Updated Receive Order Items Successfully!");
                 })
-            }else if(this.btnSaveOption === 'saveAndInvoice'){
-                this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
-                    console.log(data);
-                    this.dialogRef.close();
-                    this._snackBar.open("Receive and Invoice Order Items Successfully!");
-                })
             }
+        } else if (this.btnSaveOption === 'saveAndInvoice') {
+            this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
+                console.log(data);
+                this.dialogRef.close();
+                this._snackBar.open("Receive and Invoice Order Items Successfully!");
+            })
         }
+
 
 
         console.log(this.frm.value);
@@ -205,6 +189,12 @@ export class ReceiveInvoiceComponent implements OnInit {
 
     saveOption(option: string) {
         this.btnSaveOption = option;
+    }
+
+    getVendorById(id: string) {
+        this.vendorService.getVendorById(id).subscribe(res => {
+            this.vendor = res['Result'];
+        })
     }
 
 }
@@ -227,11 +217,11 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-    {no: '1', item_no: 'ITM001', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: ''},
-    {no: '2', item_no: 'ITM002', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: ''},
-    {no: '3', item_no: 'ITM003', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: ''},
-    {no: '4', item_no: 'ITM004', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: ''},
-    {no: '5', item_no: 'ITM005', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: ''},
+    { no: '1', item_no: 'ITM001', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: '' },
+    { no: '2', item_no: 'ITM002', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: '' },
+    { no: '3', item_no: 'ITM003', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: '' },
+    { no: '4', item_no: 'ITM004', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: '' },
+    { no: '5', item_no: 'ITM005', item_desc: 'Item Description', source: '', site: '', warehouse: '', qty: '3', rec_unit: '3', unit: 'KG', unit_price: '200', net_amt: '600', vendor_batch: '', in_no: '', in_date: '' },
 ];
 
 export interface TableData {

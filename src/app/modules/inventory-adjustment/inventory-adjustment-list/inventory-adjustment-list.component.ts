@@ -15,7 +15,7 @@ import { InventoryAdjustmentListService } from './inventory-adjustment-list.serv
 })
 export class InventoryAdjustmentListComponent implements OnInit {
 
-  displayedColumns: string[] = ['Id', 'InventoryAdjustmentNo', 'WarehouseId', 'WorkerId', 'AdjustmentDate', 'Status', 'action'];
+  displayedColumns: string[] = ['Id', 'InventoryAdjustmentNo', 'WarehouseId', 'WorkerId', 'AdjustmentDate', 'action'];
   dataSource !: any;
 
   warehouses: any[] = [];
@@ -25,11 +25,13 @@ export class InventoryAdjustmentListComponent implements OnInit {
   constructor(public dialog: MatDialog, private workerService: WorkerService, private warehouseService: WarehouseService, private service: InventoryAdjustmentListService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
 
     this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
-    this.getInit();
+
   }
 
   ngOnInit(): void {
     this.getWarehouses();
+    this.getWokers();
+    this.getInit();
   }
 
   getInit() {
@@ -51,11 +53,11 @@ export class InventoryAdjustmentListComponent implements OnInit {
     });
   }
 
-  getWorkers(id: string): string {
+  getWorker(id: string): string {
     return this.workers.filter((d: any) => d.WorkerId == id)[0]?.Name;
   }
 
-  getWoker() {
+  getWokers() {
     return this.workerService.getWorker().subscribe(data => {
       this.workers = data['Result'];
     });

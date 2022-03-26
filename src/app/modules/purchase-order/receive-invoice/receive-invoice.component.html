@@ -16,14 +16,14 @@
             <div class="col-12 col-md-4 col-lg-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Invoice Account</mat-label>
-                    <input matInput id="name" value="{{vendorAccount}}" readonly>
+                    <input matInput id="name" value="{{vendor?.Vendor?.Name}}" readonly>
 
                 </mat-form-field>
             </div>
             <div class="col-12 col-md-4 col-lg-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Vendor Name</mat-label>
-                    <input matInput id="vendor" value="{{VendorName}}" readonly>
+                    <input matInput id="vendor" value="{{vendor?.Vendor?.AccountNumber}}" readonly>
                 </mat-form-field>
             </div>
         </div>
@@ -48,25 +48,36 @@
                 </ng-container>
                 <ng-container matColumnDef="qty">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Qty</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
                         {{getData(index, 'Quantity')}}
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="ReceiveQuantity">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Receive Quantity</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
-                        <input type="number" formControlName="ReceiveQuantity" max="{{getData(index, 'Quantity')}}">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
+                        <!-- <input [disabled]="po && po.PurchaseReceiveStatus===4" type="number" formControlName="ReceiveQuantity" max="{{getData(index, 'Quantity')}}"> -->
+
+                        <mat-form-field appearance="fill" style="width:270px; margin: auto;">                            
+                            <input matInput formControlName="ReceiveQuantity"  type="number" max="{{getData(index, 'Quantity')}}" [readonly]="po && po.PurchaseReceiveStatus===4">        
+                        </mat-form-field>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="BatchNo">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Batch No</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
-                        <input type="text" formControlName="BatchNo">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
+                        <!-- <input type="text" readonly [disabled]="true" formControlName="BatchNo"> -->
+                        <mat-form-field appearance="fill" style="width: 270px; margin: auto;">                            
+                            <input matInput formControlName="BatchNo" [readonly]="po && po.PurchaseReceiveStatus===4">        
+                        </mat-form-field>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="unit">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Unit</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
 
                         {{getUnit(getData(index, 'UnitId'))}}
 
@@ -74,7 +85,8 @@
                 </ng-container>
                 <ng-container matColumnDef="unit_price">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Unit Price</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
 
                         {{getData(index, 'UnitPrice')}}
 
@@ -82,7 +94,8 @@
                 </ng-container>
                 <ng-container matColumnDef="net_amt">
                     <th mat-header-cell *matHeaderCellDef class="text-center"> Net Amount</th>
-                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index" class="text-center">
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                        class="text-center">
 
                         {{getData(index, 'NetAmount')}}
 
@@ -97,8 +110,9 @@
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
         <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" (click)="saveOption('save')">Save</button>
-        <ng-container *ngIf="this.info['IsPurchaseReceiveSaved']">
+        <button mat-raised-button color="primary" *ngIf="po && po.PurchaseReceiveStatus!==4"
+            (click)="saveOption('save')">Save</button>
+        <ng-container *ngIf="po && po.PurchaseReceiveStatus!==4">
             <button mat-raised-button color="primary" (click)="saveOption('saveAndInvoice')">Save and Invoice</button>
         </ng-container>
     </mat-dialog-actions>

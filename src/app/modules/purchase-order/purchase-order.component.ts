@@ -59,36 +59,36 @@ export class PurchaseOrderComponent implements OnInit {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
 
-        whService.getWarehouse(this.orgId.toString()).subscribe(data => {
-            this.warehouseAll = data['Result'];
-            if (this.warehouseAll.length > 0) {
-                this.defaultWarehouseId = this.warehouseAll[0];
-            }
-        });
 
-        itemService.getItem(this.orgId.toString()).subscribe((data) => {
-            this.itemOptions = data['Result'];
-            this.data.forEach((d: TableData) => this.addRow(d, false));
-            this.updateView();
-        });
 
-        poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
+    }
+
+    async onInit() {
+        this.warehouseAll = (await this.whService.getWarehouse(this.orgId.toString()).toPromise()).Result;
+        if (this.warehouseAll.length > 0) {
+            this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
+        }
+
+        this.itemOptions = (await this.itemService.getItem(this.orgId.toString()).toPromise()).Result;
+        this.data.forEach((d: TableData) => this.addRow(d, false));
+        this.updateView();
+
+        this.poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
             this.form.get('PurchaseOrder.PurchaseOrderNo')?.setValue(data['Result']);
         })
 
-        vendorService.getVendors(this.orgId.toString()).subscribe(data => {
-            this.vendorAll = data['Result'];
-        });
+        this.vendorAll = (await this.vendorService.getVendors(this.orgId.toString()).toPromise()).Result;
 
-        uomService.getUomConversion(this.orgId.toString()).subscribe(data => {
-            this.UomConvertionAll = data['Result'];
-
-            console.log(this.UomConvertionAll)
-        })
+        this.UomConvertionAll = (await this.uomService.getUomConversion(this.orgId.toString()).toPromise()).Result;
     }
 
-
-    ngOnInit(): void {
+    ngOnInit() {
+        
+        // const whs = await this.whService.getWarehouse(this.orgId.toString()).toPromise();
+        // this.warehouseAll = whs.Result;
+        // if (this.warehouseAll.length > 0) {
+        //     this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
+        // }
         this.form = this.formBulider.group({
             'PurchaseOrder': this.formBulider.group({
                 'PurchaseOrderNo': new FormControl('', Validators.required),
@@ -102,12 +102,13 @@ export class PurchaseOrderComponent implements OnInit {
             IsPurchaseReceiveSaved: [false]
         });
 
-        this.form.get('PurchaseOrder.OrganizationId')?.setValue(this.orgId.toString());
+        this.form?.get('PurchaseOrder.OrganizationId')?.setValue(this.orgId.toString());
+        this.onInit();
     }
 
     loadDD(index: string) {
-        this.control = this.form.get('PurchaseOrderItems.' + index + '.ItemId') as FormControl;
-        this.itemFiltered = this.control.valueChanges.pipe(
+        this.control = this.form?.get('PurchaseOrderItems.' + index + '.ItemId') as FormControl;
+        this.itemFiltered = this.control?.valueChanges.pipe(
             startWith(''),
             map(value => (typeof value === 'string' ? value : value.name)),
             map(name => (name ? this._filter(name) : this.itemOptions.slice())),
@@ -129,9 +130,8 @@ export class PurchaseOrderComponent implements OnInit {
         const row = this.formBulider.group({
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
             'ItemId': [d && d.ItemId ? d.ItemId : null, [Validators.required]],
-            'WarehouseId': [d && d.WarehouseId && d.WarehouseId > 0 ? d.WarehouseId : this.defaultWarehouseId.WarehouseId, [Validators.required]],
+            'WarehouseId': [d && d.WarehouseId && d.WarehouseId > 0 ? d.WarehouseId : this.defaultWarehouseId, [Validators.required]],
             'Quantity': [d && d.Quantity ? d.Quantity : 1, [Validators.required]],
-            'Unit': [d && d.Unit ? d.Unit : null, []],
             'UnitId': [d && d.UnitId ? d.UnitId : null, [Validators.required]],
             'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, [Validators.required]],
             'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, [Validators.required]],
@@ -168,15 +168,15 @@ export class PurchaseOrderComponent implements OnInit {
 
     itemChange(eventValue: any, index: any) {
         console.log(eventValue);
-        this.form.get('PurchaseOrderItems.' + index + '.SourceOfOriginName')?.setValue(eventValue?.SourceOfOriginName);
-        let c = this.form.get('PurchaseOrderItems.' + index + '.UnitId') as FormControl;
+        this.form?.get('PurchaseOrderItems.' + index + '.SourceOfOriginName')?.setValue(eventValue?.SourceOfOriginName);
+        let c = this.form?.get('PurchaseOrderItems.' + index + '.UnitId') as FormControl;
 
         c.setValue(eventValue?.PurchaseUnitId);
 
     }
 
     itemChangeUnit(eventValue: any, index: any) {
-        this.form.get('PurchaseOrderItems.' + index + '.Unit')?.setValue(this.UomConvertionAll.filter((d: any) => d.Id == eventValue)[0]?.Name);
+        this.form?.get('PurchaseOrderItems.' + index + '.Unit')?.setValue(this.UomConvertionAll.filter((d: any) => d.Id == eventValue)[0]?.Name);
     }
 
     vendorChange(eventValue: any) {
@@ -184,7 +184,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
     netAmount(index: string) {
-        this.form.get('PurchaseOrderItems.' + index + '.NetAmount')?.setValue((this.form.get('PurchaseOrderItems.' + index + '.UnitPrice')?.value).toFixed(2) * (this.form.get('PurchaseOrderItems.' + index + '.Quantity')?.value).toFixed(2));
+        this.form?.get('PurchaseOrderItems.' + index + '.NetAmount')?.setValue((this.form?.get('PurchaseOrderItems.' + index + '.UnitPrice')?.value).toFixed(2) * (this.form?.get('PurchaseOrderItems.' + index + '.Quantity')?.value).toFixed(2));
         this.totalAmount()
     }
 
@@ -210,7 +210,7 @@ export class PurchaseOrderComponent implements OnInit {
             }
         }));
 
-        this.form.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
+        this.form?.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
 
         this.poService.createPO(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Purchase Order Created Successfully!");

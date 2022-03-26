@@ -43,7 +43,7 @@ export class PurchaseOrderListComponent {
     }
 
     getVendor(id: string): string {
-        return this.vendorAll.filter((d: any) => d.VendorId == id)[0]?.Name;
+        return this.vendorAll?.filter((d: any) => d.VendorId == id)[0]?.Name;
     }
 
 }

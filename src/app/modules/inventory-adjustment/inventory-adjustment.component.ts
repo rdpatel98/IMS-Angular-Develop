@@ -83,12 +83,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             this.updateView();
         });
 
-        whService.getWarehouse(this.orgId.toString()).subscribe(data => {
-            this.warehouseAll = data['Result'];
-            // if (this.warehouseAll.length > 0) {
-            //     this.defaultWarehouseId = this.warehouseAll[0];
-            // }
-        });
+       
 
         service.getWorker(this.orgId.toString()).subscribe(data => {
             this.workerAll = data['Result'];
@@ -107,6 +102,13 @@ export class InventoryAdjustmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.whService.getWarehouse(this.orgId.toString()).subscribe(data => {
+            this.warehouseAll = data['Result'];
+            if (this.warehouseAll.length > 0) {
+                this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
+                this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
+            }
+        });
         this.service.getPrefixAutoValue(this.orgId.toString()).subscribe(data => {
             this.form.get('InventoryAdjustment.InventoryAdjustmentNo')?.setValue(data['Result']);
         });
@@ -182,7 +184,7 @@ export class InventoryAdjustmentComponent implements OnInit {
 
         this.service.saveInventoryAdjustment(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Inventory Adjustment Created Successfully!");
-            this.router.navigate(['/inventory-adjustment-view', data['Result']]);
+            this.router.navigate(['/inventory-adjustment-list']);
             this.form.reset();
             
         });
