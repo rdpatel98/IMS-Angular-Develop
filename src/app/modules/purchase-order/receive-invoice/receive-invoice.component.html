@@ -69,7 +69,10 @@
                         <!-- <input [disabled]="po && po.PurchaseReceiveStatus===4" type="number" formControlName="ReceiveQuantity" max="{{getData(index, 'Quantity')}}"> -->
 
                         <mat-form-field appearance="fill" style="width:270px; margin: auto;">                            
-                            <input matInput formControlName="ReceiveQuantity"  type="number" max="{{getData(index, 'Quantity')}}" [readonly]="po && po.PurchaseReceiveStatus===4">        
+                            <input matInput formControlName="ReceiveQuantity"  type="number" [max]="getData(index, 'Quantity')" [readonly]="po && po.PurchaseReceiveStatus===4">        
+                            <mat-error *ngIf="element.controls.ReceiveQuantity.hasError('max')">
+                                Receive Quantity is less than the quantity
+                            </mat-error>
                         </mat-form-field>
                     </td>
                 </ng-container>

@@ -153,7 +153,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             'WorkerId': [d && d.WorkerId ? d.WorkerId : null, []],
             'Quantity': [d && d.Quantity ? d.Quantity : 0, [Validators.required]],
             'Reason': [d && d.Reason ? d.Reason : '', []],
-            'Unit': [d && d.Unit ? d.Unit : '', [Validators.required]],
+            'Unit': [d && d.Unit ? d.Unit : '', []],
         });
         this.rows.push(row);
         this.loadDD((this.rows.length - 1).toString());
@@ -184,9 +184,7 @@ export class InventoryAdjustmentComponent implements OnInit {
 
         this.service.saveInventoryAdjustment(this.form.value).subscribe((data: any) => {
             this._snackBar.open("Inventory Adjustment Created Successfully!");
-            this.router.navigate(['/inventory-adjustment-list']);
-            this.form.reset();
-            
+            this.router.navigate(['/inventory-adjustment-list']);                        
         });
 
 

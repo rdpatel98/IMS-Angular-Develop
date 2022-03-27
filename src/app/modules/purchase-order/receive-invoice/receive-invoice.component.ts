@@ -36,7 +36,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     vendor: any;
     btnSaveOption!: string;
 
-    constructor(private _snackBar: MatSnackBar,private router: Router, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    constructor(private _snackBar: MatSnackBar, private router: Router, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
         itemService.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data) => {
             this.itemOptions = data['Result'];
             // this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -141,17 +141,17 @@ export class ReceiveInvoiceComponent implements OnInit {
 
     getItem(ItemId: any): string {
 
-        return this.itemOptions.filter((d: any) => d.ItemId == ItemId)[0]?.Name;
+        return this.itemOptions?.filter((d: any) => d.ItemId == ItemId)[0]?.Name;
     }
 
     getWH(WarehouseId: any): string {
 
-        return this.warehouseAll.filter((d: any) => d.WarehouseId == WarehouseId)[0]?.Name;
+        return this.warehouseAll?.filter((d: any) => d.WarehouseId == WarehouseId)[0]?.Name;
     }
 
     getUnit(UnitId: any): string {
 
-        return this.UomConvertionAll.filter((d: any) => d.Id == UnitId)[0]?.Name;
+        return this.UomConvertionAll?.filter((d: any) => d.Id == UnitId)[0]?.Name;
     }
 
     onSubmit() {
@@ -159,6 +159,8 @@ export class ReceiveInvoiceComponent implements OnInit {
         if (this.btnSaveOption === 'save') {
             this.frm?.get('InvoiceNumber')?.clearValidators();
             this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
+            if (this.frm.invalid)
+                return;
             if (!this.info['IsPurchaseReceiveSaved']) {
                 this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
                     console.log(data);
@@ -242,7 +244,7 @@ export interface TableData {
     UnitPrice?: number;
     NetAmount?: string;
     Unit?: string;
-    ReceiveQuantity?: string;
+    ReceiveQuantity?: number;
     BatchNo?: string;
     PurchaseReceiveItemsId?: string;
     PurchaseReceiveId?: string;
