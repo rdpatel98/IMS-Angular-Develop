@@ -46,9 +46,9 @@ export class PurchaseOrderComponent implements OnInit {
     vendorAll: any;
     _totalAmount: number = 0;
 
-    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: 0, Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0, SourceOfOriginName: '' }];
+    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: 0, Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0}];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
-    displayedColumns = ['no', 'item_no', 'warehouse', 'SourceOfOriginName', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
+    displayedColumns = ['no', 'item_no', 'warehouse', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
 
     rows: FormArray = this.formBulider.array([]);
 
@@ -134,8 +134,7 @@ export class PurchaseOrderComponent implements OnInit {
             'Quantity': [d && d.Quantity ? d.Quantity : 1, [Validators.required]],
             'UnitId': [d && d.UnitId ? d.UnitId : null, [Validators.required]],
             'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, [Validators.required]],
-            'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, [Validators.required]],
-            'SourceOfOriginName': [d && d.SourceOfOriginName ? d.SourceOfOriginName : '', []],
+            'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, [Validators.required]]
         });
         this.rows.push(row);
         this.loadDD((this.rows.length - 1).toString());
@@ -173,7 +172,7 @@ export class PurchaseOrderComponent implements OnInit {
             this.form?.get('PurchaseOrderItems.' + index + '.UnitPrice')?.setValue(data.Result);
             this.netAmount(index);
         })
-        this.form?.get('PurchaseOrderItems.' + index + '.SourceOfOriginName')?.setValue(eventValue?.SourceOfOriginName);
+        // this.form?.get('PurchaseOrderItems.' + index + '.SourceOfOriginName')?.setValue(eventValue?.SourceOfOriginName);
         let c = this.form?.get('PurchaseOrderItems.' + index + '.UnitId') as FormControl;
 
         c.setValue(eventValue?.PurchaseUnitId);
@@ -210,8 +209,9 @@ export class PurchaseOrderComponent implements OnInit {
                 Quantity: d.Quantity,
                 UnitId: d.UnitId,
                 UnitPrice: d.UnitPrice,
-                NetAmount: d.NetAmount,
-                SourceOfOriginName: d.SourceOfOriginName
+                NetAmount: d.NetAmount
+                // ,
+                // SourceOfOriginName: d.SourceOfOriginName
             }
         }));
 
@@ -235,5 +235,5 @@ export interface TableData {
     UnitPrice: number;
     NetAmount: number;
     Unit: string;
-    SourceOfOriginName: string;
+    // SourceOfOriginName: string;
 }
