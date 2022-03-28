@@ -14,6 +14,11 @@ export class PurchaseOrderService {
     return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/AddPurchaseOrder", data);
   }
 
+
+  updatePO(data: any) {
+    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/UpdatePurchaseOrder", data);
+  }
+
   getPOByID(id:string){
     return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPurchaseOrderByID?purchaseOrderId="+id);
   }

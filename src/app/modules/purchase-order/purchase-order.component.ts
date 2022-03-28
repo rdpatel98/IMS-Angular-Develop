@@ -13,7 +13,7 @@ import { WarehouseService } from "../warehouse/warehouse.service";
 import { UomConvertionService } from "../uom-convertion/uom-convertion.service";
 import { VendorService } from "../vendor/vendor.service";
 import { PurchaseOrderService } from "./purchase-order.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoginService } from '../user/login/login.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -46,7 +46,7 @@ export class PurchaseOrderComponent implements OnInit {
     vendorAll: any;
     _totalAmount: number = 0;
 
-    data: TableData[] = [{ LineNo: '', Unit: '', ItemId: '', WarehouseId: 0, Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0}];
+    data: TableData[] = [{ PurchaseOrderItemsId: 0, LineNo: '', Unit: '', ItemId: '', WarehouseId: 0, Quantity: 1, UnitId: '', UnitPrice: 0, NetAmount: 0 }];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'warehouse', 'qty', 'unit', 'unit_price', 'net_amt', 'action'];
 
@@ -55,22 +55,46 @@ export class PurchaseOrderComponent implements OnInit {
     form!: FormGroup;
     isSaving = false;
 
-    constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
+    constructor(private router: Router, private _snackBar: MatSnackBar,
+        private activatedRoute: ActivatedRoute, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
 
-
-
     }
 
+    getPO(id: any) {
+
+        this.poService.getPOByID(id).subscribe((data: any) => {
+            const result = {
+                'PurchaseOrder': {
+                    'PurchaseOrderId': data.Result.PurchaseOrder.PurchaseOrderId,
+                    'PurchaseOrderNo': data.Result.PurchaseOrder.PurchaseOrderNo,
+                    'VendorId': data.Result.PurchaseOrder.VendorId,
+                    'NetAmount': data.Result.PurchaseOrder.NetAmount,
+                    'OrganizationId': this.orgId.toString(),
+                    'OrderStatus': 1,
+                    'Status': 1
+                },
+                IsPurchaseReceiveSaved: false
+            }
+            this.vendorChange(data.Result.PurchaseOrder.VendorId);
+            this.form.patchValue(result);
+            data['Result']['PurchaseOrderItems'].forEach((d: TableData, index: any) => {
+                this.addRow(d, undefined, true);
+                this.netAmount(index);
+            })
+
+        });
+    }
     async onInit() {
+        const id = this.activatedRoute.snapshot.paramMap.get('id');
         this.warehouseAll = (await this.whService.getWarehouse(this.orgId.toString()).toPromise()).Result;
         if (this.warehouseAll.length > 0) {
             this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
         }
 
         this.itemOptions = (await this.itemService.getItem(this.orgId.toString()).toPromise()).Result;
-        this.data.forEach((d: TableData) => this.addRow(d, false));
+
         this.updateView();
 
         this.poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
@@ -80,9 +104,13 @@ export class PurchaseOrderComponent implements OnInit {
         this.vendorAll = (await this.vendorService.getVendors(this.orgId.toString()).toPromise()).Result;
 
         this.UomConvertionAll = (await this.uomService.getUomConversion(this.orgId.toString()).toPromise()).Result;
+        if (id)
+            this.getPO(id);
+        else
+            this.data.forEach((d: TableData) => this.addRow(d, false));
     }
 
-    ngOnInit() {
+    async ngOnInit() {
 
         // const whs = await this.whService.getWarehouse(this.orgId.toString()).toPromise();
         // this.warehouseAll = whs.Result;
@@ -91,6 +119,7 @@ export class PurchaseOrderComponent implements OnInit {
         // }
         this.form = this.formBulider.group({
             'PurchaseOrder': this.formBulider.group({
+                'PurchaseOrderId': null,
                 'PurchaseOrderNo': new FormControl('', Validators.required),
                 'VendorId': new FormControl('', Validators.required),
                 'NetAmount': [''],
@@ -103,7 +132,10 @@ export class PurchaseOrderComponent implements OnInit {
         });
 
         this.form?.get('PurchaseOrder.OrganizationId')?.setValue(this.orgId.toString());
-        this.onInit();
+
+
+        await this.onInit();
+
     }
 
     loadDD(index: string) {
@@ -126,8 +158,13 @@ export class PurchaseOrderComponent implements OnInit {
         this.updateView();
     }
 
-    addRow(d?: TableData, noUpdate?: boolean) {
+    addRow(d?: TableData, noUpdate?: boolean, forEdit: boolean = false) {
+        if (forEdit && d) {
+            const item = this.itemOptions?.find(x => x.ItemId == d?.ItemId) ?? null;
+            d.ItemId = item;
+        }
         const row = this.formBulider.group({
+            'PurchaseOrderItemsId': [d && d.PurchaseOrderItemsId ? d.PurchaseOrderItemsId : 0, []],
             'LineNo': [d && d.LineNo ? d.LineNo : null, []],
             'ItemId': [d && d.ItemId ? d.ItemId : null, [Validators.required]],
             'WarehouseId': [d && d.WarehouseId && d.WarehouseId > 0 ? d.WarehouseId : this.defaultWarehouseId, [Validators.required]],
@@ -203,6 +240,7 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.form.controls['PurchaseOrderItems'].setValue(this.form.value.PurchaseOrderItems.map((d: any, i = 0) => {
             return {
+                PurchaseOrderItemsId: d?.PurchaseOrderItemsId,
                 ItemId: d?.ItemId?.ItemId,
                 LineNo: ++i,
                 WarehouseId: d.WarehouseId,
@@ -217,16 +255,26 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.form?.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
 
-        this.poService.createPO(this.form.value).subscribe((data: any) => {
-            this._snackBar.open("Purchase Order Created Successfully!");
-            this.router.navigate(['/purchase-order-view', data['Result']]);
-        });
+        if (this.form.value.PurchaseOrder.PurchaseOrderId && this.form.value.PurchaseOrder.PurchaseOrderId > 0) {
+            this.poService.updatePO(this.form.value).subscribe((data: any) => {
+                this._snackBar.open("Purchase Order Updated Successfully!");
+                this.router.navigate(['/purchase-order-view', data['Result']]);
+            });
+        }
+        else {
+            this.poService.createPO(this.form.value).subscribe((data: any) => {
+                this._snackBar.open("Purchase Order Created Successfully!");
+                this.router.navigate(['/purchase-order-view', data['Result']]);
+            });
+        }
+
     }
 
 
 }
 
 export interface TableData {
+    PurchaseOrderItemsId: number | undefined;
     LineNo: string;
     ItemId: any;
     WarehouseId: number;
