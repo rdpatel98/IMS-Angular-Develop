@@ -90,7 +90,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     }
 
     // displayedColumns = ['no', 'item_no', 'item_desc', 'source', 'site', 'warehouse', 'qty', 'rec_unit', 'unit', 'unit_price', 'net_amt', 'vendor_batch', 'in_no', 'in_date'];
-    displayedColumns = ['no', 'item_no', 'warehouse', 'qty', 'unit', 'unit_price', 'net_amt', 'ReceiveQuantity', 'BatchNo'];
+    displayedColumns = ['no', 'item_no', 'warehouse', 'qty', 'unit', 'unit_price', 'net_amt', 'ReceivedQuantity', 'ReceiveQuantity', 'BatchNo'];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     rows: FormArray = this.fb.array([]);
 
@@ -120,11 +120,13 @@ export class ReceiveInvoiceComponent implements OnInit {
             'ItemId': [d && d.ItemId ? d.ItemId : null, []],
             'WarehouseId': [d && d.WarehouseId ? d.WarehouseId : null, []],
             'Quantity': [d && d.Quantity ? d.Quantity : 0, []],
-            'ReceiveQuantity': [d && d.ReceiveQuantity ? d.ReceiveQuantity : 0, []],
+            'ReceivedQuantity': [d && d.ReceiveQuantity ? d.ReceiveQuantity : 0, []],
+            'ReceiveQuantity': [0, []],
             'UnitId': [d && d.UnitId ? d.UnitId : null, []],
             'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, []],
             'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, []],
             'BatchNo': [d && d.BatchNo ? d.BatchNo : null, []],
+            'PurchaseOrderItemsId': [d && d.PurchaseOrderItemsId ? d.PurchaseOrderItemsId : 0, [Validators.required]],
             'PurchaseReceiveItemsId': [d && d.PurchaseReceiveItemsId ? d.PurchaseReceiveItemsId : null, []],
             'PurchaseReceiveId': [d && d.PurchaseReceiveId ? d.PurchaseReceiveId : null, []],
         });
@@ -155,12 +157,15 @@ export class ReceiveInvoiceComponent implements OnInit {
     }
 
     onSubmit() {
-
         if (this.btnSaveOption === 'save') {
             this.frm?.get('InvoiceNumber')?.clearValidators();
             this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
             if (this.frm.invalid)
                 return;
+
+            this.rows.value.forEach((data: any) => {
+                data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+            })
             if (!this.info['IsPurchaseReceiveSaved']) {
                 this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
                     console.log(data);
@@ -179,6 +184,10 @@ export class ReceiveInvoiceComponent implements OnInit {
             this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
             if (this.frm.invalid)
                 return;
+
+            this.rows.value.forEach((data: any) => {
+                data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+            })
             this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
                 console.log(data);
                 this.dialogRef.close();
@@ -196,6 +205,12 @@ export class ReceiveInvoiceComponent implements OnInit {
         var arrayControl = this.frm.get('PurchaseReceiveItems') as FormArray;
         return arrayControl.at(index).get(frmCtrl)?.value;
 
+    }
+
+    getTotalQty(index: any) {
+        var receivedQuantity = parseInt(this.getData(index, 'ReceivedQuantity'));
+        var totalQty = parseInt(this.getData(index, 'Quantity'));
+        return (totalQty - receivedQuantity);
     }
 
     saveOption(option: string) {
@@ -247,5 +262,6 @@ export interface TableData {
     ReceiveQuantity?: number;
     BatchNo?: string;
     PurchaseReceiveItemsId?: string;
+    PurchaseOrderItemsId: number;
     PurchaseReceiveId?: string;
 }
