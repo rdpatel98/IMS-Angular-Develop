@@ -97,7 +97,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     ngOnInit(): void {
 
         this.frm = this.fb.group({
-            InvoiceNumber: [''],
+            InvoiceNumber: ['',Validators.required],
             PurchaseReceive: this.fb.group({
                 PurchaseReceiveId: [''],
                 PurchaseOrderId: [''],
@@ -157,44 +157,64 @@ export class ReceiveInvoiceComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.btnSaveOption === 'save') {
-            this.frm?.get('InvoiceNumber')?.clearValidators();
-            this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
-            if (this.frm.invalid)
-                return;
+        
+        if (this.frm.invalid)
+            return;
 
-            this.rows.value.forEach((data: any) => {
-                data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+        this.rows.value.forEach((data: any) => {
+            data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+        })
+        if (!this.info['IsPurchaseReceiveSaved']) {
+            this.service.createPurchaseReceive(this.frm.value).subscribe(data => {                
+                this.dialogRef.close();
+                this._snackBar.open("Receive Order Items Successfully!");
             })
-            if (!this.info['IsPurchaseReceiveSaved']) {
-                this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
-                    console.log(data);
-                    this.dialogRef.close();
-                    this._snackBar.open("Receive Order Items Successfully!");
-                })
-            } else {
-                this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
-                    console.log(data);
-                    this.dialogRef.close();
-                    this._snackBar.open("Updated Receive Order Items Successfully!");
-                })
-            }
-        } else if (this.btnSaveOption === 'saveAndInvoice') {
-            this.frm?.get('InvoiceNumber')?.setValidators([Validators.required]);
-            this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
-            if (this.frm.invalid)
-                return;
-
-            this.rows.value.forEach((data: any) => {
-                data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
-            })
-            this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
+        } else {
+            this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
                 console.log(data);
                 this.dialogRef.close();
-                this._snackBar.open("Receive and Invoice Order Items Successfully!");
-                this.router.navigate(['/purchase-order-list']);
+                this._snackBar.open("Updated Receive Order Items Successfully!");
             })
         }
+
+        // if (this.btnSaveOption === 'save') {
+        //     this.frm?.get('InvoiceNumber')?.clearValidators();
+        //     this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
+        //     if (this.frm.invalid)
+        //         return;
+
+        //     this.rows.value.forEach((data: any) => {
+        //         data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+        //     })
+        //     if (!this.info['IsPurchaseReceiveSaved']) {
+        //         this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
+        //             console.log(data);
+        //             this.dialogRef.close();
+        //             this._snackBar.open("Receive Order Items Successfully!");
+        //         })
+        //     } else {
+        //         this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
+        //             console.log(data);
+        //             this.dialogRef.close();
+        //             this._snackBar.open("Updated Receive Order Items Successfully!");
+        //         })
+        //     }
+        // } else if (this.btnSaveOption === 'saveAndInvoice') {
+        //     this.frm?.get('InvoiceNumber')?.setValidators([Validators.required]);
+        //     this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
+        //     if (this.frm.invalid)
+        //         return;
+
+        //     this.rows.value.forEach((data: any) => {
+        //         data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+        //     })
+        //     this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
+        //         console.log(data);
+        //         this.dialogRef.close();
+        //         this._snackBar.open("Receive and Invoice Order Items Successfully!");
+        //         this.router.navigate(['/purchase-order-list']);
+        //     })
+        // }
 
 
 
@@ -213,9 +233,9 @@ export class ReceiveInvoiceComponent implements OnInit {
         return (totalQty - receivedQuantity);
     }
 
-    saveOption(option: string) {
-        this.btnSaveOption = option;
-    }
+    // saveOption(option: string) {
+    //     this.btnSaveOption = option;
+    // }
 
     getVendorById(id: string) {
         this.vendorService.getVendorById(id).subscribe(res => {

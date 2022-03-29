@@ -23,7 +23,7 @@
             <div class="col-12 col-md-4 col-lg-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Invoice Number</mat-label>
-                    <input matInput id="name" [readonly]="po && po.PurchaseReceiveStatus===4"
+                    <input matInput id="name"
                         formControlName="InvoiceNumber">
                     <mat-error>
                         Invoice Number is required
@@ -129,10 +129,9 @@
 
     </mat-dialog-content>
     <mat-dialog-actions class="float-right">
-        <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" (click)="saveOption('save')">Save</button>
-        <ng-container *ngIf="po && po.Status!==4">
-            <button mat-raised-button color="primary" (click)="saveOption('saveAndInvoice')">Save and Invoice</button>
+        <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>        
+        <ng-container>
+            <button mat-raised-button color="primary">Save and Invoice</button>
         </ng-container>
     </mat-dialog-actions>
 </form>
