@@ -1,0 +1,87 @@
+<app-header></app-header>
+<app-siderbar></app-siderbar>
+<main role="main" class="wlt-mainpanel ml-sm-auto px-2 py-2">
+    <mat-card>
+        <mat-card-title>
+            <div class="row">
+                <div class="col-6 col-md-8 col-lg-9">
+                    <h3>Consumption Report</h3>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+
+            <form [formGroup]="frm" (ngSubmit)="onSubmit()">
+                <div>
+                    <div class="row" formGroupName="Consumption">
+                        <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>From Date</mat-label>
+                                    <input matInput [matDatepicker]="FRODO" formControlName="FromDate">
+                                    <mat-datepicker-toggle matSuffix [for]="FRODO"></mat-datepicker-toggle>
+                                    <mat-datepicker #FRODO></mat-datepicker>
+                                    <mat-error>
+                                        From Date is required!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>To Date</mat-label>
+                                    <input matInput [matDatepicker]="DOJ" formControlName="ToDate">
+                                    <mat-datepicker-toggle matSuffix [for]="DOJ"></mat-datepicker-toggle>
+                                    <mat-datepicker #DOJ></mat-datepicker>
+                                    <mat-error>
+                                        To Date is required!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Warehouse</mat-label>
+                                    <mat-select formControlName="WarehouseId">
+                                        <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
+                                </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Item Type</mat-label>
+                                    <mat-select formControlName="ItemType">
+                                        <!-- <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
+                                </mat-option> -->
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Worker Name</mat-label>
+                                    <mat-select formControlName="WorkerId" id="worker">
+                                        <mat-option *ngFor="let w of workerAll" value="{{w.WorkerId}}">{{w.Name}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Worker Name is required!
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right px-4">
+
+                        <button mat-raised-button color="primary">Submit</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</main>
+<app-footer></app-footer>
