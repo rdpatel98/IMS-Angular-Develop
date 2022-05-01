@@ -41,14 +41,12 @@ export class ConsumptionReportComponent implements OnInit {
   }
   init() {
     this.frm = this.fb.group({
-      Consumption: this.fb.group({
         FromDate: ['', Validators.required],
         ToDate: ['', Validators.required],
         WarehouseId: ['', Validators.required],
         ItemType: [''],
         WorkerId: [this.serviceLogin.currentUser()?.UserId],
         OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
-      })
     })
   }
   ngOnInit(): void {

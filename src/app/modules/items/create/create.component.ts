@@ -1,13 +1,14 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {UomConvertionService} from "../../uom-convertion/uom-convertion.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ItemsService} from "../items.service";
-import {LoginService} from "../../user/login/login.service";
-import {VendorService} from "../../vendor/vendor.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UomConvertionService } from "../../uom-convertion/uom-convertion.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { ItemsService } from "../items.service";
+import { LoginService } from "../../user/login/login.service";
+import { VendorService } from "../../vendor/vendor.service";
+import { ItemTypesService } from '../../item-types/item-types.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -37,9 +38,10 @@ export class CreateComponent implements OnInit {
     units: any;
     sourceOfOrigins: any;
     addItemForm: FormGroup = new FormGroup({});
-    isSaving=false;
+    isSaving = false;
+    itemTypes: any;
 
-    constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService) {
+    constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService, private iTypeService: ItemTypesService) {
 
         if (info.ed == null) {
             this.isCreate = true;
@@ -53,7 +55,9 @@ export class CreateComponent implements OnInit {
         serviceVendor.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
             this.sourceOfOrigins = data['Result'];
         })
-
+        this.iTypeService.getItemTypes().subscribe(data => {
+            this.itemTypes = data['Result'];
+        });
         this.addItemForm = this.formBulider.group({
             'ItemId': [0],
             'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
@@ -64,6 +68,7 @@ export class CreateComponent implements OnInit {
             'PurchaseUnitId': new FormControl('', Validators.required),
             'InventoryUnitId': new FormControl('', Validators.required),
             'MinStock': new FormControl(''),
+            'ItemTypeId': new FormControl(''),
             'MaxStock': new FormControl(''),
             'SourceOfOrigin': [],
             'AvgPrice': []
@@ -83,12 +88,12 @@ export class CreateComponent implements OnInit {
         }
 
 
-        this.isSaving=true;
+        this.isSaving = true;
         if (this.isCreate) {
             this.service.createItem(this.addItemForm.value).subscribe(
                 data => {
                     console.log(data);
-                    this.isSaving=false;
+                    this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Created Successfully!");
                 }
@@ -97,7 +102,7 @@ export class CreateComponent implements OnInit {
             this.service.update(this.addItemForm.value).subscribe(
                 data => {
                     console.log(data);
-                    this.isSaving=false;
+                    this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Updated Successfully!");
                 }

@@ -5,7 +5,7 @@
         <mat-card-title>
             <div class="row">
                 <div class="col-6 col-md-8 col-lg-9">
-                    <h3>Consumption Report</h3>
+                    <h3>On-Hand Report</h3>
                 </div>
             </div>
         </mat-card-title>
@@ -13,7 +13,7 @@
 
             <form [formGroup]="frm" (ngSubmit)="onSubmit()">
                 <div>
-                    <div class="row" formGroupName="Consumption">
+                    <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline">
@@ -42,7 +42,7 @@
                                     <mat-label>Warehouse</mat-label>
                                     <mat-select formControlName="WarehouseId">
                                         <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
-                                </mat-option>
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -50,37 +50,45 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Item Type</mat-label>
                                     <mat-select formControlName="ItemType">
-                                        <!-- <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
-                                </mat-option> -->
+                                        <mat-option *ngFor="let type of itemTypes" [value]="type.ItemTypeId">
+                                            {{type.Name}}
+                                        </mat-option>
                                     </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Worker Name</mat-label>
-                                    <mat-select formControlName="WorkerId" id="worker">
-                                        <mat-option *ngFor="let w of workerAll" value="{{w.WorkerId}}">{{w.Name}}</mat-option>
-                                    </mat-select>
-                                    <mat-error>
-                                        Worker Name is required!
-                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-right px-4">
-
                         <button mat-raised-button color="primary">Submit</button>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                        </div>
                     </div>
                 </div>
 
 
             </form>
+        </mat-card-content>
+        <mat-card-content>
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="Id">
+                        <th mat-header-cell *matHeaderCellDef> Sr No</th>
+                        <td mat-cell *matCellDef="let element ; let i = index"> {{element.ItemId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemName">
+                        <th mat-header-cell *matHeaderCellDef>Item Name</th>
+                        <td mat-cell *matCellDef="let element"> {{element.ItemName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="On-Hand">
+                        <th mat-header-cell *matHeaderCellDef>On-Hand</th>
+                        <td mat-cell *matCellDef="let element"> {{element.OnHand}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div>
         </mat-card-content>
     </mat-card>
 </main>

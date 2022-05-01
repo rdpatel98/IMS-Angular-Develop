@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ItemCategoryService } from '../../item-category/item-category.service';
+import { ItemTypesService } from '../../item-types/item-types.service';
 import { DetailsComponent } from '../../items/details/details.component';
 import { ItemsService } from '../../items/items.service';
 import { CreateComponent } from '../../organization/create/create.component';
@@ -19,12 +20,20 @@ import { ReportService } from '../report.service';
   styleUrls: ['./on-hand-report.component.css']
 })
 export class OnHandReportComponent implements OnInit {
-  
+
+  displayedColumns: string[] = ['Id', 'ItemName', 'On-Hand'];
+  dataSource !: any;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
   frm!: FormGroup;
   control = new FormControl();
   warehouseAll: any;
   workerAll: any;
   orgId: any;
+  count: any;
+  itemTypes : any;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,
@@ -32,7 +41,8 @@ export class OnHandReportComponent implements OnInit {
     private serviceItemCategory: ItemCategoryService,
     private service: ReportService,
     private whService: WarehouseService,
-    private serviceLogin: LoginService) {
+    private serviceLogin: LoginService,
+    private iTypeService : ItemTypesService) {
 
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
@@ -40,20 +50,20 @@ export class OnHandReportComponent implements OnInit {
     this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.warehouseAll = data['Result'];
     });
+    this.iTypeService.getItemTypes().subscribe(data => {
+      this.itemTypes = data['Result'];
+    });
     service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.workerAll = data['Result'];
     });
   }
   init() {
     this.frm = this.fb.group({
-      Consumption: this.fb.group({
-        FromDate: ['', Validators.required],
-        ToDate: ['', Validators.required],
-        WarehouseId: ['', Validators.required],
-        ItemType: [''],
-        WorkerId: [this.serviceLogin.currentUser()?.UserId],
-        OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
-      })
+      FromDate: ['', Validators.required],
+      ToDate: ['', Validators.required],
+      WarehouseId: ['', Validators.required],
+      ItemType: [''],
+      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
     })
   }
   ngOnInit(): void {
@@ -78,10 +88,18 @@ export class OnHandReportComponent implements OnInit {
     //     }
     // }));
     //
-    this.service.GetItemCategoryReport(this.frm.value).subscribe((d: any) => {
-      console.log('test');
-      // this.router.navigate(['/item-consumption']);
-    })
+    this.service.GetOnHandReport(this.frm.value).subscribe(
+      data => {
+        this.count = data.Result.length;
+        this.dataSource = new MatTableDataSource<IOnHand>(data['Result']);
+        this.dataSource.paginator = this.paginator;
+        
+      })
   }
 
+}
+export interface IOnHand {
+  ItemId: number;
+  ItemName: string;
+  OnHand: string;
 }

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ItemCategoryService } from '../../item-category/item-category.service';
 import { LoginService } from '../../user/login/login.service';
@@ -14,6 +16,13 @@ import { ReportService } from '../report.service';
 })
 export class PurchaseEnquiryReportComponent implements OnInit {
 
+  displayedColumns: string[] = ['Date', 'Order no', 'Status','Vendor Name','Amount'];
+  dataSource !: any;
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
+  
   frm!: FormGroup;
   control = new FormControl();
   warehouseAll: any;
@@ -40,14 +49,12 @@ export class PurchaseEnquiryReportComponent implements OnInit {
   }
   init() {
     this.frm = this.fb.group({
-      Consumption: this.fb.group({
-        FromDate: ['', Validators.required],
-        ToDate: ['', Validators.required],
-        WarehouseId: ['', Validators.required],
-        ItemType: [''],
-        WorkerId: [this.serviceLogin.currentUser()?.UserId],
-        OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
-      })
+      FromDate: ['', Validators.required],
+      ToDate: ['', Validators.required],
+      WarehouseId: ['', Validators.required],
+      Status: [''],
+      VendorName: [''],
+      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
     })
   }
   ngOnInit(): void {
@@ -72,10 +79,18 @@ export class PurchaseEnquiryReportComponent implements OnInit {
     //     }
     // }));
     //
-    this.service.GetItemCategoryReport(this.frm.value).subscribe((d: any) => {
-      console.log('test');
+    this.service.GetPurchaseEnquiryReport(this.frm.value).subscribe(data => {
+      this.dataSource = new MatTableDataSource<IPurchaseEnquiry>(data['Result']);
+      this.dataSource.paginator = this.paginator;
       // this.router.navigate(['/item-consumption']);
     })
   }
 
+}
+export interface IPurchaseEnquiry {
+  Date: string;
+  OrderNo: string;
+  Status : string;
+  VendorName: string;
+  Amount : string;
 }
