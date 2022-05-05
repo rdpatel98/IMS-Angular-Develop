@@ -73,14 +73,54 @@
 
                         <button mat-raised-button color="primary">Submit</button>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                        </div>
-                    </div>
                 </div>
 
 
             </form>
+        </mat-card-content>
+        <mat-card-content>
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                          <th>Item</th>
+                          <th *ngFor="let cat of categories">{{cat}}</th>
+                          <th>Total Consumption</th>
+                          <th>On-Hand</th>
+                          <th>Worker</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let report of reports">
+                        <td>{{ report.ItemName }}</td>
+                        <td *ngFor="let cat of categories">0</td>
+                        <td>0</td>
+                        <td>{{ report.OnHand }}</td>
+                        <td>{{ report.Worker }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                <!-- <table mat-table >
+                    <th></th> -->
+                    <!-- <ng-container matColumnDef="Id">
+                        <th mat-header-cell *matHeaderCellDef> Sr No</th>
+                        <td mat-cell *matCellDef="let element ; let i = index"> {{element.ItemId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemName">
+                        <th mat-header-cell *matHeaderCellDef>Item Name</th>
+                        <td mat-cell *matCellDef="let element"> {{element.ItemName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="On-Hand">
+                        <th mat-header-cell *matHeaderCellDef>On-Hand</th>
+                        <td mat-cell *matCellDef="let element"> {{element.OnHand}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                <!-- </table> -->
+                <!-- <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator> -->
+            </div>
         </mat-card-content>
     </mat-card>
 </main>

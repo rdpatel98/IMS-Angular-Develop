@@ -31,8 +31,8 @@ export class ReportService {
         return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/SaveItemConsumption", data);
     }
 
-    GetItemCategoryReport(data: any) {
-        return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemCategoryReport", data);
+    GetConsumptionReport(data: any) {
+        return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetConsumptionReport", data);
     }
     GetOnHandReport(data: any) {
         return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetOnHandReport", data);

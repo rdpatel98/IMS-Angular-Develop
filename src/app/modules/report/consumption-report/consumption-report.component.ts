@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ItemCategoryService } from '../../item-category/item-category.service';
 import { ItemConsumptionService } from '../../item-consumption/item-consumption.service';
+import { ItemTypesService } from '../../item-types/item-types.service';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
@@ -20,6 +21,10 @@ export class ConsumptionReportComponent implements OnInit {
   warehouseAll: any;
   workerAll: any;
   orgId: any;
+  data: any;
+  itemTypes: any;
+  reports: any[] | undefined;
+  categories: any[] | undefined;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,
@@ -27,7 +32,8 @@ export class ConsumptionReportComponent implements OnInit {
     private serviceItemCategory: ItemCategoryService,
     private service: ReportService,
     private whService: WarehouseService,
-    private serviceLogin: LoginService) {
+    private serviceLogin: LoginService,
+    private iTypeService: ItemTypesService) {
 
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
@@ -38,15 +44,18 @@ export class ConsumptionReportComponent implements OnInit {
     service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.workerAll = data['Result'];
     });
+    this.iTypeService.getItemTypes().subscribe(data => {
+      this.itemTypes = data['Result'];
+    });
   }
   init() {
     this.frm = this.fb.group({
-        FromDate: ['', Validators.required],
-        ToDate: ['', Validators.required],
-        WarehouseId: ['', Validators.required],
-        ItemType: [''],
-        WorkerId: [this.serviceLogin.currentUser()?.UserId],
-        OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
+      FromDate: ['', Validators.required],
+      ToDate: ['', Validators.required],
+      WarehouseId: ['', Validators.required],
+      ItemType: [''],
+      WorkerId: [this.serviceLogin.currentUser()?.UserId],
+      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
     })
   }
   ngOnInit(): void {
@@ -71,8 +80,15 @@ export class ConsumptionReportComponent implements OnInit {
     //     }
     // }));
     //
-    this.service.GetItemCategoryReport(this.frm.value).subscribe((d: any) => {
-      console.log('test');
+    this.service.GetConsumptionReport(this.frm.value).subscribe(data => {
+      console.log('test', data["Result"]);
+      this.data = data["Result"];
+      this.categories = this.data.ItemCategories;
+      this.reports = this.data.Reports;
+      console.log('test1', this.data.Reports);
+      console.log('report', this.reports);
+      console.log('cate', this.categories);
+
       // this.router.navigate(['/item-consumption']);
     })
   }
