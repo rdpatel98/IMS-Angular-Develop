@@ -23,7 +23,7 @@ export class OnHandReportComponent implements OnInit {
 
   displayedColumns: string[] = ['Id', 'ItemName', 'On-Hand'];
   dataSource !: any;
-
+  expanded = true;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
@@ -90,6 +90,7 @@ export class OnHandReportComponent implements OnInit {
     //
     this.service.GetOnHandReport(this.frm.value).subscribe(
       data => {
+        this.expanded = false;
         this.count = data.Result.length;
         this.dataSource = new MatTableDataSource<IOnHand>(data['Result']);
         this.dataSource.paginator = this.paginator;

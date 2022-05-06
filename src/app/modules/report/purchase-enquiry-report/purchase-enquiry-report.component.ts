@@ -22,7 +22,7 @@ export class PurchaseEnquiryReportComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
-  
+  expanded = true;
   frm!: FormGroup;
   control = new FormControl();
   warehouseAll: any;
@@ -80,6 +80,7 @@ export class PurchaseEnquiryReportComponent implements OnInit {
     // }));
     //
     this.service.GetPurchaseEnquiryReport(this.frm.value).subscribe(data => {
+      this.expanded = false;
       this.dataSource = new MatTableDataSource<IPurchaseEnquiry>(data['Result']);
       this.dataSource.paginator = this.paginator;
       // this.router.navigate(['/item-consumption']);
