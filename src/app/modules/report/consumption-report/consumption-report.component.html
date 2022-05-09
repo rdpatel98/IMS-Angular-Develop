@@ -86,7 +86,7 @@
                     <thead>
                         <tr>
                             <th>Item</th>
-                            <th *ngFor="let cat of categories">{{cat}}</th>
+                            <th *ngFor="let cat of categories">{{cat.CategoryName}}</th>
                             <th>Total Consumption</th>
                             <th>On-Hand</th>
                             <th>Worker</th>
@@ -95,8 +95,10 @@
                     <tbody>
                         <tr *ngFor="let report of reports">
                             <td>{{ report.ItemName }}</td>
-                            <td *ngFor="let cat of categories">0</td>
-                            <td>0</td>
+                            <td *ngFor="let cat of categories">
+                                {{getCategoryData(report.CategoryData,cat.ItemCategoryId,cat.CategoryId)}}
+                            </td>
+                            <td>{{report.TotalConsumptions}}</td>
                             <td>{{ report.OnHand }}</td>
                             <td>{{ report.Worker }}</td>
                         </tr>

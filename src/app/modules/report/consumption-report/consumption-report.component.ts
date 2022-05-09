@@ -93,4 +93,8 @@ export class ConsumptionReportComponent implements OnInit {
     })
   }
 
+
+  getCategoryData(categoryData: any[], itemCategoryId: number, categoryId: number) {
+    return categoryData.find(x => x.ItemCategoryId === itemCategoryId && x.CategoryId === categoryId)?.Quantity ?? 0;
+  }
 }
