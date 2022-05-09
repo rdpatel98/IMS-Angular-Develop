@@ -7,7 +7,7 @@ import {LoginService} from "../../modules/user/login/login.service";
     styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+    showSidebar!: boolean;
     userlogdetails: any;
     constructor(private serviceLogin: LoginService) {
     }
@@ -18,6 +18,10 @@ export class HeaderComponent implements OnInit {
 
     logout() {
         this.serviceLogin.logout();
+    }
+
+    changeMenu() {
+        this.showSidebar = !this.showSidebar;
     }
 
 }

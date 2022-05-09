@@ -25,6 +25,7 @@ export class ConsumptionReportComponent implements OnInit {
   itemTypes: any;
   reports: any[] | undefined;
   categories: any[] | undefined;
+  expanded = true;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,
@@ -88,7 +89,7 @@ export class ConsumptionReportComponent implements OnInit {
       console.log('test1', this.data.Reports);
       console.log('report', this.reports);
       console.log('cate', this.categories);
-
+      this.expanded = false;
       // this.router.navigate(['/item-consumption']);
     })
   }

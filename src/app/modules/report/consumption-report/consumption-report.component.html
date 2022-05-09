@@ -7,9 +7,12 @@
                 <div class="col-6 col-md-8 col-lg-9">
                     <h3>Consumption Report</h3>
                 </div>
+                <div class="col-6 col-md-12 col-lg-12 text-right" *ngIf="!expanded">
+                    <button mat-raised-button (click)="expanded=!expanded" color="primary">Expand</button>
+                </div>
             </div>
         </mat-card-title>
-        <mat-card-content>
+        <mat-card-content *ngIf="expanded">
 
             <form [formGroup]="frm" (ngSubmit)="onSubmit()">
                 <div>
@@ -81,26 +84,40 @@
             </form>
         </mat-card-content>
         <mat-card-content>
-            <div class="table-container">
-                <table class="table table-striped">
+            <div class="mat-tab-body-content">
+                <table class="mat-table cdk-table">
                     <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th *ngFor="let cat of categories">{{cat.CategoryName}}</th>
-                            <th>Total Consumption</th>
-                            <th>On-Hand</th>
-                            <th>Worker</th>
+                        <tr class="mat-header-row cdk-header-row">
+                            <th
+                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Item</th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table"
+                                *ngFor="let cat of categories">{{cat.CategoryName}}</th>
+                            <th
+                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Total Consumption</th>
+                            <th
+                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                On-Hand</th>
+                            <th
+                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Worker</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of reports">
-                            <td>{{ report.ItemName }}</td>
-                            <td *ngFor="let cat of categories">
+                        <tr class="mat-row cdk-row" *ngFor="let report of reports">
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
+                                report.ItemName }}</td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table"
+                                *ngFor="let cat of categories">
                                 {{getCategoryData(report.CategoryData,cat.ItemCategoryId,cat.CategoryId)}}
                             </td>
-                            <td>{{report.TotalConsumptions}}</td>
-                            <td>{{ report.OnHand }}</td>
-                            <td>{{ report.Worker }}</td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">
+                                {{report.TotalConsumptions}}</td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
+                                report.OnHand }}</td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
+                                report.Worker }}</td>
                         </tr>
                     </tbody>
                 </table>

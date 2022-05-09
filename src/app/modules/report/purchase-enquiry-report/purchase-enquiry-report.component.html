@@ -8,7 +8,7 @@
                     <h3>Purchase Enquiry Report</h3>
                 </div>
                 <div class="col-6 col-md-12 col-lg-12 text-right" *ngIf="!expanded">
-                    <button mat-raised-button (click)="expanded=!expanded" color="primary">Collapse</button>
+                    <button mat-raised-button (click)="expanded=!expanded" color="primary">Expand</button>
                 </div>
             </div>
         </mat-card-title>
@@ -63,7 +63,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Vendor Name</mat-label>
                                     <mat-select formControlName="VendorName">
-                                        <mat-option *ngFor="let w of workerAll" value="{{w.WorkerId}}">{{w.Name}}</mat-option>
+                                        <mat-option *ngFor="let v of vendorAll" value="{{v.VendorId}}">{{v.Name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>

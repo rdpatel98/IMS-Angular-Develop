@@ -27,6 +27,7 @@ export class PurchaseEnquiryReportComponent implements OnInit {
   control = new FormControl();
   warehouseAll: any;
   workerAll: any;
+  vendorAll : any;
   orgId: any;
 
   constructor(private router: Router,
@@ -43,8 +44,8 @@ export class PurchaseEnquiryReportComponent implements OnInit {
     this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.warehouseAll = data['Result'];
     });
-    service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
-      this.workerAll = data['Result'];
+    service.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+      this.vendorAll = data['Result'];
     });
   }
   init() {
