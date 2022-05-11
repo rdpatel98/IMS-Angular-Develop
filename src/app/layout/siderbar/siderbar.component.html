@@ -98,6 +98,35 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#drop-menu" aria-expanded="false" aria-controls="drop-menu">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+          <span class="wlt-menu-title">Reports</span>
+          <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </a>
+        <div class="collapse" id="drop-menu">
+          <ul class="nav flex-column ac-sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/consumption-report" routerLinkActive="active">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <span class="wlt-menu-title">Consumption Report</span>
+              </a>
+            </li>
+             <li class="nav-item">
+        <a class="nav-link" routerLink="/on-hand-report" routerLinkActive="active">
+          <i class="fa fa-file" aria-hidden="true"></i>
+          <span class="wlt-menu-title">On-Hand Report</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/purchase-enquiry-report" routerLinkActive="active">
+          <i class="fa fa-file" aria-hidden="true"></i>
+          <span class="wlt-menu-title">Purchase Enquiry Report</span>
+        </a>
+      </li>
+          </ul>
+        </div>
+      </li>
+      <!-- <li class="nav-item">
         <a class="nav-link" routerLink="/consumption-report" routerLinkActive="active">
           <i class="fa fa-file" aria-hidden="true"></i>
           <span class="wlt-menu-title">Consumption Report</span>
@@ -114,7 +143,7 @@
           <i class="fa fa-file" aria-hidden="true"></i>
           <span class="wlt-menu-title">Purchase Enquiry Report</span>
         </a>
-      </li>
+      </li> -->
     </ul>
   </div>
 </nav>
