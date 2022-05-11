@@ -75,7 +75,7 @@
                 <table mat-table [dataSource]="dataSource">
                     <ng-container matColumnDef="Id">
                         <th mat-header-cell *matHeaderCellDef> Sr No</th>
-                        <td mat-cell *matCellDef="let element ; let i = index"> {{element.ItemId}} </td>
+                        <td mat-cell *matCellDef="let element ; let i = index"> {{i+1}} </td>
                     </ng-container>
                     <ng-container matColumnDef="ItemName">
                         <th mat-header-cell *matHeaderCellDef>Item Name</th>
