@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ItemCategoryService } from '../../item-category/item-category.service';
 import { ItemConsumptionService } from '../../item-consumption/item-consumption.service';
-import { ItemTypesService } from '../../item-types/item-types.service';
+import { ItemTypeService } from '../../item-type/item-type.service';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
@@ -34,7 +34,7 @@ export class ConsumptionReportComponent implements OnInit {
     private service: ReportService,
     private whService: WarehouseService,
     private serviceLogin: LoginService,
-    private iTypeService: ItemTypesService) {
+    private itemTypeService: ItemTypeService) {
 
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
@@ -45,7 +45,7 @@ export class ConsumptionReportComponent implements OnInit {
     service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.workerAll = data['Result'];
     });
-    this.iTypeService.getItemTypes().subscribe(data => {
+    this.itemTypeService.getItemTypes().subscribe(data => {
       this.itemTypes = data['Result'];
     });
   }

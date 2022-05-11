@@ -33,6 +33,7 @@ const routes: Routes = [
     },
     { path: 'category', loadChildren: () => import('./modules/category/category.module').then(m => m.CategoryModule) },
     { path: 'uom', loadChildren: () => import('./modules/uom/uom.module').then(m => m.UomModule) },
+    { path: 'item-types', loadChildren: () => import('./modules/item-type/item-type.module').then(m => m.ItemTypeModule) },
     { path: 'uom-converstion', loadChildren: () => import('./modules/uom-convertion/uom-convertion.module').then(m => m.UomConvertionModule) },
     { path: 'items', loadChildren: () => import('./modules/items/items.module').then(m => m.ItemsModule) },
     { path: 'item-category', loadChildren: () => import('./modules/item-category/item-category.module').then(m => m.ItemCategoryModule) },

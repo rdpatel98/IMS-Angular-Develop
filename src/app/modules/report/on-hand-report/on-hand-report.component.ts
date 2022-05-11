@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ItemCategoryService } from '../../item-category/item-category.service';
-import { ItemTypesService } from '../../item-types/item-types.service';
+import { ItemTypeService } from '../../item-type/item-type.service';
 import { DetailsComponent } from '../../items/details/details.component';
 import { ItemsService } from '../../items/items.service';
 import { CreateComponent } from '../../organization/create/create.component';
@@ -42,7 +42,7 @@ export class OnHandReportComponent implements OnInit {
     private service: ReportService,
     private whService: WarehouseService,
     private serviceLogin: LoginService,
-    private iTypeService : ItemTypesService) {
+    private itemTypeService : ItemTypeService) {
 
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
@@ -50,7 +50,7 @@ export class OnHandReportComponent implements OnInit {
     this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.warehouseAll = data['Result'];
     });
-    this.iTypeService.getItemTypes().subscribe(data => {
+    this.itemTypeService.getItemTypes().subscribe(data => {
       this.itemTypes = data['Result'];
     });
     service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {

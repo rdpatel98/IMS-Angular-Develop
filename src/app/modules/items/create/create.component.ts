@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ItemsService } from "../items.service";
 import { LoginService } from "../../user/login/login.service";
 import { VendorService } from "../../vendor/vendor.service";
-import { ItemTypesService } from '../../item-types/item-types.service';
+import { ItemTypeService } from '../../item-type/item-type.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -41,7 +41,8 @@ export class CreateComponent implements OnInit {
     isSaving = false;
     itemTypes: any;
 
-    constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService, private iTypeService: ItemTypesService) {
+    constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService,
+     private itemTypeService: ItemTypeService) {
 
         if (info.ed == null) {
             this.isCreate = true;
@@ -55,7 +56,7 @@ export class CreateComponent implements OnInit {
         serviceVendor.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
             this.sourceOfOrigins = data['Result'];
         })
-        this.iTypeService.getItemTypes().subscribe(data => {
+        this.itemTypeService.getItemTypes().subscribe(data => {
             this.itemTypes = data['Result'];
         });
         this.addItemForm = this.formBulider.group({
