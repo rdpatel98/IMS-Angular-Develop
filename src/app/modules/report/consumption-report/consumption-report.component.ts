@@ -65,8 +65,13 @@ export class ConsumptionReportComponent implements OnInit {
 
     if (this.frm.invalid)
       return;
-    console.log(this.frm.value);
-
+    const d = new Date(this.frm.value.FromDate);
+    const d1 = new Date(this.frm.value.FromDate);
+    // This will return an ISO string matching your local time.
+    var data = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
+    var data1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate(), d1.getHours(), d1.getMinutes() - d1.getTimezoneOffset()).toISOString();
+    this.frm.value.FromDate = data;
+    this.frm.value.ToDate = data1;
     // this.frm.controls['ConsumptionItems'].setValue(this.frm.value.ConsumptionItems.map((d: any, i = 1) => {
     //     return {
     //         LineNo: ++i,
@@ -81,14 +86,11 @@ export class ConsumptionReportComponent implements OnInit {
     //     }
     // }));
     //
+    debugger;
     this.service.GetConsumptionReport(this.frm.value).subscribe(data => {
-      console.log('test', data["Result"]);
       this.data = data["Result"];
       this.categories = this.data.ItemCategories;
       this.reports = this.data.Reports;
-      console.log('test1', this.data.Reports);
-      console.log('report', this.reports);
-      console.log('cate', this.categories);
       this.expanded = false;
       // this.router.navigate(['/item-consumption']);
     })
