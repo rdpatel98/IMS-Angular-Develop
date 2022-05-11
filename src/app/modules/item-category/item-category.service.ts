@@ -31,4 +31,7 @@ export class ItemCategoryService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemCategoryById?itemCategoryId=" + catId);
     }
 
+    delete(categoryId: any,itemCategoryId : any) {
+        return this.http.delete<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/DeleteItemCategory/"+categoryId+"/"+itemCategoryId);
+    }
 }

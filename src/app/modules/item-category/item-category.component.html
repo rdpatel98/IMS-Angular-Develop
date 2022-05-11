@@ -34,7 +34,9 @@
                                     <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)">
                                         <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon>
                                     </a>
-
+                                    <a style="cursor: pointer;" (click)="delete(element)" class="mr-2 wlt-delete">
+                                        <mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon">delete</mat-icon>
+                                    </a>
                                     <a style="cursor: pointer;" (click)="getItemView(element)" class="mr-2 wlt-view">
                                         <mat-icon aria-hidden="false" matTooltip="View" aria-label="view icon">visibility</mat-icon>
                                     </a>

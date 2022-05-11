@@ -7,6 +7,7 @@ import { CategoryService } from "../category/category.service";
 import { LoginService } from "../user/login/login.service";
 import { ICategory } from "../category/category.component";
 import { ItemCategoryService } from "./item-category.service";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-item-category',
@@ -25,7 +26,7 @@ export class ItemCategoryComponent {
     paginator!: MatPaginator;
 
 
-    constructor(public dialog: MatDialog, private service: ItemCategoryService, private serviceLogin: LoginService) {
+    constructor(public dialog: MatDialog, private service: ItemCategoryService, private serviceLogin: LoginService, private _snackBar: MatSnackBar) {
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
     }
 
@@ -76,6 +77,15 @@ export class ItemCategoryComponent {
         dialogRef.afterClosed().subscribe(result => {
             this.get();
         });
+    }
+    delete(data: any) {
+        console.log('data', data);
+        this.service.delete(data.CategoryId, data.ItemCategoryId).subscribe(
+            data => {
+                this._snackBar.open("Deleted Successfully!");
+                this.get();
+            }
+        );
     }
 }
 
