@@ -22,7 +22,7 @@ export class ItemTypeService {
   }
 
   delete(id: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/DeleteItemType?unitid=" + id, {});
+    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/DeleteItemType?itemTypeid=" + id, {});
   }
 
   getItemTypebyId(id: any) {
