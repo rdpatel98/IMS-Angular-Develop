@@ -59,8 +59,9 @@ export class OnHandReportComponent implements OnInit {
   }
   init() {
     this.frm = this.fb.group({
-      FromDate: ['', Validators.required],
-      ToDate: ['', Validators.required],
+      // FromDate: ['', Validators.required],
+      // ToDate: ['', Validators.required],
+      ItemMaster : [''],
       WarehouseId: ['', Validators.required],
       ItemType: [''],
       OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
