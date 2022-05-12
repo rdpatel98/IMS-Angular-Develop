@@ -55,7 +55,7 @@ export class ConsumptionReportComponent implements OnInit {
       ToDate: ['', Validators.required],
       WarehouseId: ['', Validators.required],
       ItemType: [''],
-      WorkerId: [this.serviceLogin.currentUser()?.UserId],
+      WorkerId: [],
       OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
     })
   }
@@ -66,7 +66,7 @@ export class ConsumptionReportComponent implements OnInit {
     if (this.frm.invalid)
       return;
     const d = new Date(this.frm.value.FromDate);
-    const d1 = new Date(this.frm.value.FromDate);
+    const d1 = new Date(this.frm.value.ToDate);
     // This will return an ISO string matching your local time.
     var data = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString();
     var data1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate(), d1.getHours(), d1.getMinutes() - d1.getTimezoneOffset()).toISOString();
@@ -85,8 +85,7 @@ export class ConsumptionReportComponent implements OnInit {
     //         Quantity: d.Quantity,
     //     }
     // }));
-    //
-    debugger;
+    //    
     this.service.GetConsumptionReport(this.frm.value).subscribe(data => {
       this.data = data["Result"];
       this.categories = this.data.ItemCategories;
