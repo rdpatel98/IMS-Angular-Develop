@@ -22,6 +22,9 @@ export class ReportService {
     getWorker(id: string) {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + id);
     }
+    getItem(id: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems?organizationId=" + id);
+    }
     getVendors(id: string) {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor?organizationId=" + id);
     }

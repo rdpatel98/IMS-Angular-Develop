@@ -31,8 +31,10 @@ export class OnHandReportComponent implements OnInit {
   control = new FormControl();
   warehouseAll: any;
   workerAll: any;
+  itemAll: any;
   orgId: any;
   count: any;
+
   itemTypes : any;
 
   constructor(private router: Router,
@@ -56,12 +58,15 @@ export class OnHandReportComponent implements OnInit {
     service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
       this.workerAll = data['Result'];
     });
+    service.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+      this.itemAll = data['Result'];
+    });
   }
   init() {
     this.frm = this.fb.group({
       // FromDate: ['', Validators.required],
       // ToDate: ['', Validators.required],
-      ItemMaster : [''],
+      ItemMasterId : [''],
       WarehouseId: ['', Validators.required],
       ItemType: [''],
       OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
