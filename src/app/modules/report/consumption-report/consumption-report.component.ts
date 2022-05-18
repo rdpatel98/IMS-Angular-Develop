@@ -8,6 +8,7 @@ import { ItemTypeService } from '../../item-type/item-type.service';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-consumption-report',
@@ -61,6 +62,11 @@ export class ConsumptionReportComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  exportToExcel() {
+    let targetTableElm = document.getElementById("table");
+    let wb = xlsx.utils.table_to_book(targetTableElm);
+    xlsx.writeFile(wb, "consumption-report.xlsx");
+   }
   onSubmit() {
 
     if (this.frm.invalid)
@@ -88,8 +94,8 @@ export class ConsumptionReportComponent implements OnInit {
     //    
     this.service.GetConsumptionReport(this.frm.value).subscribe(data => {
       this.data = data["Result"];
-      this.categories = this.data.ItemCategories;
-      this.reports = this.data.Reports;
+      this.categories = this.data?.ItemCategories;
+      this.reports = this.data?.Reports;
       this.expanded = false;
       // this.router.navigate(['/item-consumption']);
     })
