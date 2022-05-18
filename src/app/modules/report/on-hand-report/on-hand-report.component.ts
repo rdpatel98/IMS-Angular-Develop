@@ -13,6 +13,7 @@ import { CreateComponent } from '../../organization/create/create.component';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-on-hand-report',
@@ -74,6 +75,11 @@ export class OnHandReportComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  exportToExcel() {
+    let targetTableElm = document.getElementById("table");
+    let wb = xlsx.utils.table_to_book(targetTableElm);
+    xlsx.writeFile(wb, "on-hand-report.xlsx");
+   }
   onSubmit() {
 
     if (this.frm.invalid)

@@ -8,6 +8,7 @@ import { ItemCategoryService } from '../../item-category/item-category.service';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-purchase-enquiry-report',
@@ -60,6 +61,11 @@ export class PurchaseEnquiryReportComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  exportToExcel() {
+    let targetTableElm = document.getElementById("table");
+    let wb = xlsx.utils.table_to_book(targetTableElm);
+    xlsx.writeFile(wb, "purchase-enquiry-report.xlsx");
+   }
   onSubmit() {
 
     if (this.frm.invalid)

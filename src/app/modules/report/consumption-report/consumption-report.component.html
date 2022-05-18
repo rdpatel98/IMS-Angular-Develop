@@ -8,12 +8,13 @@
                     <h3>Consumption Report</h3>
                 </div>
                 <div class="col-6 col-md-12 col-lg-12 text-right" *ngIf="!expanded">
-                    <button mat-raised-button (click)="expanded=!expanded" color="primary">Expand</button>
+                    <button mat-raised-button (click)="expanded = !expanded" color="primary">
+            Expand
+          </button>
                 </div>
             </div>
         </mat-card-title>
         <mat-card-content *ngIf="expanded">
-
             <form [formGroup]="frm" (ngSubmit)="onSubmit()">
                 <div>
                     <div class="row">
@@ -21,30 +22,26 @@
                             <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline">
                                     <mat-label>From Date</mat-label>
-                                    <input matInput [matDatepicker]="FRODO" formControlName="FromDate">
+                                    <input matInput [matDatepicker]="FRODO" formControlName="FromDate" />
                                     <mat-datepicker-toggle matSuffix [for]="FRODO"></mat-datepicker-toggle>
                                     <mat-datepicker #FRODO></mat-datepicker>
-                                    <mat-error>
-                                        From Date is required!
-                                    </mat-error>
+                                    <mat-error> From Date is required! </mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline">
                                     <mat-label>To Date</mat-label>
-                                    <input matInput [matDatepicker]="DOJ" formControlName="ToDate">
+                                    <input matInput [matDatepicker]="DOJ" formControlName="ToDate" />
                                     <mat-datepicker-toggle matSuffix [for]="DOJ"></mat-datepicker-toggle>
                                     <mat-datepicker #DOJ></mat-datepicker>
-                                    <mat-error>
-                                        To Date is required!
-                                    </mat-error>
+                                    <mat-error> To Date is required! </mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Warehouse</mat-label>
                                     <mat-select formControlName="WarehouseId">
-                                        <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{wh.Name}}
+                                        <mat-option *ngFor="let wh of warehouseAll" [value]="wh.WarehouseId">{{ wh.Name }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -54,7 +51,7 @@
                                     <mat-label>Item Type</mat-label>
                                     <mat-select formControlName="ItemType">
                                         <mat-option *ngFor="let type of itemTypes" [value]="type.ItemTypeId">
-                                            {{type.Name}}
+                                            {{ type.Name }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -63,61 +60,69 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Worker Name</mat-label>
                                     <mat-select formControlName="WorkerId" id="worker">
-                                        <mat-option *ngFor="let w of workerAll" value="{{w.WorkerId}}">{{w.Name}}
+                                        <mat-option *ngFor="let w of workerAll" value="{{ w.WorkerId }}">{{ w.Name }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error>
-                                        Worker Name is required!
-                                    </mat-error>
+                                    <mat-error> Worker Name is required! </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-right px-4">
-
                         <button mat-raised-button color="primary">Submit</button>
                     </div>
                 </div>
-
-
             </form>
         </mat-card-content>
         <mat-card-content>
+            <div class="col-md-12 table-responsive" #table>
+                <div class="row">
+                    <div class="col-6 col-md-12 col-lg-12 text-right">
+                        <button mat-raised-button (click)="exportToExcel()" color="primary">
+              Export To Excel
+            </button>
+                    </div>
+                </div>
+            </div>
             <div class="mat-tab-body-content">
-                <table class="mat-table cdk-table">
+                <table id="table" class="mat-table cdk-table">
                     <thead>
                         <tr class="mat-header-row cdk-header-row">
-                            <th
-                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
-                                Item</th>
-                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table"
-                                *ngFor="let cat of categories">{{cat.CategoryName}}</th>
-                            <th
-                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
-                                Total Consumption</th>
-                            <th
-                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
-                                On-Hand</th>
-                            <th
-                                class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
-                                Worker</th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Item
+                            </th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table" *ngFor="let cat of categories">
+                                {{ cat.CategoryName }}
+                            </th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Total Consumption
+                            </th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                On-Hand
+                            </th>
+                            <th class="mat-header-cell cdk-header-cell cdk-column-item_code mat-column-item_code report-Table">
+                                Worker
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="mat-row cdk-row" *ngFor="let report of reports">
-                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
-                                report.ItemName }}</td>
-                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table"
-                                *ngFor="let cat of categories">
-                                {{getCategoryData(report.CategoryData,cat.ItemCategoryId,cat.CategoryId)}}
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">
+                                {{ report.ItemName }}
+                            </td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table" *ngFor="let cat of categories">
+                                {{ getCategoryData( report.CategoryData, cat.ItemCategoryId, cat.CategoryId ) }}
                             </td>
                             <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">
-                                {{report.TotalConsumptions}}</td>
-                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
-                                report.OnHand }}</td>
-                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">{{
-                                report.Worker }}</td>
+                                {{ report.TotalConsumptions }}
+                            </td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">
+                                {{ report.OnHand }}
+                            </td>
+                            <td class="mat-cell cdk-cell cdk-column-item_code mat-column-item_code report-Table">
+                                {{ report.Worker }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
