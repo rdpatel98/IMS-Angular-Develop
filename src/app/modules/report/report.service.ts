@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 @Injectable({
     providedIn: 'root'
 })
-export class ItemConsumptionService {
+export class ReportService {
 
     constructor(private http: HttpClient) {
     }
@@ -22,7 +22,12 @@ export class ItemConsumptionService {
     getWorker(id: string) {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + id);
     }
-
+    getItem(id: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems?organizationId=" + id);
+    }
+    getVendors(id: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor?organizationId=" + id);
+    }
     getItemsWithCategoryByWarehouseId(org_id: string, wid: string) {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithCategoryByWarehouseId?warehouseId=" + wid + "&organizationId=" + org_id);
     }
@@ -31,4 +36,26 @@ export class ItemConsumptionService {
         return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/SaveItemConsumption", data);
     }
 
+    GetConsumptionReport(data: any) {
+        return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetConsumptionReport", data);
+    }
+    GetOnHandReport(data: any) {
+        return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetOnHandReport", data);
+    }
+    GetPurchaseEnquiryReport(data: any) {
+        return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPurchaseEnquiryReport", data);
+    }
+    getPurchaseList(id: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListPurchaseOrder?organizationId=" + id);
+    }
 }
+
+export class ConsumptionReportFilter {
+    fromDate: Date | undefined;
+    toDate: Date | undefined;
+    store: number | undefined;
+    worker: number | undefined;
+    itemType: number | undefined;
+    organizationId: number | undefined;
+}
+

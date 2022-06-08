@@ -97,17 +97,20 @@ export class PurchaseOrderComponent implements OnInit {
 
         this.updateView();
 
-        this.poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
-            this.form.get('PurchaseOrder.PurchaseOrderNo')?.setValue(data['Result']);
-        })
+
 
         this.vendorAll = (await this.vendorService.getVendors(this.orgId.toString()).toPromise()).Result;
 
         this.UomConvertionAll = (await this.uomService.getUomConversion(this.orgId.toString()).toPromise()).Result;
         if (id)
             this.getPO(id);
-        else
+        else {
+            this.poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
+                this.form.get('PurchaseOrder.PurchaseOrderNo')?.setValue(data['Result']);
+            })
             this.data.forEach((d: TableData) => this.addRow(d, false));
+        }
+
     }
 
     async ngOnInit() {

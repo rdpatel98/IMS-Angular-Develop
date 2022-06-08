@@ -1,0 +1,9 @@
+.wlt-sidebar {
+    overflow: auto;
+}
+
+.wlt-sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}

@@ -76,7 +76,7 @@ export class ReceiveInvoiceComponent implements OnInit {
                 console.log(this.po['PurchaseReceiveNo']);
                 this.poNo = this.po['PurchaseReceiveNo'];
                 this.getVendorById(this.po.VendorId);
-                this.frm.get('InvoiceNumber')?.setValue(data['Result']['InvoiceNumber']);
+                // this.frm.get('InvoiceNumber')?.setValue(data['Result']['InvoiceNumber']);
 
                 data['Result']['PurchaseReceiveItems'].forEach((d: TableData) => {
                     this.addRow(d);
@@ -125,7 +125,7 @@ export class ReceiveInvoiceComponent implements OnInit {
             'UnitId': [d && d.UnitId ? d.UnitId : null, []],
             'UnitPrice': [d && d.UnitPrice ? d.UnitPrice : 0, []],
             'NetAmount': [d && d.NetAmount ? d.NetAmount : 0, []],
-            'BatchNo': [d && d.BatchNo ? d.BatchNo : null, []],
+            'BatchNo': [null, []],
             'PurchaseOrderItemsId': [d && d.PurchaseOrderItemsId ? d.PurchaseOrderItemsId : 0, [Validators.required]],
             'PurchaseReceiveItemsId': [d && d.PurchaseReceiveItemsId ? d.PurchaseReceiveItemsId : null, []],
             'PurchaseReceiveId': [d && d.PurchaseReceiveId ? d.PurchaseReceiveId : null, []],
@@ -161,9 +161,9 @@ export class ReceiveInvoiceComponent implements OnInit {
         if (this.frm.invalid)
             return;
 
-        this.rows.value.forEach((data: any) => {
-            data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
-        })
+        // this.rows.value.forEach((data: any) => {
+        //     data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
+        // })
         if (!this.info['IsPurchaseReceiveSaved']) {
             this.service.createPurchaseReceive(this.frm.value).subscribe(data => {                
                 this.dialogRef.close();
