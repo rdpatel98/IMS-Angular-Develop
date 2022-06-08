@@ -27,15 +27,12 @@ export class LoginComponent implements OnInit {
     onSubmit() {
         this.service.login(this.frm.value).subscribe((data: any) => {
             // console.log(data);
-            if (data.StatusCode == 200) {
-                localStorage.setItem('user', JSON.stringify(data['Result']));
-                console.log(this.service.currentUser());
-                this._snackBar.open("Login Successfully!");
-                this.router.navigate(['/organization']);
-            }
-            else {
+            localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('userName', data.userName);
+            this.router.navigate(['/organization']);
+        },
+        error => {
                 this._snackBar.open("Login Failed. Invalid User Id/Password!");
-            }
         });
 
     }

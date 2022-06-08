@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {CommonConstants, DefaultWarehouseId, OrgId} from "../../../shared/common.constant";
-import {Route, Router} from "@angular/router";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { CommonConstants, DefaultWarehouseId, OrgId } from "../../../shared/common.constant";
+import { Route, Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +16,13 @@ export class LoginService {
     }
 
     public login(data: any) {
-        return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/Login", data);
+        var request = `grant_type=password&userName=${data.UserId}&password=${data.Password}`;
+        const options = {
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            }
+        };
+        return this.http.post(CommonConstants.LOGIN_URL + "token", request, options);
     }
 
     public currentUser(): any {
@@ -44,11 +50,11 @@ export class LoginService {
         return this.user['DefaultWarehouseId'];
     }
 
-    getUserId(){
+    getUserId() {
         return this.user['UserId'];
     }
 
-    getUserName(){
+    getUserName() {
         return this.user['UserName'];
     }
 
