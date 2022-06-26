@@ -93,7 +93,6 @@ export class CreateComponent implements OnInit {
         if (this.isCreate) {
             this.service.createItem(this.addItemForm.value).subscribe(
                 data => {
-                    console.log(data);
                     this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Created Successfully!");
@@ -102,7 +101,6 @@ export class CreateComponent implements OnInit {
         } else {
             this.service.update(this.addItemForm.value).subscribe(
                 data => {
-                    console.log(data);
                     this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Item Updated Successfully!");

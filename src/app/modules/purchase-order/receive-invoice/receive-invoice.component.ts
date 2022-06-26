@@ -51,13 +51,13 @@ export class ReceiveInvoiceComponent implements OnInit {
             this.UomConvertionAll = data['Result'];
         })
 
-        console.log(this.info['IsPurchaseReceiveSaved'])
-        console.log(this.info['id'])
+        //console.log(this.info['IsPurchaseReceiveSaved'])
+        //console.log(this.info['id'])
 
         if (!this.info['IsPurchaseReceiveSaved']) {
             poService.getPOByID(this.info['id']).subscribe((data: any) => {
 
-                console.log(data);
+                //console.log(data);
                 this.po = data['Result']['PurchaseOrder'];
                 this.poNo = this.po['PurchaseOrderNo'];
                 this.getVendorById(this.po.VendorId);
@@ -71,9 +71,9 @@ export class ReceiveInvoiceComponent implements OnInit {
         } else {
             service.getPurchaseReceiveByPurchaseOrder(this.info['id']).subscribe((data: any) => {
 
-                console.log(data);
+                //console.log(data);
                 this.po = data['Result']['PurchaseReceive'];
-                console.log(this.po['PurchaseReceiveNo']);
+                //console.log(this.po['PurchaseReceiveNo']);
                 this.poNo = this.po['PurchaseReceiveNo'];
                 this.getVendorById(this.po.VendorId);
                 // this.frm.get('InvoiceNumber')?.setValue(data['Result']['InvoiceNumber']);
@@ -111,7 +111,7 @@ export class ReceiveInvoiceComponent implements OnInit {
     }
 
     log(e: any) {
-        console.log(e);
+        //console.log(e);
     }
 
     addRow(d?: TableData, noUpdate?: boolean) {
@@ -171,7 +171,7 @@ export class ReceiveInvoiceComponent implements OnInit {
             })
         } else {
             this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
-                console.log(data);
+                //console.log(data);
                 this.dialogRef.close();
                 this._snackBar.open("Updated Receive Order Items Successfully!");
             })
@@ -188,13 +188,13 @@ export class ReceiveInvoiceComponent implements OnInit {
         //     })
         //     if (!this.info['IsPurchaseReceiveSaved']) {
         //         this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
-        //             console.log(data);
+        //             //console.log(data);
         //             this.dialogRef.close();
         //             this._snackBar.open("Receive Order Items Successfully!");
         //         })
         //     } else {
         //         this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
-        //             console.log(data);
+        //             //console.log(data);
         //             this.dialogRef.close();
         //             this._snackBar.open("Updated Receive Order Items Successfully!");
         //         })
@@ -209,7 +209,7 @@ export class ReceiveInvoiceComponent implements OnInit {
         //         data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
         //     })
         //     this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
-        //         console.log(data);
+        //         //console.log(data);
         //         this.dialogRef.close();
         //         this._snackBar.open("Receive and Invoice Order Items Successfully!");
         //         this.router.navigate(['/purchase-order-list']);
@@ -218,7 +218,7 @@ export class ReceiveInvoiceComponent implements OnInit {
 
 
 
-        console.log(this.frm.value);
+        //console.log(this.frm.value);
     }
 
     getData(index: any, frmCtrl: any): string {

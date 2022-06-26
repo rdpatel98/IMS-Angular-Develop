@@ -59,7 +59,6 @@ export class ItemConsumptionComponent implements OnInit {
 
         this._rowsOfConsumption.clear();
         this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.OrganizationId].toString(), [this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
-            console.log(data['Result']['ConsumptionCategory']);
             this.listItemCategory = data['Result']['ConsumptionCategory'];
 
             this.listItemCategory.forEach((d: any) => {
@@ -101,7 +100,6 @@ export class ItemConsumptionComponent implements OnInit {
         this.rows.clear();
         this._rowsOfConsumption.clear();
         this.service.getItemsWithCategoryByWarehouseId(this.orgId, whId.toString()).subscribe((data: any) => {
-            console.log(data['Result']['ConsumptionCategory']);
             this.listItemCategory = data['Result']['ConsumptionCategory'];
 
             this.listItemCategory.forEach((d: any) => {
@@ -115,7 +113,6 @@ export class ItemConsumptionComponent implements OnInit {
         this.rows.clear();
         this.service.getItemsWithOnHandQtyByItemCategoryId(this.listItemCategory[data].ItemCategoryId, this.frm.get('Consumption.WarehouseId')?.value).subscribe(
             data => {
-                console.log(data)
                 data['Result'].forEach((d: any) => {
                     this.addRow(d);
                 })
@@ -184,7 +181,6 @@ export class ItemConsumptionComponent implements OnInit {
 
         if (this.frm.invalid)
             return;
-        console.log(this.frm.value);
 
         // this.frm.controls['ConsumptionItems'].setValue(this.frm.value.ConsumptionItems.map((d: any, i = 1) => {
         //     return {

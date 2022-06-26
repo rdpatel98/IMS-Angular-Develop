@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Permission } from './shared/common.constant';
 
 const routes: Routes = [
     {
         path: 'organization',
+        
         children: [
             { path: '', loadChildren: () => import('./modules/organization/organization.module').then(m => m.OrganizationModule) },
             { path: 'view/:id', loadChildren: () => import('./modules/organization/view/view.module').then(m => m.ViewModule) },
@@ -12,6 +14,7 @@ const routes: Routes = [
     },
     {
         path: 'warehouse',
+        
         children: [
             { path: '', loadChildren: () => import('./modules/warehouse/warehouse.module').then(m => m.WarehouseModule) },
             { path: 'view/:id', loadChildren: () => import('./modules/warehouse/view/view.module').then(m => m.ViewModule) },
@@ -19,6 +22,7 @@ const routes: Routes = [
     },
     {
         path: 'worker',
+        
         children: [
             { path: '', loadChildren: () => import('./modules/worker/worker.module').then(m => m.WorkerModule) },
             { path: 'view/:id', loadChildren: () => import('./modules/worker/view/view.module').then(m => m.ViewModule) },
@@ -26,6 +30,7 @@ const routes: Routes = [
     },
     {
         path: 'vendor',
+        
         children: [
             { path: '', loadChildren: () => import('./modules/vendor/vendor.module').then(m => m.VendorModule) },
             { path: 'view/:id', loadChildren: () => import('./modules/vendor/view/view.module').then(m => m.ViewModule) },
@@ -33,6 +38,11 @@ const routes: Routes = [
     },
     { path: 'category', loadChildren: () => import('./modules/category/category.module').then(m => m.CategoryModule) },
     { path: 'uom', loadChildren: () => import('./modules/uom/uom.module').then(m => m.UomModule) },
+    { path: 'role', loadChildren: () => import('./modules/role/role.module').then(m => m.RoleModule)},
+    { path: 'lookup', loadChildren: () => import('./modules/lookup/lookup.module').then(m => m.LookUpModule)},
+    { path: 'permission-entity', loadChildren: () => import('./modules/permissionEntity/permissionEntity.module').then(m => m.PermissionEntityModule)},
+    { path: 'role-permission-entity-lookUp', loadChildren: () => import('./modules/role-permission-entity-lookUp/role-permission-entity-lookUp.module').then(m => m.RolePermissionEntityLookUpModule) },
+    { path: 'permission-entity-lookUp', loadChildren: () => import('./modules/permission-entity-lookUp/permission-entity-lookUp.module').then(m => m.PermissionEntityLookUpModule) },
     { path: 'item-types', loadChildren: () => import('./modules/item-type/item-type.module').then(m => m.ItemTypeModule) },
     { path: 'uom-converstion', loadChildren: () => import('./modules/uom-convertion/uom-convertion.module').then(m => m.UomConvertionModule) },
     { path: 'items', loadChildren: () => import('./modules/items/items.module').then(m => m.ItemsModule) },

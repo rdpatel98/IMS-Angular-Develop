@@ -63,7 +63,6 @@ export class InventoryAdjustmentComponent implements OnInit {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         this.orgId = serviceLogin.currentUser()?.OrganizationId;
         this.userlogdetails = serviceLogin.currentUser();
-        console.log("justcheck" + this.userlogdetails.DefaultWarehouseId + " " + this.defaultWarehouseId);
 
 
         this.form = formBulider.group({

@@ -50,6 +50,7 @@ export class WorkerComponent {
     }
 
     edit(data: any) {
+         
         const dialogRef = this.dialog.open(CreateComponent, {
             disableClose: true,
             data: {ed: data},

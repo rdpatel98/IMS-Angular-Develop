@@ -100,7 +100,6 @@ export class InventoryAdjustmentViewComponent implements OnInit {
     getInit() {
 
         this.inventoryAdjustment.getIAByID(this._id).subscribe((data: any) => {
-            console.log(data);
             this.dataSource = new MatTableDataSource<TableData>(data['Result']['InventoryAdjustmentItems']);
             this.iaNo = data['Result']['InventoryAdjustment']['InventoryAdjustmentNo'];
             this.iaID = data['Result']['InventoryAdjustment']['InventoryAdjustmentId'];
@@ -112,7 +111,6 @@ export class InventoryAdjustmentViewComponent implements OnInit {
 
 
     log(element: any) {
-        console.log(element)
     }
 
 

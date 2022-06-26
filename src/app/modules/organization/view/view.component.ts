@@ -65,7 +65,7 @@ export class ViewComponent {
                 this.dataSource = new MatTableDataSource<IAddress>(this.addresses);
                 this.dataSource.paginator = this.paginator;
 
-                console.log(data);
+                //console.log(data);
             }
         );
     }
@@ -100,7 +100,7 @@ export class ViewComponent {
 
 
     deleteAddress(data: any) {
-        console.log(data['AddressId']);
+        //console.log(data['AddressId']);
         this.addressService.deleteAddress(data['AddressId']).subscribe(data => {
             this.getData();
             this._snackBar.open("Address Deleted Successfully!");

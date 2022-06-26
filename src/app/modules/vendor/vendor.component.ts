@@ -33,7 +33,7 @@ export class VendorComponent {
     getInit() {
         this.service.getVendors(this.orgId.toString()).subscribe(
             data => {
-                console.log(data);
+                //console.log(data);
                 this.dataSource = new MatTableDataSource<IVendor>(data['Result']);
                 this.dataSource.paginator = this.paginator;
             }

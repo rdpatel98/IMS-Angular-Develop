@@ -72,7 +72,7 @@ export class CreateComponent implements OnInit {
         this.saveloading=true;
         if (this.isCreate) {
 
-            console.log(this.frm.value);
+            //console.log(this.frm.value);
             this.service.createWarehouse({ "Warehouse": this.frm.value }).subscribe(
                 data => {
                     this.dialogRef.close();

@@ -38,7 +38,6 @@ export class ItemsComponent implements AfterViewInit {
     getInit() {
         this.service.getItem(this.orgId.toString()).subscribe(
             data => {
-                console.log(data);
                 this.dataSource = new MatTableDataSource<IItem>(data['Result']);
                 this.dataSource.paginator = this.paginator;
             }

@@ -29,7 +29,6 @@ export class CreateComponent implements OnInit {
             this.isCreate = true;
         }
 
-        console.log(serviceLogin.currentUser()?.OrganizationId);
 
         this.addcategoryForm = this.formBulider.group({
             'CategoryId': [''],
@@ -51,7 +50,6 @@ export class CreateComponent implements OnInit {
             return;
         this.isSaving = true;
 
-        console.log(this.addcategoryForm.value);
         if (this.isCreate) {
             this.service.createCategory(this.addcategoryForm.value).subscribe(
                 data => {
@@ -62,7 +60,6 @@ export class CreateComponent implements OnInit {
         } else {
             this.service.update(this.addcategoryForm.value).subscribe(
                 data => {
-                    console.log(data);
                     this.dialogRef.close();
                     this._snackBar.open("Category Updated Successfully!");
                 }

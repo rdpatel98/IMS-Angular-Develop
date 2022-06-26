@@ -21,7 +21,6 @@ export class AddAddressComponent implements OnInit {
             this.isCreate = true;
         }
 
-        console.log(info.ed);
 
         this.frm = this.fb.group({
             'AddressId': [''],

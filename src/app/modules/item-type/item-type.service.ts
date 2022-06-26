@@ -17,7 +17,7 @@ export class ItemTypeService {
   }
 
   update(data: any) {
-    debugger;
+     
     return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/UpdateItemType", data);
   }
 

@@ -15,23 +15,23 @@ export class WorkerService {
 
 
   createWorker(data: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/AddWorker", data);
+    return this.http.post(CommonConstants.WEBAPI_URL + "Worker/AddWorker", data);
   }
 
   getWorkerById(id: string) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetWorkerByID?workerid=" + id);
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Worker/GetWorkerByID?workerid=" + id);
   }
 
   getWorker() {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + this.orgId.toString());
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Worker/ListWorker");
   }
 
 
   update(data: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/UpdateWorker", { Worker: data });
+    return this.http.post(CommonConstants.WEBAPI_URL + "Worker/UpdateWorker", { Worker: data });
   }
 
   delete(id: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/DeleteWorker?workerid=" + id, {});
+    return this.http.post(CommonConstants.WEBAPI_URL + "Worker/DeleteWorker?workerid=" + id, {});
   }
 }

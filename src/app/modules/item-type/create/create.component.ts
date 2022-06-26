@@ -37,7 +37,6 @@ export class CreateComponent implements OnInit {
 
     ngOnInit(): void {
         if (!this.isCreate) {
-            console.log('test',this.info.ed);
             this.addItemTypeForm.patchValue(this.info.ed);
         }
     }

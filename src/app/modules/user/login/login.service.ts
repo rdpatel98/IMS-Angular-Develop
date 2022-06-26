@@ -8,7 +8,7 @@ import { Route, Router } from "@angular/router";
 })
 export class LoginService {
     user: any;
-    _orgId             !: string;
+    _orgId!: string;
     _defaultWarehouseId!: string;
 
     constructor(private http: HttpClient, private router: Router) {
@@ -24,7 +24,9 @@ export class LoginService {
         };
         return this.http.post(CommonConstants.LOGIN_URL + "token", request, options);
     }
-
+    public setUser() {
+        return this.http.get<any>(CommonConstants.LOGIN_URL + "api/Account/UserInfo");
+    }
     public currentUser(): any {
         if (!this.user) {
             this.user = JSON.parse(localStorage.getItem('user') || '{}');

@@ -59,7 +59,7 @@ export class CreateComponent implements OnInit {
                 }
             )
         } else {
-            console.log(this.addvendorForm.value);
+            //console.log(this.addvendorForm.value);
             this.service.update(this.addvendorForm.value).subscribe(
                 data => {
                     this.dialogRef.close();

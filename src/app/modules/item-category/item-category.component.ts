@@ -37,7 +37,6 @@ export class ItemCategoryComponent {
     get() {
         this.service.getListItemCategory(this.orgId.toString()).subscribe(
             data => {
-                console.log(data);
                 this.dataSource = new MatTableDataSource<ItemCategory>(data['Result']);
                 this.dataSource.paginator = this.paginator;
             }
@@ -56,11 +55,9 @@ export class ItemCategoryComponent {
     }
 
     getItemView(element: any) {
-        console.log(element);
         this.ItemCategoryName = "for " + element.CategoryName;
         this.service.getItemsByItemCategoryId(element.ItemCategoryId).subscribe(
             data => {
-                console.log(data);
                 this.dataItemSource = new MatTableDataSource<IItem>(data['Result']['ItemCategoryCollections']);
                 this.dataItemSource.paginator = this.paginator;
             }
@@ -79,7 +76,6 @@ export class ItemCategoryComponent {
         });
     }
     delete(data: any) {
-        console.log('data', data);
         this.service.delete(data.CategoryId, data.ItemCategoryId).subscribe(
             data => {
                 this._snackBar.open("Deleted Successfully!");

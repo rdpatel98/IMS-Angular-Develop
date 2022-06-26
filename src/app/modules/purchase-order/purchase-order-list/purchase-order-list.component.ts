@@ -9,6 +9,7 @@ import { IOrganization } from "../../organization/organization.component";
 import { PurchaseOrderListService } from "./purchase-order-list.service";
 import { LoginService } from "../../user/login/login.service";
 import { VendorService } from "../../vendor/vendor.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-purchase-order-list',
@@ -20,12 +21,15 @@ export class PurchaseOrderListComponent {
     displayedColumns: string[] = ['Id', 'PurchaseOrderNo', 'VendorId', 'NetAmount', 'OrderStatus', 'action'];
     dataSource !: any;
     vendorAll: any;
-
+    permission: any = Permission;
+    data : any;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
     orgId: string;
     constructor(public dialog: MatDialog, private service: PurchaseOrderListService, private _snackBar: MatSnackBar, private vendorService: VendorService, private serviceLogin: LoginService) {
-
+         
+this.data=this.permission.Organization_List;
+//console.log(this.data);
         this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         this.vendorService.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
             this.vendorAll = data['Result'];

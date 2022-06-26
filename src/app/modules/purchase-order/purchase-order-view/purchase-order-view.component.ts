@@ -100,7 +100,7 @@ export class PurchaseOrderViewComponent implements OnInit {
     getInit() {
 
         this.poService.getPOByID(this._id).subscribe((data: any) => {
-            console.log(data);
+            //console.log(data);
             this.IsPurchaseReceiveSaved = data['Result']['IsPurchaseReceiveSaved'];
             this.dataSource = new MatTableDataSource<TableData>(data['Result']['PurchaseOrderItems']);
             this.poNo = data['Result']['PurchaseOrder']['PurchaseOrderNo'];
@@ -146,7 +146,7 @@ export class PurchaseOrderViewComponent implements OnInit {
     // }
 
     log(element: any) {
-        console.log(element)
+        //console.log(element)
     }
 
     // addRow(d?: TableData, noUpdate?: boolean) {
@@ -221,9 +221,9 @@ export class PurchaseOrderViewComponent implements OnInit {
     //
     //     this.form.get('PurchaseOrder.NetAmount')?.setValue(this._totalAmount);
     //
-    //     console.log(this.form.value);
+    //     //console.log(this.form.value);
     //
-    //     this.poService.createPO(this.form.value).subscribe(data => console.log(data));
+    //     this.poService.createPO(this.form.value).subscribe(data => //console.log(data));
     //
     // }
 

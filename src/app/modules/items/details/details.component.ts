@@ -39,7 +39,6 @@ export class DetailsComponent implements AfterViewInit {
 
     constructor(private service: ItemsService, @Inject(MAT_DIALOG_DATA) public info: any) {
 
-        console.log(info);
         let itemId = info['item']['ItemId']
         this.itemName = info['item']['Name'];
         service.getVendorPriceListByItemId(itemId, info['CatId']).subscribe((data: any) => {
@@ -55,7 +54,7 @@ export class DetailsComponent implements AfterViewInit {
             this.dataSourceCategory.paginator = this.paginatorCategory;
         });
         service.getOnHandQtyByItemId(itemId, info['CatId']).subscribe((data: any) => {
-            console.log(data);
+            
             this.dataSourceOnHandQty = new MatTableDataSource<IOnHand>(data['Result']);
             this.dataSourceOnHandQty.paginator = this.paginatorTOnHandQty;
         });
