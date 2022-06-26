@@ -7,52 +7,26 @@
                 <div class="col-6 col-md-8 col-lg-9">
                     <h3>Role Permission Map</h3>
                 </div>
-                <!-- <div class="col-6 col-md-4 col-lg-3">
-                    <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
-                </div> -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <button mat-raised-button color="primary" class="float-right" (click)="save()">Save</button>
+                </div>
             </div>
         </mat-card-title>
         <mat-card-content>
             <mat-form-field appearance="outline">
                 <mat-label>Role</mat-label>
-                <mat-select>
+                <mat-select (selectionChange)="onChange($event.value)">
                     <mat-option *ngFor="let role of roles; let i = index" [value]="role.Id">
                         {{role.Name}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Please select at least one property</mat-error>
             </mat-form-field>
-            <!-- <div class="table-container">
-                <table mat-table [dataSource]="dataSource">
-                    <ng-container matColumnDef="Name">
-                        <th mat-header-cell *matHeaderCellDef> Role Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef style="width:120px">
-                            Action
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            <div class="float-left">
-                                <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)">
-                                    <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">mode_edit
-                                    </mat-icon>
-                                </a>
-                                <a [routerLink]="" class=" wlt-delete" (click)="delete(element.Id)">
-                                    <mat-icon aria-hidden="false" matTooltip="Delete" aria-label="delete icon">delete
-                                    </mat-icon>
-                                </a>
-                            </div>
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-                <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
-                    aria-label="Select page of periodic elements">
-                </mat-paginator>
-            </div> -->
+        </mat-card-content>
+        <mat-card-content>
+            <ngx-treeview class="treeview" [config]="config" [items]="rightList"
+                (selectedChange)="rightIdList = $event">
+            </ngx-treeview>
         </mat-card-content>
     </mat-card>
 </main>

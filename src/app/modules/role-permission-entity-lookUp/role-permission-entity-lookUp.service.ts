@@ -23,9 +23,17 @@ export class RolePermissionEntityLookUpService {
   getRolePermissionEntityLookUp(id: any) {
     return this.http.get<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/GetRolePermissionEntityLookUp/" + id);
   }
+  
+  getRoleRightByRole(roleId: any) {
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/" + roleId);
+  }
 
   update(data: any, id: any) {
     return this.http.post(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/UpdateRolePermissionEntityLookUp/" + id, data);
+  }
+  saveRolePermission(data: any) {
+    debugger;
+    return this.http.post<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/SaveRolePermission/", data);
   }
 
   delete(id: any) {
