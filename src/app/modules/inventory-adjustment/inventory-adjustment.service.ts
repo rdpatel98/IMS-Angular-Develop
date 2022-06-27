@@ -14,11 +14,11 @@ export class InventoryAdjustmentService {
   }
 
   getWorker() {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker");
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Worker/ListWorker");
   }
 
   getPrefixAutoValue() {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=ia");
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?type=ia");
   }
 
   

@@ -16,11 +16,11 @@ export class ReportService {
 
     getPrefixAutoValue() {
 
-        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=ic");
+        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?type=ic");
     }
 
     getWorker() {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker");
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "Worker/ListWorker");
     }
     getItem() {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems");

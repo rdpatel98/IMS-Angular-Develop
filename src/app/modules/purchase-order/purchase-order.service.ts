@@ -25,7 +25,7 @@ export class PurchaseOrderService {
 
   getPrefixAutoValue() {
 
-    return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=po");
+    return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?type=po");
   }
 
   getPurchaseOrderUnitPriceByItemId(itemId:string) {
