@@ -18,8 +18,8 @@ export class CategoryService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetCategoryByID?categoryId=" + id);
     }
 
-    getCategory(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListCategory?organizationId=" + id);
+    getCategory() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListCategory");
     }
 
 

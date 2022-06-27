@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiderbarComponent implements OnInit {
 
+  permission: any = Permissions;
   constructor() { }
 
   ngOnInit(): void {

@@ -25,24 +25,28 @@ export class LoginComponent implements OnInit {
     }
 
     onSubmit() {
-         
+
         this.service.login(this.frm.value).subscribe((data: any) => {
             // //console.log(data);
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('userName', data.userName);
-
+            if (localStorage.getItem('access_token')) {
+                this.gerUserInfo();
+            }
             this.router.navigate(['/organization']);
         },
             error => {
                 this._snackBar.open("Login Failed. Invalid User Id/Password!");
             });
+
+    }
+    gerUserInfo() {
         this.service.setUser().subscribe((data: any) => {
             localStorage.setItem('currentUser', JSON.stringify(data));
         },
             error => {
                 this._snackBar.open("Login Failed. Invalid User Id/Password!");
             });
-        
-    }
 
+    }
 }

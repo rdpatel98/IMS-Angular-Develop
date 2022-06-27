@@ -49,7 +49,7 @@
                                     <mat-icon aria-hidden="false" matTooltip="View" aria-label="view icon">visibility
                                     </mat-icon>
                                 </a>
-                                <a *ngIf="element.OrderStatus===1"
+                                <a [hidden]="element.OrderStatus===1"  *hasPermission="[permission.PurchaseOrder_Edit]"
                                     [routerLink]="['/purchase-order/',element.PurchaseOrderId]" class="mr-2 wlt-edit">
                                     <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">edit
                                     </mat-icon>

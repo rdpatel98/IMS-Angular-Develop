@@ -4,7 +4,7 @@ import { AuthGuard } from 'src/app/services/authentication/auth.guard';
 import { Permission } from 'src/app/shared/common.constant';
 import { PurchaseOrderListComponent } from './purchase-order-list.component';
 
-const routes: Routes = [{ path: '', component: PurchaseOrderListComponent,canActivate: [AuthGuard], data: { permissions: [Permission.PurchaseOrder_Create] } }];
+const routes: Routes = [{ path: '', component: PurchaseOrderListComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

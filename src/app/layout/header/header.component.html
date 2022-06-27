@@ -1,24 +1,25 @@
 <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0 wlt-navbar">
-     
-    <div class="navbar-brand mr-0" href="#" style="color: #000;">
-        <button class="navbar-toggler navbar-toggler align-self-center" (click)="changeMenu()" type="button" data-toggle="minimize">
-          <!-- <span data-feather="menu"></span> -->
-          <i class="fa fa-bars" aria-hidden="true"></i>
-        </button>
-        Inventory Solutions
-        <!-- <img src="assets/img/agracity-logo.png"> -->
-    </div>
-    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
-    <div class="navbar-menu-wrapper d-flex align-items-top"> 
-      <ul class="navbar-nav">
-        <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-          <h1 class="wlt-welcome-text">Welcome, <span class="text-black fw-bold">{{userlogdetails.UserName}}</span></h1>
-        </li>
-      </ul>
-      <ul class="navbar-nav px-3 ms-auto wlt-navbar-nav">
-        <li class="wlt-dropdown text-nowrap">
-          <!-- <a class="wlt-dropbtn" href="#"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="wlt-count"></span></a> -->
-           <!-- <ul class="wlt-notifcation-content">
+
+  <div class="navbar-brand mr-0" href="#" style="color: #000;">
+    <button class="navbar-toggler navbar-toggler align-self-center" (click)="changeMenu()" type="button"
+      data-toggle="minimize">
+      <!-- <span data-feather="menu"></span> -->
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+    Inventory Solutions
+    <!-- <img src="assets/img/agracity-logo.png"> -->
+  </div>
+  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+  <div class="navbar-menu-wrapper d-flex align-items-top">
+    <ul class="navbar-nav">
+      <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+        <h1 class="wlt-welcome-text">Welcome, <span class="text-black fw-bold">{{userlogdetails.UserName}}</span></h1>
+      </li>
+    </ul>
+    <ul class="navbar-nav px-3 ms-auto wlt-navbar-nav">
+      <li class="wlt-dropdown text-nowrap">
+        <!-- <a class="wlt-dropbtn" href="#"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="wlt-count"></span></a> -->
+        <!-- <ul class="wlt-notifcation-content">
             <li>
               <a href="#">
                 <h4>Notification1</h4>
@@ -32,14 +33,14 @@
               </a>
             </li>
           </ul> -->
-        </li>
-        <li class="wlt-dropdown text-nowrap">
-          <a class="wlt-dropbtn" href="#"><img src="assets/img/wlt-user-face.jpg"></a>
-           <ul class="wlt-dropdown-content">
-            <li><a href="#">Profile</a></li>
-            <li><a href="#" (click)="logout()">Sign Out</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </nav>
+      </li>
+      <li class="wlt-dropdown text-nowrap">
+        <a class="wlt-dropbtn"><img src="assets/img/wlt-user-face.jpg"></a>
+        <ul class="wlt-dropdown-content">
+          <li><a href="#">Profile</a></li>
+          <li><a href="#" (click)="logout()">Sign Out</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

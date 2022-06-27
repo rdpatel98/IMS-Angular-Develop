@@ -7,6 +7,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { CategoryService } from "../category.service";
 import * as moment from "moment";
 import { LoginService } from "../../user/login/login.service";
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OrganizationService } from '../../organization/organization.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,7 +26,16 @@ export class CreateComponent implements OnInit {
     addcategoryForm: FormGroup = new FormGroup({});
     isCreate: boolean = false;
     isSaving: boolean = false;
-    constructor(private formBulider: FormBuilder, private service: CategoryService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    isMultipleOrg: boolean = false;
+    orgs: any;
+    constructor(private formBulider: FormBuilder, 
+                private service: CategoryService, 
+                private dialogRef: MatDialogRef<CreateComponent>, 
+                private _snackBar: MatSnackBar,
+                @Inject(MAT_DIALOG_DATA) public info: any, 
+                private serviceLogin: LoginService,
+                private orgService: OrganizationService,
+                private authService: AuthenticationService) {
         if (info.ed == null) {
             this.isCreate = true;
         }
@@ -32,7 +43,7 @@ export class CreateComponent implements OnInit {
 
         this.addcategoryForm = this.formBulider.group({
             'CategoryId': [''],
-            'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
+            'OrganizationId': new FormControl('', Validators.required),
             'Id': new FormControl('', Validators.required),
             'Name': new FormControl('', Validators.required),
             'Description': new FormControl('', Validators.required),
@@ -43,9 +54,25 @@ export class CreateComponent implements OnInit {
         if (!this.isCreate) {
             this.addcategoryForm.patchValue(this.info.ed);
         }
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.addcategoryForm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
 
+    getOrg() {
+
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
     onSubmit() {
+        
         if (!this.addcategoryForm.valid)
             return;
         this.isSaving = true;

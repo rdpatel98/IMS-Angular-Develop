@@ -3,6 +3,6 @@ export class UserModel {
   UserName: string | undefined;
   fFullName: string | undefined;
   Roles: Array<string> | undefined;
-  Organizations:Array<number> | undefined;
-  Permissions : Array<string> | [] | undefined;
+  OrganizationIds: number[] = [];
+  Permissions : Array<string> = [] ;
 }

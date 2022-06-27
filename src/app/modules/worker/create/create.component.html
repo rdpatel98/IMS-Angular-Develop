@@ -89,7 +89,7 @@
             <div class="col-12 col-md-6 col-lg-6">
                 <mat-form-field appearance="outline">
                     <mat-label>Organization</mat-label>
-                    <mat-select formControlName="OrganizationId">
+                    <mat-select formControlName="OrganizationIds" multiple>
                         <mat-option *ngFor="let organization of orgs" [value]="organization.OrganizationId">
                             {{organization.Name}}
                         </mat-option>

@@ -13,30 +13,30 @@ export class RolePermissionEntityLookUpService {
   }
 
   createRolePermissionEntityLookUp(data: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/CreateRolePermissionEntityLookUp", data);
+    return this.http.post(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/CreateRolePermissionEntityLookUp", data);
   }
 
   getRolePermissionEntityLookUps() {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/GetRolePermissionEntityLookUps");
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/GetRolePermissionEntityLookUps");
   }
 
   getRolePermissionEntityLookUp(id: any) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/GetRolePermissionEntityLookUp/" + id);
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/GetRolePermissionEntityLookUp/" + id);
   }
   
   getRoleRightByRole(roleId: any) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/" + roleId);
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/" + roleId);
   }
 
   update(data: any, id: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/UpdateRolePermissionEntityLookUp/" + id, data);
+    return this.http.post(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/UpdateRolePermissionEntityLookUp/" + id, data);
   }
   saveRolePermission(data: any) {
     debugger;
-    return this.http.post<any>(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/SaveRolePermission/", data);
+    return this.http.post<any>(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/SaveRolePermission/", data);
   }
 
   delete(id: any) {
-    return this.http.post(CommonConstants.WEBAPI_URL + "PermissionEntityLookUp/DeleteRolePermissionEntityLookUp/" + id, {});
+    return this.http.post(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/DeleteRolePermissionEntityLookUp/" + id, {});
   }
 }

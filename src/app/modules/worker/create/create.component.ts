@@ -43,7 +43,7 @@ export class CreateComponent implements OnInit {
         });
         this.WorkerFrm = this.formBulider.group({
             'WorkerId': [''],
-            'OrganizationId': ['', Validators.required],
+            'OrganizationIds': ['', Validators.required],
             'Name': new FormControl('', Validators.required),
             'PersonnelNumber': new FormControl('', Validators.required),
             'DOJ': new FormControl('', Validators.required),
@@ -64,7 +64,6 @@ export class CreateComponent implements OnInit {
     }
 
     onSubmit() {
-         
         this.WorkerFrm.controls['DOJ'].setValue(moment(this.WorkerFrm.value['DOJ']).format("yyyy-MM-DD"));
         this.WorkerFrm.controls['DOB'].setValue(moment(this.WorkerFrm.value['DOB']).format("yyyy-MM-DD"));
 
