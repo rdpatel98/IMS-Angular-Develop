@@ -16,7 +16,7 @@ import {LayoutModule} from "../../layout/layout.module";
     imports: [
         CommonModule,
         UomConvertionRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule
     ]
 })

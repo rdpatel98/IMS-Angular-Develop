@@ -16,7 +16,7 @@ import {LayoutModule} from "../../layout/layout.module";
     imports: [
         CommonModule,
         PermissionEntityRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule
     ]
 })

@@ -14,7 +14,7 @@ import { LayoutModule } from 'src/app/layout/layout.module';
   imports: [
     CommonModule,
     ConsumptionReportRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     LayoutModule
   ]
 })

@@ -78,8 +78,6 @@ export enum Permission {
     PurchaseOrder_Update = "PurchaseOrder.Update",
     PurchaseOrder_Create = "PurchaseOrder.Create",
     Inventory_Adjustment_List = "Inventory_Adjustment.List",
-    Inventory_Adjustment_Delete = "Inventory_Adjustment.Delete",
-    Inventory_Adjustment_Update = "Inventory_Adjustment.Update",
     Inventory_Adjustment_Create = "Inventory_Adjustment.Create",
     Consumption_Report_List = "Consumption_Report.List",
     Consumption_Report_Delete = "Consumption_Report.Delete",

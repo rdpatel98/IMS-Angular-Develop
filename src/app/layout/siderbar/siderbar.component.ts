@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Permission } from "src/app/shared/common.constant";
+
 
 @Component({
   selector: 'app-siderbar',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiderbarComponent implements OnInit {
 
-  permission: any = Permissions;
+  permission: any = Permission;
   constructor() { }
 
   ngOnInit(): void {

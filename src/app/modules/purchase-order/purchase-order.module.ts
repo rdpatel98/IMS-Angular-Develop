@@ -16,7 +16,7 @@ import {LayoutModule} from "../../layout/layout.module";
     imports: [
         CommonModule,
         PurchaseOrderRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule
     ]
 })

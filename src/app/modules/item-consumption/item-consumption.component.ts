@@ -10,6 +10,7 @@ import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { OrganizationService } from '../organization/organization.service';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-item-consumption',
@@ -24,7 +25,7 @@ export class ItemConsumptionComponent implements OnInit {
 
     survey!: FormGroup;
     myForm!: FormGroup;
-
+    permission : any = Permission;
 
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
 

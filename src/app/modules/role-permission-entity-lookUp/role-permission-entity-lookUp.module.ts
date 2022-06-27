@@ -14,7 +14,7 @@ import { TreeviewModule } from 'ngx-treeview';
     imports: [
         CommonModule,
         RolePermissionEntityLookUpRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule,
         TreeviewModule.forRoot()
     ]

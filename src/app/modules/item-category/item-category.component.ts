@@ -8,6 +8,7 @@ import { LoginService } from "../user/login/login.service";
 import { ICategory } from "../category/category.component";
 import { ItemCategoryService } from "./item-category.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-item-category',
@@ -20,7 +21,7 @@ export class ItemCategoryComponent {
     dataSource: any;
     dataItemSource: any;
     ItemCategoryName!: string;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

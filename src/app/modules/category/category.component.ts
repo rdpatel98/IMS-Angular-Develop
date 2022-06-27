@@ -9,6 +9,7 @@ import { WorkerService } from "../worker/worker.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { CategoryService } from "./category.service";
 import { LoginService } from "../user/login/login.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-category',
@@ -18,7 +19,7 @@ import { LoginService } from "../user/login/login.service";
 export class CategoryComponent {
     displayedColumns: string[] = ['Id', 'Name', 'Description', 'action'];
     dataSource !: any;
-
+    permission: any = Permission;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;

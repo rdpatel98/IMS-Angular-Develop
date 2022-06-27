@@ -14,7 +14,7 @@ import { InventoryAdjustmentViewRoutingModule } from './inventory-adjustment-vie
     imports: [
         CommonModule,
         InventoryAdjustmentViewRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule
     ]
 })

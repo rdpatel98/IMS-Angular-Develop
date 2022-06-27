@@ -20,7 +20,7 @@ import {LayoutModule} from "../../../layout/layout.module";
     imports: [
         CommonModule,
         ViewRoutingModule,
-        SharedModule,
+        SharedModule.forRoot(),
         LayoutModule
     ]
 })

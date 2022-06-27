@@ -12,7 +12,7 @@ import { InventoryAdjustmentListComponent } from './inventory-adjustment-list.co
   imports: [
     CommonModule,
     InventoryAdjustmentListRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     LayoutModule
   ]
 })

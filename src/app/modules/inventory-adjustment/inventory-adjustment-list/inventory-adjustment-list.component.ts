@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Permission } from 'src/app/shared/common.constant';
 import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { WorkerService } from '../../worker/worker.service';
@@ -17,7 +18,7 @@ export class InventoryAdjustmentListComponent implements OnInit {
 
   displayedColumns: string[] = ['Id', 'InventoryAdjustmentNo', 'WarehouseId', 'WorkerId', 'AdjustmentDate', 'action'];
   dataSource !: any;
-
+  permission: any = Permission;
   warehouses: any[] = [];
   workers: any[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -4,6 +4,7 @@ import {HeaderComponent} from "./header/header.component";
 import {SiderbarComponent} from "./siderbar/siderbar.component";
 import {FooterComponent} from "./footer/footer.component";
 import {RouterModule} from "@angular/router";
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {RouterModule} from "@angular/router";
   imports: [
     CommonModule,
     RouterModule,
+    SharedModule.forRoot()
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

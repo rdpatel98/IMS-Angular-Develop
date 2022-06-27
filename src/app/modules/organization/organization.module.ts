@@ -23,7 +23,7 @@ import {LayoutModule} from "../../layout/layout.module";
   imports: [
     CommonModule,
     OrganizationRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     LayoutModule,
     // LayoutModule,
   ]
