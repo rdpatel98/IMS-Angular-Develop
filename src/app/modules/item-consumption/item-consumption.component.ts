@@ -8,6 +8,8 @@ import { BehaviorSubject } from "rxjs";
 import { WarehouseService } from "../warehouse/warehouse.service";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { OrganizationService } from '../organization/organization.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
     selector: 'app-item-consumption',
@@ -37,28 +39,42 @@ export class ItemConsumptionComponent implements OnInit {
     warehouseAll: any;
     workerAll: any;
     defaultWarehouseId: any;
-    orgId: any;
+    isMultipleOrg: boolean = false;
+    orgs: any;
 
     _rowsOfConsumption: FormArray = this.fb.array([]);
 
 
-    constructor(private router: Router, private _snackBar: MatSnackBar, private fb: FormBuilder, private serviceItemCategory: ItemCategoryService, private service: ItemConsumptionService, private whService: WarehouseService, private serviceLogin: LoginService) {
+    constructor(private router: Router,
+        private _snackBar: MatSnackBar,
+        private fb: FormBuilder,
+        private serviceItemCategory: ItemCategoryService,
+        private service: ItemConsumptionService,
+        private whService: WarehouseService,
+        private serviceLogin: LoginService,
+        private orgService: OrganizationService,
+        private authService: AuthenticationService) {
         this.init();
-        this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
+        // this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
         this.defaultWarehouseId = this.serviceLogin.currentUser()?.DefaultWarehouseId;
 
-        this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        this.whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];
         });
 
-        service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        service.getWorker().subscribe(data => {
             this.workerAll = data['Result'];
         });
     }
     init() {
-
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
         this._rowsOfConsumption.clear();
-        this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.OrganizationId].toString(), [this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
+        this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
             this.listItemCategory = data['Result']['ConsumptionCategory'];
 
             this.listItemCategory.forEach((d: any) => {
@@ -73,7 +89,7 @@ export class ItemConsumptionComponent implements OnInit {
                 ConsumptionNo: ['', Validators.required],
                 WarehouseId: ['', Validators.required],
                 WorkerId: [this.serviceLogin.currentUser()?.UserId, Validators.required],
-                OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
+                OrganizationId: new FormControl('', Validators.required)
 
             }),
             ConsumptionCategory: this._rowsOfConsumption
@@ -88,7 +104,7 @@ export class ItemConsumptionComponent implements OnInit {
         // });
 
 
-        this.service.getPrefixAutoValue([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
+        this.service.getPrefixAutoValue().subscribe((data: any) => {
             this.frm.get('Consumption.ConsumptionNo')?.setValue(data['Result']);
         })
 
@@ -96,10 +112,21 @@ export class ItemConsumptionComponent implements OnInit {
 
 
     }
+
+    getOrg() {
+
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
+
     warehouseChange(whId: any) {
         this.rows.clear();
         this._rowsOfConsumption.clear();
-        this.service.getItemsWithCategoryByWarehouseId(this.orgId, whId.toString()).subscribe((data: any) => {
+        this.service.getItemsWithCategoryByWarehouseId(whId.toString()).subscribe((data: any) => {
             this.listItemCategory = data['Result']['ConsumptionCategory'];
 
             this.listItemCategory.forEach((d: any) => {

@@ -18,8 +18,8 @@ export class ItemCategoryService {
         return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/UpdateItemCategory", data);
     }
 
-    getListItemCategory(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItemCategory?organizationId=" + id);
+    getListItemCategory() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItemCategory");
     }
 
     getItemsByItemCategoryId(id:string){

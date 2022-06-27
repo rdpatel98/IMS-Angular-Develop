@@ -36,7 +36,7 @@ export class OnHandReportComponent implements OnInit {
   orgId: any;
   count: any;
 
-  itemTypes : any;
+  itemTypes: any;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,
@@ -45,21 +45,21 @@ export class OnHandReportComponent implements OnInit {
     private service: ReportService,
     private whService: WarehouseService,
     private serviceLogin: LoginService,
-    private itemTypeService : ItemTypeService) {
+    private itemTypeService: ItemTypeService) {
 
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
 
-    this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    this.whService.getWarehouse().subscribe(data => {
       this.warehouseAll = data['Result'];
     });
     this.itemTypeService.getItemTypes().subscribe(data => {
       this.itemTypes = data['Result'];
     });
-    service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    service.getWorker().subscribe(data => {
       this.workerAll = data['Result'];
     });
-    service.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    service.getItem().subscribe(data => {
       this.itemAll = data['Result'];
     });
   }
@@ -67,10 +67,10 @@ export class OnHandReportComponent implements OnInit {
     this.frm = this.fb.group({
       // FromDate: ['', Validators.required],
       // ToDate: ['', Validators.required],
-      ItemMasterId : [''],
+      ItemMasterId: [''],
       WarehouseId: ['', Validators.required],
       ItemType: [''],
-      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
+      OrganizationId: ['', Validators.required]
     })
   }
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class OnHandReportComponent implements OnInit {
     let targetTableElm = document.getElementById("table");
     let wb = xlsx.utils.table_to_book(targetTableElm);
     xlsx.writeFile(wb, "on-hand-report.xlsx");
-   }
+  }
   onSubmit() {
 
     if (this.frm.invalid)
@@ -106,7 +106,7 @@ export class OnHandReportComponent implements OnInit {
         this.count = data.Result.length;
         this.dataSource = new MatTableDataSource<IOnHand>(data['Result']);
         this.dataSource.paginator = this.paginator;
-        
+
       })
   }
 

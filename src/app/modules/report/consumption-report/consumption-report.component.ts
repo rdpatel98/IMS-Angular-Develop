@@ -40,10 +40,10 @@ export class ConsumptionReportComponent implements OnInit {
     this.init();
     this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
 
-    this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    this.whService.getWarehouse().subscribe(data => {
       this.warehouseAll = data['Result'];
     });
-    service.getWorker([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    service.getWorker().subscribe(data => {
       this.workerAll = data['Result'];
     });
     this.itemTypeService.getItemTypes().subscribe(data => {
@@ -57,7 +57,7 @@ export class ConsumptionReportComponent implements OnInit {
       WarehouseId: ['', Validators.required],
       ItemType: [''],
       WorkerId: [],
-      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
+      OrganizationId:['', Validators.required]
     })
   }
   ngOnInit(): void {

@@ -18,7 +18,6 @@ import {DetailsComponent} from "./details/details.component";
 export class ItemsComponent implements AfterViewInit {
     displayedColumns: string[] = ['ItemNo', 'Name', 'Description', 'action'];
     dataSource: any;
-    orgId: string;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
@@ -28,7 +27,6 @@ export class ItemsComponent implements AfterViewInit {
     }
 
     constructor(public dialog: MatDialog, private service: ItemsService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         this.getInit();
     }
 
@@ -36,7 +34,7 @@ export class ItemsComponent implements AfterViewInit {
     }
 
     getInit() {
-        this.service.getItem(this.orgId.toString()).subscribe(
+        this.service.getItem().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<IItem>(data['Result']);
                 this.dataSource.paginator = this.paginator;
@@ -80,7 +78,7 @@ export class ItemsComponent implements AfterViewInit {
     viewDetails(item:any) {
         const dialogRef = this.dialog.open(DetailsComponent, {
             disableClose: true,
-            data: {"item":item, "CatId":this.orgId},
+            data: {"item":item},
             width: '800px',
         })
     }

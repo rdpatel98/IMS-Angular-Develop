@@ -10,8 +10,8 @@ export class PurchaseOrderListService {
   constructor(private http: HttpClient) {}
 
 
-  getPurchaseList(id: string) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListPurchaseOrder?organizationId=" + id);
+  getPurchaseList() {
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListPurchaseOrder");
   }
 
 }

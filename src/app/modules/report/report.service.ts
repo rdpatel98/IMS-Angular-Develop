@@ -14,22 +14,22 @@ export class ReportService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithOnHandQtyByItemCategoryId?itemCategoryId=" + id + "&warehouseId=" + whId);
     }
 
-    getPrefixAutoValue(orgId: string) {
+    getPrefixAutoValue() {
 
-        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId=" + orgId + "&type=ic");
+        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=ic");
     }
 
-    getWorker(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + id);
+    getWorker() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker");
     }
-    getItem(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems?organizationId=" + id);
+    getItem() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems");
     }
-    getVendors(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor?organizationId=" + id);
+    getVendors() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor");
     }
-    getItemsWithCategoryByWarehouseId(org_id: string, wid: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithCategoryByWarehouseId?warehouseId=" + wid + "&organizationId=" + org_id);
+    getItemsWithCategoryByWarehouseId(wid: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithCategoryByWarehouseId?warehouseId=" + wid);
     }
 
     createItemConsumption(data: any) {
@@ -45,8 +45,8 @@ export class ReportService {
     GetPurchaseEnquiryReport(data: any) {
         return this.http.post<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPurchaseEnquiryReport", data);
     }
-    getPurchaseList(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListPurchaseOrder?organizationId=" + id);
+    getPurchaseList() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListPurchaseOrder");
     }
 }
 

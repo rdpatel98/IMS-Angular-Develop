@@ -37,17 +37,17 @@ export class ReceiveInvoiceComponent implements OnInit {
     btnSaveOption!: string;
 
     constructor(private _snackBar: MatSnackBar, private router: Router, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
-        itemService.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data) => {
+        itemService.getItem().subscribe((data) => {
             this.itemOptions = data['Result'];
             // this.data.forEach((d: TableData) => this.addRow(d, false));
             // this.updateView();
         });
 
-        whService.getWarehouse([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];
         });
 
-        uomService.getUomConversion([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        uomService.getUomConversion().subscribe(data => {
             this.UomConvertionAll = data['Result'];
         })
 

@@ -25,20 +25,18 @@ export class PurchaseOrderListComponent {
     data : any;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
-    orgId: string;
     constructor(public dialog: MatDialog, private service: PurchaseOrderListService, private _snackBar: MatSnackBar, private vendorService: VendorService, private serviceLogin: LoginService) {
          
 this.data=this.permission.Organization_List;
 //console.log(this.data);
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
-        this.vendorService.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        this.vendorService.getVendors().subscribe(data => {
             this.vendorAll = data['Result'];
         })
         this.getInit();
     }
 
     getInit() {
-        this.service.getPurchaseList(this.orgId.toString()).subscribe(
+        this.service.getPurchaseList().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<IPurchaseOrder>(data['Result']);
                 this.dataSource.paginator = this.paginator;

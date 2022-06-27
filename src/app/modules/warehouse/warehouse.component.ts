@@ -16,7 +16,6 @@ import { LoginService } from '../user/login/login.service';
 export class WarehouseComponent implements AfterViewInit {
     displayedColumns: string[] = ['Id', 'Name', 'action'];
     dataSource: any;
-    orgId: string;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 
@@ -25,12 +24,11 @@ export class WarehouseComponent implements AfterViewInit {
     }
 
     constructor(public dialog: MatDialog, private service: WarehouseService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         this.getInit();
     }
 
     getInit() {
-        this.service.getWarehouse(this.orgId.toString()).subscribe(
+        this.service.getWarehouse().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<IWarehouse>(data['Result']);
                 this.dataSource.paginator = this.paginator;

@@ -13,8 +13,8 @@ export class ItemsService {
         return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/AddItems", data);
     }
 
-    getItem(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems?organizationId=" + id);
+    getItem() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListItems");
     }
 
     getItemById(id: string) {
@@ -30,20 +30,20 @@ export class ItemsService {
         return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/DeleteItem?itemId=" + id, {});
     }
 
-    getVendorPriceListByItemId(itemId: string, catId: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetVendorPriceListByItemId?itemId=" + itemId + "&organizationId=" + catId);
+    getVendorPriceListByItemId(itemId: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetVendorPriceListByItemId?itemId=" + itemId);
     }
 
-    getAllTransactionsByItemId(itemId: string, catId: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetAllTransactionsByItemId?itemId=" + itemId + "&organizationId=" + catId);
+    getAllTransactionsByItemId(itemId: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetAllTransactionsByItemId?itemId=" + itemId);
     }
 
-    getCategoryByItemId(itemId: string, catId: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetCategoryByItemId?itemId=" + itemId + "&organizationId=" + catId);
+    getCategoryByItemId(itemId: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetCategoryByItemId?itemId=" + itemId);
     }
 
-    getOnHandQtyByItemId(itemId: string, catId: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetOnHandQtyByItemId?itemId=" + itemId + "&organizationId=" + catId);
+    getOnHandQtyByItemId(itemId: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetOnHandQtyByItemId?itemId=" + itemId);
     }
 
 }

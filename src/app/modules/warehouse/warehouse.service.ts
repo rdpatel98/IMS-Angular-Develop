@@ -17,8 +17,8 @@ export class WarehouseService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetWarehouseByID?warehouseid=" + id);
     }
 
-    getWarehouse(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWarehouse?organizationId=" + id);
+    getWarehouse() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWarehouse");
     }
 
 

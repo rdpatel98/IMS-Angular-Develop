@@ -69,21 +69,21 @@ export class PurchaseOrderViewComponent implements OnInit {
 
         this._id = this.route.snapshot.paramMap.get('id');
 
-        itemService.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data) => {
+        itemService.getItem().subscribe((data) => {
             this.itemOptions = data['Result'];
             // this.data.forEach((d: TableData) => this.addRow(d, false));
             // this.updateView();
         });
 
-        whService.getWarehouse([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];
         });
 
-        vendorService.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        vendorService.getVendors().subscribe(data => {
             this.vendorAll = data['Result'];
         });
 
-        uomService.getUomConversion([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+        uomService.getUomConversion().subscribe(data => {
             this.UomConvertionAll = data['Result'];
         })
 

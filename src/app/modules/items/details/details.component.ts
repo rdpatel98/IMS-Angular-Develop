@@ -41,19 +41,19 @@ export class DetailsComponent implements AfterViewInit {
 
         let itemId = info['item']['ItemId']
         this.itemName = info['item']['Name'];
-        service.getVendorPriceListByItemId(itemId, info['CatId']).subscribe((data: any) => {
+        service.getVendorPriceListByItemId(itemId).subscribe((data: any) => {
             this.dataSourceVendor = new MatTableDataSource<IVendor>(data['Result']);
             this.dataSourceVendor.paginator = this.paginator;
         });
-        service.getAllTransactionsByItemId(itemId, info['CatId']).subscribe((data: any) => {
+        service.getAllTransactionsByItemId(itemId).subscribe((data: any) => {
             this.dataSourceTransaction = new MatTableDataSource<ITransactions>(data['Result']);
             this.dataSourceTransaction.paginator = this.paginatorTransaction;
         });
-        service.getCategoryByItemId(itemId, info['CatId']).subscribe((data: any) => {
+        service.getCategoryByItemId(itemId).subscribe((data: any) => {
             this.dataSourceCategory = new MatTableDataSource<ICategory>(data['Result']);
             this.dataSourceCategory.paginator = this.paginatorCategory;
         });
-        service.getOnHandQtyByItemId(itemId, info['CatId']).subscribe((data: any) => {
+        service.getOnHandQtyByItemId(itemId).subscribe((data: any) => {
             
             this.dataSourceOnHandQty = new MatTableDataSource<IOnHand>(data['Result']);
             this.dataSourceOnHandQty.paginator = this.paginatorTOnHandQty;

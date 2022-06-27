@@ -7,6 +7,7 @@ import { OrganizationService } from "../../organization/organization.service";
 import { WarehouseService } from "../warehouse.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { LoginService } from "../../user/login/login.service";
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -30,6 +31,9 @@ export class CreateComponent implements OnInit {
     organizations!: any;
     isCreate: boolean = false;
     saveloading: boolean=false;
+    isMultipleOrg: boolean = false;
+    orgs: any;
+
     warehouseId: warehouseId[] = [
         { value: '0001', viewValue: 'Organization 1' },
         { value: '0002', viewValue: 'Organization 2' },
@@ -37,7 +41,14 @@ export class CreateComponent implements OnInit {
     ];
     frm: FormGroup = new FormGroup({});
 
-    constructor(private formBulider: FormBuilder, private orgService: OrganizationService, private service: WarehouseService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    constructor(private formBulider: FormBuilder, 
+                private orgService: OrganizationService, 
+                private service: WarehouseService, 
+                private dialogRef: MatDialogRef<CreateComponent>, 
+                private _snackBar: MatSnackBar, 
+                @Inject(MAT_DIALOG_DATA) public info: any, 
+                private serviceLogin: LoginService,
+                private authService: AuthenticationService) {
 
         orgService.getOrganization().subscribe(
             data => {
@@ -53,7 +64,7 @@ export class CreateComponent implements OnInit {
             'WarehouseId': [''],
             'Id': new FormControl('', Validators.required),
             'Name': new FormControl('', Validators.required),
-            'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
+            'OrganizationId': new FormControl('', Validators.required),
         })
 
     }
@@ -62,9 +73,24 @@ export class CreateComponent implements OnInit {
         if (!this.isCreate) {
             this.frm.patchValue(this.info.ed);
         }
-
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
 
+    getOrg() {
+
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
+    
     onSubmit() {
         if (!this.frm.valid) {
             return;

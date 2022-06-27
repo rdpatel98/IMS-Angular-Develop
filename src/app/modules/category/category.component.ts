@@ -22,10 +22,8 @@ export class CategoryComponent {
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
-    orgId: string;
 
     constructor(public dialog: MatDialog, private service: CategoryService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         this.getInit();
     }
 
@@ -33,7 +31,7 @@ export class CategoryComponent {
     }
 
     getInit() {
-        this.service.getCategory(this.orgId.toString()).subscribe(
+        this.service.getCategory().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<ICategory>(data['Result']);
                 this.dataSource.paginator = this.paginator;

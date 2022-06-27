@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { CommonConstants, DefaultWarehouseId, OrgId } from "../../../shared/common.constant";
 import { Route, Router } from "@angular/router";
+import { UserModel } from 'src/app/_Models/user/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -28,10 +29,12 @@ export class LoginService {
         return this.http.get<any>(CommonConstants.LOGIN_URL + "api/Account/UserInfo");
     }
     public currentUser(): any {
-        if (!this.user) {
-            this.user = JSON.parse(localStorage.getItem('user') || '{}');
-        }
-        return this.user;
+        if (localStorage.getItem('currentUser')) {
+            var userJson = localStorage.getItem('currentUser');
+            var user =userJson !== null ? JSON.parse(userJson) : new UserModel();
+            return <UserModel>user;
+          }
+          return new UserModel();
     }
 
 

@@ -21,10 +21,8 @@ export class InventoryAdjustmentListComponent implements OnInit {
   warehouses: any[] = [];
   workers: any[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  orgId: string;
-  constructor(public dialog: MatDialog, private workerService: WorkerService, private warehouseService: WarehouseService, private service: InventoryAdjustmentListService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
 
-    this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
+  constructor(public dialog: MatDialog, private workerService: WorkerService, private warehouseService: WarehouseService, private service: InventoryAdjustmentListService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
 
   }
 
@@ -35,7 +33,7 @@ export class InventoryAdjustmentListComponent implements OnInit {
   }
 
   getInit() {
-    this.service.getInventoryAdjustmentList(this.orgId.toString()).subscribe(
+    this.service.getInventoryAdjustmentList().subscribe(
       data => {
         this.dataSource = new MatTableDataSource<IInventoryAdjustment>(data['Result']);
         this.dataSource.paginator = this.paginator;
@@ -48,7 +46,7 @@ export class InventoryAdjustmentListComponent implements OnInit {
   }
 
   getWarehouses() {
-    return this.warehouseService.getWarehouse(this.orgId.toString()).subscribe(data => {
+    return this.warehouseService.getWarehouse().subscribe(data => {
       this.warehouses = data['Result'];
     });
   }

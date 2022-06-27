@@ -18,8 +18,8 @@ export class VendorService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetVendorByID?vendorid=" + id);
     }
 
-    getVendors(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor?organizationId=" + id);
+    getVendors() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListVendor");
     }
 
 

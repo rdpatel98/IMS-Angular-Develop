@@ -30,7 +30,7 @@ export class UomConvertionComponent  {
     }
 
     getInit() {
-        this.service.getUomConversion(this.orgId.toString()).subscribe(
+        this.service.getUomConversion().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<UomConvertion>(data['Result']);
                 this.dataSource.paginator = this.paginator;

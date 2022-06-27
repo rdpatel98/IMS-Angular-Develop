@@ -37,7 +37,7 @@ export class CreateComponent implements OnInit {
     constructor(private formBulider: FormBuilder, private service: OrganizationService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private servicesWH: WarehouseService, private serviceLogin: LoginService) {
 
 
-        servicesWH.getWarehouse([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
+        servicesWH.getWarehouse().subscribe((data: any) => {
             this.TransactionalWarehouseId = data['Result'];
         });
 
@@ -46,7 +46,7 @@ export class CreateComponent implements OnInit {
             this.isCreate = true;
         }
         this.frm = this.formBulider.group({
-            OrganizationId: [''],
+            OrganizationId: new FormControl('', Validators.required),
             Id: new FormControl('', Validators.required),
             Name: new FormControl('', Validators.required),
             Description: new FormControl('', Validators.required),

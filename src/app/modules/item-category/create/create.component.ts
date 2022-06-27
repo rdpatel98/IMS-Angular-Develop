@@ -10,6 +10,8 @@ import { LoginService } from "../../user/login/login.service";
 import { ItemsService } from "../../items/items.service";
 import { TableData } from "../../purchase-order/purchase-order.component";
 import { ItemCategoryService } from "../item-category.service";
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OrganizationService } from '../../organization/organization.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -34,9 +36,11 @@ export class CreateComponent implements OnInit {
     confirmed!: Array<any>;
     userAdd = '';
     disabled = false;
-    orgId: string;
+    //orgId: string;
     sourceLeft = true;
     format: any = DualListComponent.DEFAULT_FORMAT;
+    isMultipleOrg: boolean = false;
+    orgs: any;
 
     private sourceStations!: Array<any>;
     private confirmedStations!: Array<any>;
@@ -50,17 +54,18 @@ export class CreateComponent implements OnInit {
     isCreate: boolean = false;
     isSaving = false;
 
-    constructor(private dialogRef: MatDialogRef<CreateComponent>, @Inject(MAT_DIALOG_DATA) public info: any, private _snackBar: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private serviceCategory: CategoryService, private serviceItem: ItemsService, private service: ItemCategoryService, private serviceLogin: LoginService) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
+    constructor(private dialogRef: MatDialogRef<CreateComponent>,private orgService: OrganizationService,
+        private authService: AuthenticationService, @Inject(MAT_DIALOG_DATA) public info: any, private _snackBar: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private serviceCategory: CategoryService, private serviceItem: ItemsService, private service: ItemCategoryService, private serviceLogin: LoginService) {
+        //this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         if (info.ed == null) {
             this.isCreate = true;
         }
 
-        serviceCategory.getCategory([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(d => {
+        serviceCategory.getCategory().subscribe(d => {
             this.categoryAll = d['Result'];
         });
 
-        serviceItem.getItem([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(d => {
+        serviceItem.getItem().subscribe(d => {
             this.itemAll = d['Result'];
 
             d['Result'].forEach((d: any) => {
@@ -100,14 +105,28 @@ export class CreateComponent implements OnInit {
             ItemCategory: this.fb.group({
                 ItemCategoryId: [],
                 CategoryId: ['', Validators.required],
-                OrganizationId: [this.orgId],
+                OrganizationId: ['', Validators.required],
             }),
             ItemCategoryCollections: this.rows
         });
 
         this.doReset();
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
+    getOrg() {
 
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
 
     addRow(d?: Data) {
         const row = this.fb.group({

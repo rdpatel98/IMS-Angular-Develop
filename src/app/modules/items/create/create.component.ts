@@ -9,6 +9,8 @@ import { ItemsService } from "../items.service";
 import { LoginService } from "../../user/login/login.service";
 import { VendorService } from "../../vendor/vendor.service";
 import { ItemTypeService } from '../../item-type/item-type.service';
+import { OrganizationService } from '../../organization/organization.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -40,20 +42,31 @@ export class CreateComponent implements OnInit {
     addItemForm: FormGroup = new FormGroup({});
     isSaving = false;
     itemTypes: any;
+    isMultipleOrg: boolean = false;
+    orgs: any;
 
-    constructor(private formBulider: FormBuilder, private service: ItemsService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private uomService: UomConvertionService, private serviceVendor: VendorService, private serviceLogin: LoginService,
-     private itemTypeService: ItemTypeService) {
+    constructor(private formBulider: FormBuilder,
+                private service: ItemsService, 
+                private dialogRef: MatDialogRef<CreateComponent>, 
+                private _snackBar: MatSnackBar,
+                @Inject(MAT_DIALOG_DATA) public info: any, 
+                private uomService: UomConvertionService, 
+                private serviceVendor: VendorService, 
+                private serviceLogin: LoginService,
+                private itemTypeService: ItemTypeService,
+                private orgService: OrganizationService,
+                private authService: AuthenticationService) {
 
         if (info.ed == null) {
             this.isCreate = true;
         }
 
-        uomService.getUomConversion([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(
+        uomService.getUomConversion().subscribe(
             data => {
                 this.units = data['Result'];
             });
 
-        serviceVendor.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe((data: any) => {
+        serviceVendor.getVendors().subscribe((data: any) => {
             this.sourceOfOrigins = data['Result'];
         })
         this.itemTypeService.getItemTypes().subscribe(data => {
@@ -61,7 +74,7 @@ export class CreateComponent implements OnInit {
         });
         this.addItemForm = this.formBulider.group({
             'ItemId': [0],
-            'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
+            'OrganizationId': new FormControl('', Validators.required),
             'Id': new FormControl(''),
             'ItemNo': new FormControl('', Validators.required),
             'Name': new FormControl('', Validators.required),
@@ -80,8 +93,22 @@ export class CreateComponent implements OnInit {
         if (!this.isCreate) {
             this.addItemForm.patchValue(this.info.ed);
         }
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.addItemForm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
+    getOrg() {
 
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
     onSubmit() {
 
         if (this.addItemForm.invalid) {

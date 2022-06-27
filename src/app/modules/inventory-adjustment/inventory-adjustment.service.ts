@@ -13,12 +13,12 @@ export class InventoryAdjustmentService {
     return this.http.post(CommonConstants.WEBAPI_URL + "StoreAdmin/SaveInventoryAdjustment", data);
   }
 
-  getWorker(id: string) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + id);
+  getWorker() {
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker");
   }
 
-  getPrefixAutoValue(id: string) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId=" + id +"&type=ia");
+  getPrefixAutoValue() {
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=ia");
   }
 
   

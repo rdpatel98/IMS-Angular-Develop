@@ -40,12 +40,11 @@ export class PurchaseEnquiryReportComponent implements OnInit {
     private serviceLogin: LoginService) {
 
     this.init();
-    this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
 
-    this.whService.getWarehouse([this.serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    this.whService.getWarehouse().subscribe(data => {
       this.warehouseAll = data['Result'];
     });
-    service.getVendors([serviceLogin.currentUser()?.OrganizationId].toString()).subscribe(data => {
+    service.getVendors().subscribe(data => {
       this.vendorAll = data['Result'];
     });
   }
@@ -56,7 +55,7 @@ export class PurchaseEnquiryReportComponent implements OnInit {
       WarehouseId: ['', Validators.required],
       Status: [''],
       VendorName: [''],
-      OrganizationId: [this.serviceLogin.currentUser()?.OrganizationId, Validators.required]
+      OrganizationId: ['', Validators.required]
     })
   }
   ngOnInit(): void {

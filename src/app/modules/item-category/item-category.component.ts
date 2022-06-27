@@ -20,14 +20,12 @@ export class ItemCategoryComponent {
     dataSource: any;
     dataItemSource: any;
     ItemCategoryName!: string;
-    orgId: string;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 
 
     constructor(public dialog: MatDialog, private service: ItemCategoryService, private serviceLogin: LoginService, private _snackBar: MatSnackBar) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
     }
 
     ngOnInit(): void {
@@ -35,7 +33,7 @@ export class ItemCategoryComponent {
     }
 
     get() {
-        this.service.getListItemCategory(this.orgId.toString()).subscribe(
+        this.service.getListItemCategory().subscribe(
             data => {
                 this.dataSource = new MatTableDataSource<ItemCategory>(data['Result']);
                 this.dataSource.paginator = this.paginator;

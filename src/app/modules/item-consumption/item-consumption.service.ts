@@ -14,17 +14,17 @@ export class ItemConsumptionService {
         return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithOnHandQtyByItemCategoryId?itemCategoryId=" + id + "&warehouseId=" + whId);
     }
 
-    getPrefixAutoValue(orgId: string) {
+    getPrefixAutoValue() {
 
-        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType?organizationId=" + orgId + "&type=ic");
+        return this.http.get(CommonConstants.WEBAPI_URL + "StoreAdmin/GetPrefixByType&type=ic");
     }
 
-    getWorker(id: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker?organizationId=" + id);
+    getWorker() {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListWorker");
     }
 
-    getItemsWithCategoryByWarehouseId(org_id: string, wid: string) {
-        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithCategoryByWarehouseId?warehouseId=" + wid + "&organizationId=" + org_id);
+    getItemsWithCategoryByWarehouseId(wid: string) {
+        return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/GetItemsWithCategoryByWarehouseId?warehouseId=" + wid);
     }
 
     createItemConsumption(data: any) {

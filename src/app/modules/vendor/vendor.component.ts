@@ -15,14 +15,12 @@ import {LoginService} from "../user/login/login.service";
 export class VendorComponent {
     displayedColumns: string[] = ['Id', 'Name', 'AccountNumber', 'action'];
     dataSource !: any;
-    orgId: string;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 
 
     constructor(public dialog: MatDialog, private service: VendorService, private _snackBar: MatSnackBar, private serviceLogin: LoginService) {
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
         this.getInit();
     }
 
@@ -31,7 +29,7 @@ export class VendorComponent {
     }
 
     getInit() {
-        this.service.getVendors(this.orgId.toString()).subscribe(
+        this.service.getVendors().subscribe(
             data => {
                 //console.log(data);
                 this.dataSource = new MatTableDataSource<IVendor>(data['Result']);

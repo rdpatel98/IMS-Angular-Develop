@@ -10,7 +10,7 @@ export class InventoryAdjustmentListService {
   constructor(private http: HttpClient) { }
 
 
-  getInventoryAdjustmentList(id: string) {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListInventoryAdjustment?organizationId=" + id);
+  getInventoryAdjustmentList() {
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListInventoryAdjustment");
   }
 }

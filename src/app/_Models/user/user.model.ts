@@ -5,4 +5,5 @@ export class UserModel {
   Roles: Array<string> | undefined;
   OrganizationIds: number[] = [];
   Permissions : Array<string> = [] ;
+  DefaultWarehouseId : any;
 }

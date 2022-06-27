@@ -7,6 +7,8 @@ import { LoginService } from "../../user/login/login.service";
 import { CategoryService } from "../../category/category.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { UomService } from "../uom.service";
+import { OrganizationService } from '../../organization/organization.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,13 +26,23 @@ export class CreateComponent implements OnInit {
     addUOMForm: FormGroup = new FormGroup({});
     isCreate: boolean = false;
     isSaving = false;
-    constructor(private formBulider: FormBuilder, private service: UomService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    isMultipleOrg: boolean = false;
+    orgs: any;
+
+    constructor(private formBulider: FormBuilder,
+                private service: UomService, 
+                private dialogRef: MatDialogRef<CreateComponent>, 
+                private _snackBar: MatSnackBar, 
+                @Inject(MAT_DIALOG_DATA) public info: any, 
+                private serviceLogin: LoginService,
+                private orgService: OrganizationService,
+                private authService: AuthenticationService) {
         if (info.ed == null) {
             this.isCreate = true;
         }
 
         this.addUOMForm = this.formBulider.group({
-            'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
+            'OrganizationId': new FormControl('', Validators.required),
             'Id': [''],
             'Name': new FormControl('', Validators.required),
         })
@@ -40,8 +52,25 @@ export class CreateComponent implements OnInit {
         if (!this.isCreate) {
             this.addUOMForm.patchValue(this.info.ed);
         }
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.addUOMForm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
 
+    
+    getOrg() {
+
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
+    
     onSubmit() {
         if (!this.addUOMForm.valid)
             return;

@@ -7,9 +7,7 @@ import { LoginService } from '../user/login/login.service';
   providedIn: 'root'
 })
 export class UomService {
-  orgId: string;
   constructor(private http: HttpClient, private serviceLogin: LoginService) {
-    this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
   }
 
   createUOM(data: any) {
@@ -17,7 +15,7 @@ export class UomService {
   }
 
   getUOM() {
-    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListUnits?organizationId=" + this.orgId.toString());
+    return this.http.get<any>(CommonConstants.WEBAPI_URL + "StoreAdmin/ListUnits");
   }
 
   update(data: any) {

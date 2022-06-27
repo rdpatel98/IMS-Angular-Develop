@@ -39,7 +39,6 @@ export class PurchaseOrderComponent implements OnInit {
     itemFiltered!: Observable<IItem[]>;
     vendorAccount = "";
     items: any;
-    orgId: string;
 
     warehouseAll: any;
     UomConvertionAll: any;
@@ -58,7 +57,6 @@ export class PurchaseOrderComponent implements OnInit {
     constructor(private router: Router, private _snackBar: MatSnackBar,
         private activatedRoute: ActivatedRoute, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
-        this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
 
     }
 
@@ -71,7 +69,7 @@ export class PurchaseOrderComponent implements OnInit {
                     'PurchaseOrderNo': data.Result.PurchaseOrder.PurchaseOrderNo,
                     'VendorId': data.Result.PurchaseOrder.VendorId,
                     'NetAmount': data.Result.PurchaseOrder.NetAmount,
-                    'OrganizationId': this.orgId.toString(),
+                    'OrganizationId': data.Result.PurchaseOrder.organizationId,
                     'OrderStatus': 1,
                     'Status': 1
                 },
@@ -88,24 +86,24 @@ export class PurchaseOrderComponent implements OnInit {
     }
     async onInit() {
         const id = this.activatedRoute.snapshot.paramMap.get('id');
-        this.warehouseAll = (await this.whService.getWarehouse(this.orgId.toString()).toPromise()).Result;
+        this.warehouseAll = (await this.whService.getWarehouse().toPromise()).Result;
         if (this.warehouseAll.length > 0) {
             this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
         }
 
-        this.itemOptions = (await this.itemService.getItem(this.orgId.toString()).toPromise()).Result;
+        this.itemOptions = (await this.itemService.getItem().toPromise()).Result;
 
         this.updateView();
 
 
 
-        this.vendorAll = (await this.vendorService.getVendors(this.orgId.toString()).toPromise()).Result;
+        this.vendorAll = (await this.vendorService.getVendors().toPromise()).Result;
 
-        this.UomConvertionAll = (await this.uomService.getUomConversion(this.orgId.toString()).toPromise()).Result;
+        this.UomConvertionAll = (await this.uomService.getUomConversion().toPromise()).Result;
         if (id)
             this.getPO(id);
         else {
-            this.poService.getPrefixAutoValue(this.orgId.toString()).subscribe((data: any) => {
+            this.poService.getPrefixAutoValue().subscribe((data: any) => {
                 this.form.get('PurchaseOrder.PurchaseOrderNo')?.setValue(data['Result']);
             })
             this.data.forEach((d: TableData) => this.addRow(d, false));
@@ -126,7 +124,7 @@ export class PurchaseOrderComponent implements OnInit {
                 'PurchaseOrderNo': new FormControl('', Validators.required),
                 'VendorId': new FormControl('', Validators.required),
                 'NetAmount': [''],
-                'OrganizationId': [this.orgId.toString()],
+                'OrganizationId': new FormControl('', Validators.required),
                 'OrderStatus': [1],
                 'Status': [1]
             }),
@@ -134,7 +132,7 @@ export class PurchaseOrderComponent implements OnInit {
             IsPurchaseReceiveSaved: [false]
         });
 
-        this.form?.get('PurchaseOrder.OrganizationId')?.setValue(this.orgId.toString());
+        // this.form?.get('PurchaseOrder.OrganizationId')?.setValue(this.orgId.toString());
 
 
         await this.onInit();

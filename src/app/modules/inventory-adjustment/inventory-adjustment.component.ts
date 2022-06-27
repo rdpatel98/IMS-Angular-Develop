@@ -41,7 +41,6 @@ export class InventoryAdjustmentComponent implements OnInit {
     itemFiltered!: Observable<IItem[]>;
     warehouseAll: any;
     workerAll: any;
-    orgId: any;
     data: TableData[] = [{ LineNo: '', ItemId: '', WarehouseId: '', WorkerId: '', Quantity: 0, Reason: '', Unit: '' }];
     dataSource = new BehaviorSubject<AbstractControl[]>([]);
     displayedColumns = ['no', 'item_no', 'qty', 'unit', 'Reason', 'action'];
@@ -61,7 +60,7 @@ export class InventoryAdjustmentComponent implements OnInit {
 
     constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private service: InventoryAdjustmentService, private serviceLogin: LoginService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
-        this.orgId = serviceLogin.currentUser()?.OrganizationId;
+        // this.orgId = serviceLogin.currentUser()?.OrganizationId;
         this.userlogdetails = serviceLogin.currentUser();
 
 
@@ -76,7 +75,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             InventoryAdjustmentItems: this.rows
         });
 
-        itemService.getItem(this.orgId.toString()).subscribe((data) => {
+        itemService.getItem().subscribe((data) => {
             this.itemOptions = data['Result'];
             this.data.forEach((d: TableData) => this.addRow(d, false));
             this.updateView();
@@ -84,7 +83,7 @@ export class InventoryAdjustmentComponent implements OnInit {
 
        
 
-        service.getWorker(this.orgId.toString()).subscribe(data => {
+        service.getWorker().subscribe(data => {
             this.workerAll = data['Result'];
         });
 
@@ -101,17 +100,17 @@ export class InventoryAdjustmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.whService.getWarehouse(this.orgId.toString()).subscribe(data => {
+        this.whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];
             if (this.warehouseAll.length > 0) {
                 this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
                 this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
             }
         });
-        this.service.getPrefixAutoValue(this.orgId.toString()).subscribe(data => {
+        this.service.getPrefixAutoValue().subscribe(data => {
             this.form.get('InventoryAdjustment.InventoryAdjustmentNo')?.setValue(data['Result']);
         });
-        this.form.get('InventoryAdjustment.OrganizationId')?.setValue(this.orgId);
+        // this.form.get('InventoryAdjustment.OrganizationId')?.setValue(this.orgId);
         // this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
     }
 

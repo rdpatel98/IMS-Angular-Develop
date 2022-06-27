@@ -8,9 +8,7 @@ import { LoginService } from '../user/login/login.service';
 })
 export class WorkerService {
 
-  orgId: string;
   constructor(private http: HttpClient, private serviceLogin: LoginService) {
-    this.orgId = [serviceLogin.currentUser()?.OrganizationId].toString();
   }
 
 
