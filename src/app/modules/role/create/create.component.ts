@@ -78,16 +78,21 @@ export class CreateComponent implements OnInit {
                     this.dialogRef.close();
                     this._snackBar.open("Role Created Successfully!");
 
-                }
-            )
+                },
+                error => {
+                    this._snackBar.open("Role Name Is Already Exist in System");
+                });
+
         } else {
             this.service.update(this.addRoleForm.value, this.info.ed.Id).subscribe(
                 data => {
                     this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Role Updated Successfully!");
-                }
-            )
+                },
+                error => {
+                    this._snackBar.open("Role Name Is Already Exist in System");
+                });
         }
 
     }

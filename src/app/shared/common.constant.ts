@@ -1,7 +1,7 @@
 export const CommonConstants = {
-    "WEBAPI_URL": "https://localhost:44341/api/",
+    "WEBAPI_URL": "http://3.134.18.74:5001/api/",
     "WEBAPI_URL1": "http://3.134.18.74:5001/api/StoreAdmin/AddOrganization",
-    "LOGIN_URL": "https://localhost:44341/"
+    "LOGIN_URL": "http://3.134.18.74:5001/"
     // "WEBAPI_URL": "http://ec2-18-188-233-145.us-east-2.compute.amazonaws.com:8080/api/" ,
     // "WEBAPI_URL1": "http://ec2-18-188-233-145.us-east-2.compute.amazonaws.com:8080/api/StoreAdmin/AddOrganization" ,
 }

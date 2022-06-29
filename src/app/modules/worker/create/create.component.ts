@@ -111,13 +111,14 @@ export class CreateComponent implements OnInit {
                 data => {
                     this.dialogRef.close();
                     this._snackBar.open("Worker Created Successfully!");
-                }
-            )
+                },error => {
+                    this._snackBar.open("Email is already Exist in System");
+                });
         } else {
             this.service.update(this.WorkerFrm.value).subscribe(
                 data => {
                     this.dialogRef.close();
-                    this._snackBar.open("Worker Updated Successfully!");
+                    this._snackBar.open("Email is already Exist in System!");
                 }
             )
         }
