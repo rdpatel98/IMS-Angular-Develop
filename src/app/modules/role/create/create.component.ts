@@ -7,6 +7,8 @@ import { LoginService } from "../../user/login/login.service";
 import { CategoryService } from "../../category/category.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { RoleService } from "../role.service";
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OrganizationService } from '../../organization/organization.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,24 +26,46 @@ export class CreateComponent implements OnInit {
     addRoleForm: FormGroup = new FormGroup({});
     isCreate: boolean = false;
     isSaving = false;
-    constructor(private formBulider: FormBuilder, private service: RoleService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
+    isMultipleOrg: boolean = false;
+    orgs: any;
+
+    constructor(private formBulider: FormBuilder, private service: RoleService, private dialogRef: MatDialogRef<CreateComponent>, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService, private orgService: OrganizationService,
+        private authService: AuthenticationService) {
         if (info.ed == null) {
             this.isCreate = true;
         }
 
         this.addRoleForm = this.formBulider.group({
-            'OrganizationId': [serviceLogin.currentUser()?.OrganizationId],
+            'OrganizationId': new FormControl('', Validators.required),
             'Id': [''],
             'Name': new FormControl('', Validators.required),
         })
     }
 
     ngOnInit(): void {
+       if(this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length == 0){
+        this.getOrg();
+       }
         if (!this.isCreate) {
             this.addRoleForm.patchValue(this.info.ed);
         }
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else {
+            this.addRoleForm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
     }
+    getOrg() {
 
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
+    
     onSubmit() {
         if (!this.addRoleForm.valid)
             return;
@@ -53,11 +77,11 @@ export class CreateComponent implements OnInit {
                     this.isSaving = false;
                     this.dialogRef.close();
                     this._snackBar.open("Role Created Successfully!");
-                    
+
                 }
             )
         } else {
-            this.service.update(this.addRoleForm.value,this.info.ed.Id).subscribe(
+            this.service.update(this.addRoleForm.value, this.info.ed.Id).subscribe(
                 data => {
                     this.isSaving = false;
                     this.dialogRef.close();

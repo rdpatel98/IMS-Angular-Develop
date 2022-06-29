@@ -9,6 +9,7 @@ import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
 import * as xlsx from 'xlsx';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
   selector: 'app-consumption-report',
@@ -21,7 +22,7 @@ export class ConsumptionReportComponent implements OnInit {
   control = new FormControl();
   warehouseAll: any;
   workerAll: any;
-  orgId: any;
+  permission: any = Permission;
   data: any;
   itemTypes: any;
   reports: any[] | undefined;
@@ -38,7 +39,6 @@ export class ConsumptionReportComponent implements OnInit {
     private itemTypeService: ItemTypeService) {
 
     this.init();
-    this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
 
     this.whService.getWarehouse().subscribe(data => {
       this.warehouseAll = data['Result'];

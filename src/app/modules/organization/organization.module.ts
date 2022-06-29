@@ -6,6 +6,7 @@ import { OrganizationComponent } from './organization.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddAddressComponent } from '../add-address/add-address.component';
 import {LayoutModule} from "../../layout/layout.module";
+//import { SiderbarComponent } from 'src/app/layout/siderbar/siderbar.component';
 // import {LayoutModule} from "../../layout/layout.module";
 // import { HeaderComponent } from 'src/app/layout/header/header.component';
 // import { SiderbarComponent } from 'src/app/layout/siderbar/siderbar.component';
@@ -14,18 +15,14 @@ import {LayoutModule} from "../../layout/layout.module";
 
 @NgModule({
   declarations: [
-    // HeaderComponent,
-    // SiderbarComponent,
-    // FooterComponent,
     OrganizationComponent,
     AddAddressComponent,
   ],
   imports: [
     CommonModule,
     OrganizationRoutingModule,
-    SharedModule.forRoot(),
+    SharedModule,
     LayoutModule,
-    // LayoutModule,
   ]
 })
 export class OrganizationModule { }

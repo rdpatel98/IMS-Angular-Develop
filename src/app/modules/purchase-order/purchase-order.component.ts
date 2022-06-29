@@ -15,6 +15,8 @@ import { VendorService } from "../vendor/vendor.service";
 import { PurchaseOrderService } from "./purchase-order.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LoginService } from '../user/login/login.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OrganizationService } from '../organization/organization.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -53,9 +55,12 @@ export class PurchaseOrderComponent implements OnInit {
 
     form!: FormGroup;
     isSaving = false;
-
+    isMultipleOrg: boolean = false;
+    orgs: any;
+    
     constructor(private router: Router, private _snackBar: MatSnackBar,
-        private activatedRoute: ActivatedRoute, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService) {
+        private activatedRoute: ActivatedRoute, private formBulider: FormBuilder, public dialog: MatDialog, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, private serviceLogin: LoginService,private orgService: OrganizationService,
+        private authService: AuthenticationService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
 
     }
@@ -85,6 +90,12 @@ export class PurchaseOrderComponent implements OnInit {
         });
     }
     async onInit() {
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.form.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
         const id = this.activatedRoute.snapshot.paramMap.get('id');
         this.warehouseAll = (await this.whService.getWarehouse().toPromise()).Result;
         if (this.warehouseAll.length > 0) {
@@ -110,7 +121,15 @@ export class PurchaseOrderComponent implements OnInit {
         }
 
     }
+    getOrg() {
 
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
     async ngOnInit() {
 
         // const whs = await this.whService.getWarehouse(this.orgId.toString()).toPromise();

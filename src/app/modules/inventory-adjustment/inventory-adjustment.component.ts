@@ -16,6 +16,8 @@ import { Router } from "@angular/router";
 import { ItemCategoryService } from '../item-category/item-category.service';
 import { ItemsService } from '../items/items.service';
 import { IItem } from "../items/items.component";
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OrganizationService } from '../organization/organization.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,6 +48,8 @@ export class InventoryAdjustmentComponent implements OnInit {
     displayedColumns = ['no', 'item_no', 'qty', 'unit', 'Reason', 'action'];
     defaultWarehouseId: any;
     rows: FormArray = this.formBulider.array([]);
+    isMultipleOrg: boolean = false;
+    orgs: any;
 
     // form: FormGroup = this.formBulider.group({
     //     'InventoryAdjustment': this.formBulider.group({
@@ -58,7 +62,8 @@ export class InventoryAdjustmentComponent implements OnInit {
     //     InventoryAdjustmentItems: this.rows
     // });
 
-    constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private service: InventoryAdjustmentService, private serviceLogin: LoginService) {
+    constructor(private router: Router, private _snackBar: MatSnackBar, private formBulider: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private service: InventoryAdjustmentService, private serviceLogin: LoginService,private orgService: OrganizationService,
+        private authService: AuthenticationService) {
         this.defaultWarehouseId = serviceLogin.currentUser()?.DefaultWarehouseId;
         // this.orgId = serviceLogin.currentUser()?.OrganizationId;
         this.userlogdetails = serviceLogin.currentUser();
@@ -69,7 +74,7 @@ export class InventoryAdjustmentComponent implements OnInit {
                 'InventoryAdjustmentNo': new FormControl('', Validators.required),
                 'WarehouseId': new FormControl('', Validators.required),
                 'WorkerId': new FormControl('', Validators.required),
-                'OrganizationId': '',
+                'OrganizationId': new FormControl('', Validators.required),
                 'Status': [1]
             }),
             InventoryAdjustmentItems: this.rows
@@ -100,6 +105,12 @@ export class InventoryAdjustmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+            this.getOrg();
+        }
+        else{
+            this.form.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+        }
         this.whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];
             if (this.warehouseAll.length > 0) {
@@ -113,7 +124,15 @@ export class InventoryAdjustmentComponent implements OnInit {
         // this.form.get('InventoryAdjustment.OrganizationId')?.setValue(this.orgId);
         // this.form.get('InventoryAdjustment.WarehouseId')?.setValue(this.defaultWarehouseId);
     }
+    getOrg() {
 
+        this.orgService.getOrganization().subscribe(
+            data => {
+                this.orgs = data['Result'];
+                this.isMultipleOrg = true;
+            }
+        );
+    }
     loadDD(index: string) {
         this.control = this.form.get('InventoryAdjustmentItems.' + index + '.ItemId') as FormControl;
         this.itemFiltered = this.control.valueChanges.pipe(

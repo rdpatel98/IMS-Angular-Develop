@@ -29,7 +29,6 @@ export class PurchaseEnquiryReportComponent implements OnInit {
   warehouseAll: any;
   workerAll: any;
   vendorAll : any;
-  orgId: any;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,

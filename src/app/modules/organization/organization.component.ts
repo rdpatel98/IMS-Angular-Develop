@@ -15,13 +15,18 @@ import { Permission } from 'src/app/shared/common.constant';
 export class OrganizationComponent {
     displayedColumns: string[] = ['Id', 'Name', 'Description', 'action'];
     dataSource !: any;
-
+    // firstTime: boolean = true;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
     permission: any = Permission;
     constructor(public dialog: MatDialog, private service: OrganizationService, private _snackBar: MatSnackBar) {
-        this
-            .getInit();
+        this.getInit();
+        // if(this.firstTime)
+        // {
+        //     this.firstTime=false;
+        //     location.reload();
+        // }
+        
 
     }
 

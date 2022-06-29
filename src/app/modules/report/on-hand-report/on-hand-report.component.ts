@@ -14,6 +14,7 @@ import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
 import * as xlsx from 'xlsx';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
   selector: 'app-on-hand-report',
@@ -27,13 +28,12 @@ export class OnHandReportComponent implements OnInit {
   expanded = true;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-
+  permission: any = Permission;
   frm!: FormGroup;
   control = new FormControl();
   warehouseAll: any;
   workerAll: any;
   itemAll: any;
-  orgId: any;
   count: any;
 
   itemTypes: any;
@@ -48,7 +48,6 @@ export class OnHandReportComponent implements OnInit {
     private itemTypeService: ItemTypeService) {
 
     this.init();
-    this.orgId = this.serviceLogin.currentUser()?.OrganizationId;
 
     this.whService.getWarehouse().subscribe(data => {
       this.warehouseAll = data['Result'];
