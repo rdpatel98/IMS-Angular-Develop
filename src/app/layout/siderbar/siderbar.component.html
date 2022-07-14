@@ -2,7 +2,7 @@
   <div class="wlt-sidebar-sticky">
     <ul class="nav flex-column">
       <div>
-        <li class="nav-item" *hasPermission="[permission.Organization_List]">
+        <li class="nav-item" [hidden]="!isAdmin" *hasPermission="[permission.Organization_List]">
           <a class="nav-link" routerLink="/organization" routerLinkActive="active">
             <i class="fa fa-building-o" aria-hidden="true"></i>
             <span class="wlt-menu-title"> Organization</span>

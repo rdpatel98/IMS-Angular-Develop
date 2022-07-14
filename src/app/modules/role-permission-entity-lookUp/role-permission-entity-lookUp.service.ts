@@ -32,7 +32,6 @@ export class RolePermissionEntityLookUpService {
     return this.http.post(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/UpdateRolePermissionEntityLookUp/" + id, data);
   }
   saveRolePermission(data: any) {
-    debugger;
     return this.http.post<any>(CommonConstants.WEBAPI_URL + "Role_PermissionEntityLookUp/SaveRolePermission/", data);
   }
 

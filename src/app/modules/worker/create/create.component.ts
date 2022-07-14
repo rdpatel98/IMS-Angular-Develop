@@ -95,7 +95,6 @@ export class CreateComponent implements OnInit {
         this.WorkerFrm.controls['OrganizationIds'].updateValueAndValidity();
     }
     onSubmit() {
-        debugger;
         console.log('worker',this.WorkerFrm.value['OrganizationIds'])
         this.WorkerFrm.controls['OrganizationIds'].setValue(this.WorkerFrm.value['OrganizationIds']);  
         this.WorkerFrm.controls['DOJ'].setValue(moment(this.WorkerFrm.value['DOJ']).format("yyyy-MM-DD"));
@@ -118,9 +117,10 @@ export class CreateComponent implements OnInit {
             this.service.update(this.WorkerFrm.value).subscribe(
                 data => {
                     this.dialogRef.close();
-                    this._snackBar.open("Email is already Exist in System!");
-                }
-            )
+                    this._snackBar.open("Worker Updated Successfully!");
+                },error => {
+                    this._snackBar.open("Email is already Exist in System");
+                });
         }
 
     }

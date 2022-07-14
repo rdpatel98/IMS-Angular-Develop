@@ -54,8 +54,11 @@ export class CreateComponent implements OnInit {
                     this.dialogRef.close();
                     this._snackBar.open("LookUp Created Successfully!");
                     
-                }
-            )
+                },
+                error => {
+                    this.isSaving = false;
+                    this._snackBar.open(error.error.ExceptionMessage);
+                });
         } else {
             this.service.update(this.addLookUpForm.value,this.info.ed.Id).subscribe(
                 data => {

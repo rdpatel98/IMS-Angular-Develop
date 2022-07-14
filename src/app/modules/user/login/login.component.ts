@@ -31,15 +31,10 @@ export class LoginComponent implements OnInit {
             // //console.log(data);
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('userName', data.userName);
-            debugger;
             if (localStorage.getItem('access_token')) {
                 this.gerUserInfo();
                 
             }
-            
-            debugger;
-            
-
         },
             error => {
                 this._snackBar.open("Login Failed. Invalid User Id/Password!");
