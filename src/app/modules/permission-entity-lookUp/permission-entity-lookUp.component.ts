@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateComponent } from './create/create.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { PermissionEntityLookUpService } from "./permission-entity-lookUp.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-permission-entity-lookUp',
@@ -14,6 +15,7 @@ import { PermissionEntityLookUpService } from "./permission-entity-lookUp.servic
 export class PermissionEntityLookUpComponent {
     displayedColumns: string[] = ['EntityName', 'LookUpNames', 'action'];
     dataSource: any;
+    permission: any = Permission;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;

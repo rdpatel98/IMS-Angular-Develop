@@ -8,7 +8,7 @@
                 <h3>Items</h3>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
+                <button mat-raised-button color="primary" class="float-right" (click)="create()" *hasPermission="[permission.Items_Create]">Create</button>
             </div>
         </div>
     </mat-card-title>
@@ -41,11 +41,11 @@
                             <a [routerLink]="" class="mr-2 wlt-view" (click)="viewDetails(element)">
                                 <mat-icon aria-hidden="false" matTooltip="View" aria-label="view icon">visibility</mat-icon>
                             </a>
-                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)">
-                                <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon>
+                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)" *hasPermission="[permission.Items_Update]">
+                                <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon" >mode_edit</mat-icon>
                             </a>
-                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.ItemId)">
-                                <mat-icon aria-hidden="false" matTooltip="Delete" aria-label="delete icon">delete</mat-icon>
+                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.ItemId)" *hasPermission="[permission.Items_Delete]">
+                                <mat-icon aria-hidden="false" matTooltip="Delete" aria-label="delete icon" >delete</mat-icon>
                             </a>
                         </div>
                     </td>

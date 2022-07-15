@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateComponent } from './create/create.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { PermissionEntityService } from "./permissionEntity.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-permissionEntity',
@@ -14,7 +15,7 @@ import { PermissionEntityService } from "./permissionEntity.service";
 export class PermissionEntityComponent {
     displayedColumns: string[] = ['Name', 'action'];
     dataSource: any;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

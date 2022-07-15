@@ -8,7 +8,7 @@
                 <h3>UOM</h3>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
+                <button mat-raised-button color="primary" class="float-right" (click)="create()" *hasPermission="[permission.UOM_Create]">Create</button>
             </div>
         </div>
     </mat-card-title>
@@ -26,8 +26,8 @@
                     </th>
                     <td mat-cell *matCellDef="let element">
                         <div class="float-left">
-                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)"><mat-icon aria-hidden="false"  matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon></a>
-                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.Id)"><mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon">delete</mat-icon></a>
+                            <a *hasPermission="[permission.UOM_Update]" [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)"><mat-icon aria-hidden="false"  matTooltip="Edit" aria-label="edit icon" >mode_edit</mat-icon></a>
+                            <a *hasPermission="[permission.UOM_Delete]" [routerLink]="" class=" wlt-delete" (click)="delete(element.Id)"><mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon" >delete</mat-icon></a>
                         </div>
                     </td>
                   </ng-container>

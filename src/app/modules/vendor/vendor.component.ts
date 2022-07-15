@@ -6,6 +6,7 @@ import {CreateComponent} from './create/create.component';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {VendorService} from "./vendor.service";
 import {LoginService} from "../user/login/login.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-vendor',
@@ -15,7 +16,7 @@ import {LoginService} from "../user/login/login.service";
 export class VendorComponent {
     displayedColumns: string[] = ['Id', 'Name', 'AccountNumber', 'action'];
     dataSource !: any;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

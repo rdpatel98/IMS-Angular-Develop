@@ -9,6 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {ItemsService} from "./items.service";
 import {LoginService} from "../user/login/login.service";
 import {DetailsComponent} from "./details/details.component";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-items',
@@ -18,7 +19,7 @@ import {DetailsComponent} from "./details/details.component";
 export class ItemsComponent implements AfterViewInit {
     displayedColumns: string[] = ['ItemNo', 'Name', 'Description', 'action'];
     dataSource: any;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

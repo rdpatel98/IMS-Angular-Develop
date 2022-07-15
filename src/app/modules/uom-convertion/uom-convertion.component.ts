@@ -6,6 +6,7 @@ import {CreateComponent} from './create/create.component';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UomConvertionService} from "./uom-convertion.service";
 import {LoginService} from "../user/login/login.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-uom-convertion',
@@ -16,7 +17,7 @@ export class UomConvertionComponent  {
     displayedColumns: string[] = ['Name', 'Description', 'action'];
     dataSource: any;
     orgId: string;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

@@ -9,6 +9,7 @@ import { LoginService } from '../../user/login/login.service';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
 import * as xlsx from 'xlsx';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
   selector: 'app-purchase-enquiry-report',
@@ -22,7 +23,7 @@ export class PurchaseEnquiryReportComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-
+  permission: any = Permission;
   expanded = true;
   frm!: FormGroup;
   control = new FormControl();

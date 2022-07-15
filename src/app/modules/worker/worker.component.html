@@ -8,7 +8,7 @@
                 <h3>Worker</h3>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
+                <button mat-raised-button color="primary" class="float-right" (click)="create()" *hasPermission="[permission.Worker_Create]">Create</button>
             </div>
         </div>
     </mat-card-title>
@@ -42,8 +42,8 @@
                     <td mat-cell *matCellDef="let element">
                         <div class="float-left">
                             <a [routerLink]="['/worker/view',element.WorkerId]" class="mr-2 wlt-view"><mat-icon aria-hidden="false"  matTooltip="View" aria-label="view icon">visibility</mat-icon></a>
-                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)"><mat-icon aria-hidden="false"  matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon></a>
-                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.WorkerId)"><mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon">delete</mat-icon></a>
+                            <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element)" *hasPermission="[permission.Worker_Update]"><mat-icon aria-hidden="false"  matTooltip="Edit" aria-label="edit icon">mode_edit</mat-icon></a>
+                            <a [routerLink]="" class=" wlt-delete" (click)="delete(element.WorkerId)" *hasPermission="[permission.Worker_Delete]"><mat-icon aria-hidden="false"  matTooltip="Delete" aria-label="delete icon">delete</mat-icon></a>
                         </div>
                     </td>
                   </ng-container>

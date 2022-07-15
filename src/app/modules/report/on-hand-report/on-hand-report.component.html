@@ -82,7 +82,7 @@
             <div class="col-md-12 table-responsive" #table>
                 <div class="row pb-1">
                     <div class="col-6 col-md-12 col-lg-12 text-right">
-                        <button mat-raised-button (click)="exportToExcel()" color="primary">
+                        <button mat-raised-button (click)="exportToExcel()" color="primary" *hasPermission="[permission.On_Hand_Report_Export]">
               Export To Excel
             </button>
                     </div>

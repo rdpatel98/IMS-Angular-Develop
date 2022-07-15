@@ -6,6 +6,7 @@ import { CreateComponent } from './create/create.component';
 import { WarehouseService } from "./warehouse.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { LoginService } from '../user/login/login.service';
+import { Permission } from 'src/app/shared/common.constant';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class WarehouseComponent implements AfterViewInit {
     dataSource: any;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
-
+    permission: any = Permission;
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }

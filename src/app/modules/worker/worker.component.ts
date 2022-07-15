@@ -7,6 +7,7 @@ import {IWarehouse} from "../warehouse/warehouse.component";
 import {WorkerService} from "./worker.service";
 import * as moment from "moment";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-worker',
@@ -16,7 +17,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class WorkerComponent {
     displayedColumns: string[] = ['Name', 'UserId', 'DOJ', 'DOB', 'IsBlocked', 'action'];
     dataSource !: any;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

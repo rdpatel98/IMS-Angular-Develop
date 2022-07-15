@@ -6,6 +6,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { RolePermissionEntityLookUpService } from './role-permission-entity-lookUp.service';
 import { RoleService } from '../role/role.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-role-permission-entity-lookUp',
@@ -18,6 +19,7 @@ export class RolePermissionEntityLookUpComponent {
     roles: any;
     roleId: any;
     rightList: any;
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
     config = TreeviewConfig.create({

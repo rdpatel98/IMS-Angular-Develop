@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateComponent } from './create/create.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { RoleService } from "./role.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-role',
@@ -14,7 +15,7 @@ import { RoleService } from "./role.service";
 export class RoleComponent {
     displayedColumns: string[] = ['Name', 'action'];
     dataSource: any;
-
+    permission: any = Permission;
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
 

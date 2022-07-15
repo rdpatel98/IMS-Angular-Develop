@@ -8,7 +8,8 @@
                     <h3>Entity LookUp Map</h3>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3">
-                    <button mat-raised-button color="primary" class="float-right" (click)="create()">Create</button>
+                    <button mat-raised-button color="primary" class="float-right"
+                        *hasPermission="[permission.Entity_Lookup_Map_Create]" (click)="create()">Create</button>
                 </div>
             </div>
         </mat-card-title>
@@ -30,11 +31,13 @@
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="float-left">
-                                <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element.EntityId)">
+                                <a [routerLink]="" class="mr-2 wlt-edit" (click)="edit(element.EntityId)"
+                                    *hasPermission="[permission.Entity_Lookup_Map_Update]">
                                     <mat-icon aria-hidden="false" matTooltip="Edit" aria-label="edit icon">mode_edit
                                     </mat-icon>
                                 </a>
-                                <a [routerLink]="" class=" wlt-delete" (click)="delete(element.EntityId)">
+                                <a [routerLink]="" class=" wlt-delete" (click)="delete(element.EntityId)"
+                                    *hasPermission="[permission.Entity_Lookup_Map_Delete]">
                                     <mat-icon aria-hidden="false" matTooltip="Delete" aria-label="delete icon">delete
                                     </mat-icon>
                                 </a>

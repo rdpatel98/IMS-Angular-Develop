@@ -80,6 +80,7 @@ export enum Permission {
     Inventory_Adjustment_List = "Inventory_Adjustment.List",
     Inventory_Adjustment_Create = "Inventory_Adjustment.Create",
     Consumption_Report_List = "Consumption_Report.List",
+    Consumption_Report_Export = "Consumption_Report.Export",
     Consumption_Report_Delete = "Consumption_Report.Delete",
     Consumption_Report_Update = "Consumption_Report.Update",
     Consumption_Report_Create = "Consumption_Report.Create",
@@ -87,8 +88,10 @@ export enum Permission {
     On_Hand_Report_Delete = "On-Hand_Report.Delete",
     On_Hand_Report_Update = "On-Hand_Report.Update",
     On_Hand_Report_Create = "On-Hand_Report.Create",
+    On_Hand_Report_Export = "On-Hand_Report.Export",
     Purchase_Enquiry_Report_List = "Purchase_Enquiry_Report.List",
     Purchase_Enquiry_Report_Delete = "Purchase_Enquiry_Report.Delete",
     Purchase_Enquiry_Report_Update = "Purchase_Enquiry_Report.Update",
-    Purchase_Enquiry_Report_Create = "Purchase_Enquiry_Report.Create"
+    Purchase_Enquiry_Report_Create = "Purchase_Enquiry_Report.Create",
+    Purchase_Enquiry_Report_Export = "Purchase_Enquiry_Report.Export"
 }

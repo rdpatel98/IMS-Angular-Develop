@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateComponent } from './create/create.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { LookUpService } from "./lookup.service";
+import { Permission } from 'src/app/shared/common.constant';
 
 @Component({
     selector: 'app-lookup',
@@ -14,6 +15,7 @@ import { LookUpService } from "./lookup.service";
 export class LookUpComponent {
     displayedColumns: string[] = ['Name', 'action'];
     dataSource: any;
+    permission: any = Permission;
 
     @ViewChild(MatPaginator)
     paginator!: MatPaginator;
