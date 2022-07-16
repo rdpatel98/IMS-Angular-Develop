@@ -32,7 +32,6 @@ export class CreateComponent implements OnInit {
              
             this.isCreate = true;
         }
-        //console.log('test', this.addPermissionEntityLookUpForm.value);
         this.addPermissionEntityLookUpForm = this.formBulider.group({
             'Id': [''],
             'EntityId': new FormControl('', Validators.required),
@@ -54,11 +53,8 @@ export class CreateComponent implements OnInit {
             this.service.getPermissionEntityLookUpByEntityId(this.info.ed).subscribe(
                 res => {
                     this.addPermissionEntityLookUpForm.patchValue(res);
-                    //console.log('test', this.addPermissionEntityLookUpForm.value);
                 });
-            //console.log('test', this.addPermissionEntityLookUpForm.value);
         }
-        //console.log('test', this.addPermissionEntityLookUpForm.value);
     }
 
     onSubmit() {

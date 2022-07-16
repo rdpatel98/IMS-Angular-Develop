@@ -29,10 +29,7 @@ export class RoleComponent {
     getInit() {
         this.service.getRoles().subscribe(
             data => {
-                 
-                //console.log('result',data['Result']);
                 this.dataSource = new MatTableDataSource<IRole>(data);
-                //console.log('result',this.dataSource);
                 this.dataSource.paginator = this.paginator;
             }
         )

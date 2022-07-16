@@ -28,7 +28,6 @@ export class PurchaseOrderListComponent {
     constructor(public dialog: MatDialog, private service: PurchaseOrderListService, private _snackBar: MatSnackBar, private vendorService: VendorService, private serviceLogin: LoginService) {
          
 this.data=this.permission.Organization_List;
-//console.log(this.data);
         this.vendorService.getVendors().subscribe(data => {
             this.vendorAll = data['Result'];
         })

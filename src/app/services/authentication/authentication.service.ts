@@ -21,16 +21,10 @@ export class AuthenticationService {
   getCurrentUser(): UserModel {
     var userJson = localStorage.getItem('currentUser');
     var user =userJson !== null ? JSON.parse(userJson) : new UserModel();
-    //var user = JSON.parse(localStorage.getItem('currentUser'));
     if (user && user.Permissions && localStorage.getItem('currentUser')) {
-      // user.rights = this.getMenuList(user.rightsDB);
       localStorage.setItem('currentUser', JSON.stringify(user));
 
     }
-    //console.log("user",user);
-    //console.log("user.permissions",user.Permissions);
-    //console.log(" localStorage.getItem('currentUser')", localStorage.getItem('currentUser'));
-    //console.log("<UserModel>user",<UserModel>user);
     return <UserModel>user;
   }
 }

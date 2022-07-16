@@ -68,7 +68,6 @@ export class CreateComponent implements OnInit {
 
 
     onSubmit() {
-        //console.log(this.frm.value);
         if (!this.frm.valid) {
             return;
         }

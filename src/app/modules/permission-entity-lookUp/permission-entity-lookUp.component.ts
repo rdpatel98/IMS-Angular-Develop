@@ -31,9 +31,7 @@ export class PermissionEntityLookUpComponent {
         this.service.getPermissionEntityLookUpList().subscribe(
             data => {
                  
-                //console.log('result', data);
                 this.dataSource = new MatTableDataSource<IPermissionEntityLookUp>(data);
-                //console.log('result', this.dataSource);
                 this.dataSource.paginator = this.paginator;
             }
         )
@@ -53,15 +51,6 @@ export class PermissionEntityLookUpComponent {
     }
 
     edit(entityId: any) {
-        // var data: any;
-        // this.service.getPermissionEntityLookUpByEntityId(entityId).subscribe(
-        //     res => {
-        //         //console.log('res', res);
-
-        //         data = res;
-        //         //console.log('res4', data);
-        //     });
-        //  
         const dialogRef = this.dialog.open(CreateComponent, {
             disableClose: true,
             data: { ed: entityId },

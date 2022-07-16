@@ -29,10 +29,7 @@ export class PermissionEntityComponent {
     getInit() {
         this.service.getPermissionEntitys().subscribe(
             data => {
-                 
-                //console.log('result',data['Result']);
                 this.dataSource = new MatTableDataSource<IPermissionEntity>(data);
-                //console.log('result',this.dataSource);
                 this.dataSource.paginator = this.paginator;
             }
         )

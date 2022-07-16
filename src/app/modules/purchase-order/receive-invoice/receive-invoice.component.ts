@@ -39,8 +39,6 @@ export class ReceiveInvoiceComponent implements OnInit {
     constructor(private _snackBar: MatSnackBar, private router: Router, private dialogRef: MatDialogRef<ReceiveInvoiceComponent>, private service: ReceiveInvoiceService, private fb: FormBuilder, private itemService: ItemsService, private whService: WarehouseService, private uomService: UomConvertionService, private vendorService: VendorService, private poService: PurchaseOrderService, @Inject(MAT_DIALOG_DATA) public info: any, private serviceLogin: LoginService) {
         itemService.getItem().subscribe((data) => {
             this.itemOptions = data['Result'];
-            // this.data.forEach((d: TableData) => this.addRow(d, false));
-            // this.updateView();
         });
 
         whService.getWarehouse().subscribe(data => {
@@ -51,13 +49,8 @@ export class ReceiveInvoiceComponent implements OnInit {
             this.UomConvertionAll = data['Result'];
         })
 
-        //console.log(this.info['IsPurchaseReceiveSaved'])
-        //console.log(this.info['id'])
-
         if (!this.info['IsPurchaseReceiveSaved']) {
             poService.getPOByID(this.info['id']).subscribe((data: any) => {
-
-                //console.log(data);
                 this.po = data['Result']['PurchaseOrder'];
                 this.poNo = this.po['PurchaseOrderNo'];
                 this.getVendorById(this.po.VendorId);
@@ -70,13 +63,9 @@ export class ReceiveInvoiceComponent implements OnInit {
             })
         } else {
             service.getPurchaseReceiveByPurchaseOrder(this.info['id']).subscribe((data: any) => {
-
-                //console.log(data);
                 this.po = data['Result']['PurchaseReceive'];
-                //console.log(this.po['PurchaseReceiveNo']);
                 this.poNo = this.po['PurchaseReceiveNo'];
                 this.getVendorById(this.po.VendorId);
-                // this.frm.get('InvoiceNumber')?.setValue(data['Result']['InvoiceNumber']);
 
                 data['Result']['PurchaseReceiveItems'].forEach((d: TableData) => {
                     this.addRow(d);
@@ -111,7 +100,6 @@ export class ReceiveInvoiceComponent implements OnInit {
     }
 
     log(e: any) {
-        //console.log(e);
     }
 
     addRow(d?: TableData, noUpdate?: boolean) {
@@ -160,10 +148,6 @@ export class ReceiveInvoiceComponent implements OnInit {
         
         if (this.frm.invalid)
             return;
-
-        // this.rows.value.forEach((data: any) => {
-        //     data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
-        // })
         if (!this.info['IsPurchaseReceiveSaved']) {
             this.service.createPurchaseReceive(this.frm.value).subscribe(data => {                
                 this.dialogRef.close();
@@ -171,54 +155,10 @@ export class ReceiveInvoiceComponent implements OnInit {
             })
         } else {
             this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
-                //console.log(data);
                 this.dialogRef.close();
                 this._snackBar.open("Updated Receive Order Items Successfully!");
             })
         }
-
-        // if (this.btnSaveOption === 'save') {
-        //     this.frm?.get('InvoiceNumber')?.clearValidators();
-        //     this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
-        //     if (this.frm.invalid)
-        //         return;
-
-        //     this.rows.value.forEach((data: any) => {
-        //         data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
-        //     })
-        //     if (!this.info['IsPurchaseReceiveSaved']) {
-        //         this.service.createPurchaseReceive(this.frm.value).subscribe(data => {
-        //             //console.log(data);
-        //             this.dialogRef.close();
-        //             this._snackBar.open("Receive Order Items Successfully!");
-        //         })
-        //     } else {
-        //         this.service.updatePurchaseReceive(this.frm.value).subscribe(data => {
-        //             //console.log(data);
-        //             this.dialogRef.close();
-        //             this._snackBar.open("Updated Receive Order Items Successfully!");
-        //         })
-        //     }
-        // } else if (this.btnSaveOption === 'saveAndInvoice') {
-        //     this.frm?.get('InvoiceNumber')?.setValidators([Validators.required]);
-        //     this.frm?.get('InvoiceNumber')?.updateValueAndValidity();
-        //     if (this.frm.invalid)
-        //         return;
-
-        //     this.rows.value.forEach((data: any) => {
-        //         data.ReceiveQuantity = data.ReceivedQuantity + data.ReceiveQuantity;
-        //     })
-        //     this.service.updatePurchaseReceiveAndInvoice(this.frm.value).subscribe(data => {
-        //         //console.log(data);
-        //         this.dialogRef.close();
-        //         this._snackBar.open("Receive and Invoice Order Items Successfully!");
-        //         this.router.navigate(['/purchase-order-list']);
-        //     })
-        // }
-
-
-
-        //console.log(this.frm.value);
     }
 
     getData(index: any, frmCtrl: any): string {
@@ -232,11 +172,6 @@ export class ReceiveInvoiceComponent implements OnInit {
         var totalQty = parseInt(this.getData(index, 'Quantity'));
         return (totalQty - receivedQuantity);
     }
-
-    // saveOption(option: string) {
-    //     this.btnSaveOption = option;
-    // }
-
     getVendorById(id: string) {
         this.vendorService.getVendorById(id).subscribe(res => {
             this.vendor = res['Result'];

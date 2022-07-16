@@ -32,7 +32,6 @@ export class VendorComponent {
     getInit() {
         this.service.getVendors().subscribe(
             data => {
-                //console.log(data);
                 this.dataSource = new MatTableDataSource<IVendor>(data['Result']);
                 this.dataSource.paginator = this.paginator;
             }

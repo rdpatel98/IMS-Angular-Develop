@@ -43,13 +43,14 @@ export class CreateComponent implements OnInit {
     }
 
     ngOnInit(): void {
-       if(this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length == 0){
-        this.getOrg();
-       }
+       
         if (!this.isCreate) {
             this.addRoleForm.patchValue(this.info.ed);
         }
-        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+        if(this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length == 0){
+            this.getOrg();
+           }
+        else if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
             this.getOrg();
         }
         else {

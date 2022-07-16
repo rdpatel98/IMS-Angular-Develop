@@ -30,10 +30,7 @@ export class LookUpComponent {
     getInit() {
         this.service.getLookUps().subscribe(
             data => {
-                 
-                //console.log('result',data['Result']);
                 this.dataSource = new MatTableDataSource<ILookUp>(data);
-                //console.log('result',this.dataSource);
                 this.dataSource.paginator = this.paginator;
             }
         )

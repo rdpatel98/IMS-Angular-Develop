@@ -23,12 +23,12 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        localStorage.clear();
     }
 
     onSubmit() {
 
         this.service.login(this.frm.value).subscribe((data: any) => {
-            // //console.log(data);
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('userName', data.userName);
             if (localStorage.getItem('access_token')) {

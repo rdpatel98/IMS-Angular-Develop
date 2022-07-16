@@ -8,8 +8,6 @@ export class PermissionService {
     permissions: string[] | [];
     constructor(private authenticationService: AuthenticationService) {
         this.permissions = this.authenticationService.getCurrentUser().Permissions || [];
-        //console.log("this.permissions",this.permissions);
-        //console.log("per",this.authenticationService.getCurrentUser());
     }
 
     isGranted(permission: string): boolean {

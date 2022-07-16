@@ -16,7 +16,6 @@ export class SiderbarComponent implements OnInit {
   ngOnInit(): void {
     
     if (this.authService.getCurrentUser().Roles?.find(x=>x = '1')) {
-      console.log(this.isAdmin);
       this.isAdmin = true;
     }
   }

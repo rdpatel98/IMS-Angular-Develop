@@ -51,15 +51,11 @@ export class RolePermissionEntityLookUpComponent {
         this.getData();
     }
     getData() {
-        console.log("roleId", this.roleId);
         this.data = this.service.getRoleRightByRole(this.roleId)
             .pipe()
             .subscribe(
                 response => {
-                    //  
-                    console.log("roleId", response);
                     if (response && response.Result == 1) {
-                        // this.noItem = false;
                         this.data = response;
                         var lst: any[] = [];
                         response.PermissionList.forEach((item: any) => {
@@ -67,23 +63,18 @@ export class RolePermissionEntityLookUpComponent {
                             lst.push(i);
                         });
                         this.rightList = lst;
-                        console.log("rightList", this.rightList);
                     }
                     else {
-                        // this.error = response.result;
                     }
-                    // this.loading = false;
                 },
                 error => {
                     this._snackBar.open("Login Failed. Invalid User Id/Password!");
                 });
     }
     save() {
-       // this.rightIdList = GetAllItems(this.rightList, this.rightIdList);
         var model = new SaveRolePermissionEntityLookUp();
         model.RoleId = this.roleId;
         model.PermissionEntityLookUps = this.rightIdList;
-        console.log("model",model);
         this.service.saveRolePermission(model)
             .subscribe(
                 response => {
@@ -113,7 +104,6 @@ function mapToTreeViewItem(item: any) {
         value: item.Value,
         children: child
     });
-    console.log("result", result);
     return result;
 };
 

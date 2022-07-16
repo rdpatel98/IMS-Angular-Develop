@@ -69,22 +69,6 @@ export class PurchaseEnquiryReportComponent implements OnInit {
 
     if (this.frm.invalid)
       return;
-    //console.log(this.frm.value);
-
-    // this.frm.controls['ConsumptionItems'].setValue(this.frm.value.ConsumptionItems.map((d: any, i = 1) => {
-    //     return {
-    //         LineNo: ++i,
-    //         ItemCategoryId: d.ItemCategoryId,
-    //         ItemId: d.ItemId,
-    //         ItemName: d.ItemName,
-    //         UnitName: d.UnitName,
-    //         UnitId: d.UnitId,
-    //         OnHandQty: d.OnHandQty,
-    //         CategoryId: d.CategoryId,
-    //         Quantity: d.Quantity,
-    //     }
-    // }));
-    //
     this.service.GetPurchaseEnquiryReport(this.frm.value).subscribe(data => {
       this.expanded = false;
       this.dataSource = new MatTableDataSource<IPurchaseEnquiry>(data['Result']);

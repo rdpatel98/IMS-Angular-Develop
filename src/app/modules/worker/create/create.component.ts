@@ -95,7 +95,6 @@ export class CreateComponent implements OnInit {
         this.WorkerFrm.controls['OrganizationIds'].updateValueAndValidity();
     }
     onSubmit() {
-        console.log('worker',this.WorkerFrm.value['OrganizationIds'])
         this.WorkerFrm.controls['OrganizationIds'].setValue(this.WorkerFrm.value['OrganizationIds']);  
         this.WorkerFrm.controls['DOJ'].setValue(moment(this.WorkerFrm.value['DOJ']).format("yyyy-MM-DD"));
         this.WorkerFrm.controls['DOJ'].setValue(moment(this.WorkerFrm.value['DOJ']).format("yyyy-MM-DD"));
