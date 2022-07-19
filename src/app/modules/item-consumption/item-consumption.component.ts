@@ -72,7 +72,7 @@ export class ItemConsumptionComponent implements OnInit {
             this.getOrg();
         }
         else{
-            this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+            this.frm?.get('OrganizationId')?.setValue(this.authService.getCurrentUser().OrganizationIds[0]);
         }
         this._rowsOfConsumption.clear();
         this.service.getItemsWithCategoryByWarehouseId([this.serviceLogin.currentUser()?.DefaultWarehouseId].toString()).subscribe((data: any) => {
