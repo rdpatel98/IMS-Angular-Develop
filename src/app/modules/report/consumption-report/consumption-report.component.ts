@@ -10,6 +10,8 @@ import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
 import * as xlsx from 'xlsx';
 import { Permission } from 'src/app/shared/common.constant';
+import { OrganizationService } from '../../organization/organization.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-consumption-report',
@@ -28,6 +30,8 @@ export class ConsumptionReportComponent implements OnInit {
   reports: any[] | undefined;
   categories: any[] | undefined;
   expanded = true;
+  isMultipleOrg: boolean = false;
+  orgs: any;
 
   constructor(private router: Router,
     private _snackBar: MatSnackBar,
@@ -36,7 +40,9 @@ export class ConsumptionReportComponent implements OnInit {
     private service: ReportService,
     private whService: WarehouseService,
     private serviceLogin: LoginService,
-    private itemTypeService: ItemTypeService) {
+    private itemTypeService: ItemTypeService,
+    private orgService: OrganizationService,
+    private authService: AuthenticationService) {
 
     this.init();
 
@@ -57,16 +63,32 @@ export class ConsumptionReportComponent implements OnInit {
       WarehouseId: ['', Validators.required],
       ItemType: [''],
       WorkerId: [],
-      OrganizationId:['', Validators.required]
+      OrganizationId: ['', Validators.required]
     })
   }
   ngOnInit(): void {
+    if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+      this.getOrg();
+    }
+    else {
+      this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+    }
+  }
+
+  getOrg() {
+
+    this.orgService.getOrganization().subscribe(
+      data => {
+        this.orgs = data['Result'];
+        this.isMultipleOrg = true;
+      }
+    );
   }
   exportToExcel() {
     let targetTableElm = document.getElementById("table");
     let wb = xlsx.utils.table_to_book(targetTableElm);
     xlsx.writeFile(wb, "consumption-report.xlsx");
-   }
+  }
   onSubmit() {
 
     if (this.frm.invalid)

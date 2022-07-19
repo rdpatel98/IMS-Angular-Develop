@@ -69,6 +69,21 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                            <ng-container *ngIf="isMultipleOrg">
+                                <div class="col-12 col-md-6">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Organization</mat-label>
+                                        <mat-select formControlName="OrganizationId">
+                                            <mat-option *ngFor="let org of orgs" [value]="org.OrganizationId">
+                                                {{org.Name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Organization Name is required!
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
 

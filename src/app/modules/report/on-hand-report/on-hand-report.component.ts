@@ -15,6 +15,8 @@ import { WarehouseService } from '../../warehouse/warehouse.service';
 import { ReportService } from '../report.service';
 import * as xlsx from 'xlsx';
 import { Permission } from 'src/app/shared/common.constant';
+import { OrganizationService } from '../../organization/organization.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-on-hand-report',
@@ -35,7 +37,8 @@ export class OnHandReportComponent implements OnInit {
   workerAll: any;
   itemAll: any;
   count: any;
-
+  isMultipleOrg: boolean = false;
+  orgs: any;
   itemTypes: any;
 
   constructor(private router: Router,
@@ -45,7 +48,9 @@ export class OnHandReportComponent implements OnInit {
     private service: ReportService,
     private whService: WarehouseService,
     private serviceLogin: LoginService,
-    private itemTypeService: ItemTypeService) {
+    private itemTypeService: ItemTypeService,
+    private orgService: OrganizationService,
+    private authService: AuthenticationService) {
 
     this.init();
 
@@ -73,7 +78,25 @@ export class OnHandReportComponent implements OnInit {
     })
   }
   ngOnInit(): void {
+    if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+      this.getOrg();
+    }
+    else {
+      this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+    }
   }
+
+  
+  getOrg() {
+
+    this.orgService.getOrganization().subscribe(
+      data => {
+        this.orgs = data['Result'];
+        this.isMultipleOrg = true;
+      }
+    );
+  }
+  
   exportToExcel() {
     let targetTableElm = document.getElementById("table");
     let wb = xlsx.utils.table_to_book(targetTableElm);

@@ -90,12 +90,14 @@ export class PurchaseOrderComponent implements OnInit {
         });
     }
     async onInit() {
-        if (this.authService.getCurrentUser().OrganizationIds && this.authService.getCurrentUser().OrganizationIds?.length > 1) {
+        
+        var user = this.authService.getCurrentUser();
+        if (user.OrganizationIds && user.OrganizationIds?.length > 1) {
             this.getOrg();
         }
         else{
-            this.form.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
-        }
+            this.form?.get('PurchaseOrder.OrganizationId')?.setValue(user.OrganizationIds[0]);
+        }        
         const id = this.activatedRoute.snapshot.paramMap.get('id');
         this.warehouseAll = (await this.whService.getWarehouse().toPromise()).Result;
         if (this.warehouseAll.length > 0) {
@@ -132,11 +134,6 @@ export class PurchaseOrderComponent implements OnInit {
     }
     async ngOnInit() {
 
-        // const whs = await this.whService.getWarehouse(this.orgId.toString()).toPromise();
-        // this.warehouseAll = whs.Result;
-        // if (this.warehouseAll.length > 0) {
-        //     this.defaultWarehouseId = this.warehouseAll[0].WarehouseId;
-        // }
         this.form = this.formBulider.group({
             'PurchaseOrder': this.formBulider.group({
                 'PurchaseOrderId': null,

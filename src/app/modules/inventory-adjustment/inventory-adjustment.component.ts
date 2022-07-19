@@ -109,7 +109,7 @@ export class InventoryAdjustmentComponent implements OnInit {
             this.getOrg();
         }
         else{
-            this.form.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+            this.form?.get('OrganizationId')?.setValue(this.authService.getCurrentUser().OrganizationIds[0]);
         }
         this.whService.getWarehouse().subscribe(data => {
             this.warehouseAll = data['Result'];

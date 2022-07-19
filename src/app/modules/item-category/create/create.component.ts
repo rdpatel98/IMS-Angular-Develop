@@ -83,7 +83,7 @@ export class CreateComponent implements OnInit {
 
 
                 })
-
+                this.frm.get('ItemCategory.OrganizationId')?.setValue(info.ed['OrganizationId']);
                 this.frm.get('ItemCategory.ItemCategoryId')?.setValue(info.ed['ItemCategoryId']);
                 this.frm.get('ItemCategory.CategoryId')?.setValue(info.ed['CategoryId']);
             } else {
@@ -115,7 +115,10 @@ export class CreateComponent implements OnInit {
             this.getOrg();
         }
         else{
-            this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
+            var value = this.authService.getCurrentUser().OrganizationIds[0];
+            this.frm?.get('ItemCategory.OrganizationId')?.setValue(value);
+        
+            //this.frm.controls['OrganizationId'].setValue(this.authService.getCurrentUser().OrganizationIds[0]);
         }
     }
     getOrg() {

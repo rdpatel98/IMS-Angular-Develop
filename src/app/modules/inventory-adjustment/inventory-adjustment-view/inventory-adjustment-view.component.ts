@@ -104,8 +104,8 @@ export class InventoryAdjustmentViewComponent implements OnInit {
             this.iaNo = data['Result']['InventoryAdjustment']['InventoryAdjustmentNo'];
             this.iaID = data['Result']['InventoryAdjustment']['InventoryAdjustmentId'];
             var result = data['Result'];
-            this.WarehouseName = this.getWH(result.InventoryAdjustment.WarehouseId);
-            this.WorkerName = this.getWorker(result.InventoryAdjustment.WorkerId);
+            this.getWH(result.InventoryAdjustment.WarehouseId);
+            this.getWorker(result.InventoryAdjustment.WorkerId);
         });
     }
 
@@ -117,22 +117,36 @@ export class InventoryAdjustmentViewComponent implements OnInit {
 
 
     getItem(ItemId: any): string {
-
-        return this.itemOptions.filter((d: any) => d.ItemId == ItemId)[0]?.Name;
+        if (this.itemOptions != undefined) {
+            return this.itemOptions.filter((d: any) => d.ItemId == ItemId)[0]?.Name;
+        }
+        return '';
     }
 
-    getWH(WarehouseId: any): string {
-
-        return this.warehouseAll.filter((d: any) => d.WarehouseId == WarehouseId)[0]?.Name;
+    getWH(WarehouseId: any) {
+        this.whService.getWarehouse().subscribe(data => {
+            this.warehouseAll = data['Result'];
+            if (this.warehouseAll != undefined) {
+                this.WarehouseName = this.warehouseAll.find((d: any) => d.WarehouseId == WarehouseId)?.Name;
+            }
+        });
     }
 
-    getWorker(workerId: any): string {
+    getWorker(workerId: any) {
+        this.workerService.getWorker().subscribe(data => {
+            this.workers = data['Result'];
+            if (this.workers != undefined) {
+                this.WorkerName = this.workers.find((d: any) => d.WorkerId == workerId)?.Name;
+            }
+        });
 
-        return this.workers.filter((d: any) => d.WorkerId == workerId)[0]?.Name;
     }
 
     getUnit(itemId: any): string {
-        const InventoryUnitId = this.itemOptions.filter((d: any) => d.ItemId == itemId)[0]?.InventoryUnitId;
-        return this.UomConvertionAll.filter((d: any) => d.Id == InventoryUnitId)[0]?.Name;
+        if (this.UomConvertionAll != undefined && this.itemOptions != undefined) {
+            const InventoryUnitId = this.itemOptions.filter((d: any) => d.ItemId == itemId)[0]?.InventoryUnitId;
+            return this.UomConvertionAll.filter((d: any) => d.Id == InventoryUnitId)[0]?.Name;
+        }
+        return '';
     }
 }
